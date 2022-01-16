@@ -1,0 +1,22 @@
+---
+title: Considering macro factors in constructing covariance matrix
+output:
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "left", fig.height = 3, fig.pos = "H", fig.width = 5,
+                      message=FALSE, warning=FALSE, comment = NA)
+library(pacman)
+pacman::p_load(fmxdat, Texevier, knitr, kableExtra, tidyverse, readr)
+
+rm(list = ls()) # Cleaning environment:
+gc() # garbage collection 
+
+```
+
+# Purpose
+
+
+
