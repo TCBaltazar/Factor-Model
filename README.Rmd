@@ -179,6 +179,7 @@ With $\beta_{ik}$ representing the sensitivity of asset $i$ to factor $k$, $(k=1
 - can use factor model to estimate the variance and covariance of stock returns
 - impose that residuals of two assets are uncorrelated
 - if factor model well specified; factor model explains common variation between stock returns, what is left is idiosyncratic component
+
 - Macro factor models are a type of explicit factor model vs
 - implicit factor model driven by statistical factors from data. Sometimes prefered as it allows data to 'speak', telling us what the relevant factors are
 -> using a factor model useful way of reducing number of possible parameters. Assuming what is not explained by factor model is idiosyncratic risk, unique to each asset.
@@ -188,16 +189,7 @@ Using factor analysis to explain the variation in stock returns for the T40 inde
 - Factor models decompose asset returns into low dimension factors and idiosynchratic residual noise:
 -- In macro factor models, factors are observable economic time series
 
-For this project I use the T40 returns dataset for stock returns: only accounting for large cap stocks, which will be more affected by movements in macroeconomic variables. 
-- Variables had many returns missing, discarded ones which had more than 60% of observations missing. 
-- For the rest, a function was called to draw values from the variables own probability distribution
 
-The Palomar covFactor package was used to estimate alpha and beta coefficients for the stock returns.
-
-The macroeconomic factors used are still based on the data used for the practical, namely the:
-- US and SA 10_Yr bond spreads
-- VIX volatility index
-- Bloomberg commodities index
 
 
 Macroeconomic factor models use observable economic time series as the factors. 
@@ -213,9 +205,6 @@ security returns
  As in all
 factor models, each security also has an asset specific return unrelated to the factors security's linear sensitivities to the factors are called the factor betas of the security.
 
-In a macroeconomic factor model, the factors
-are defined by economic theory and observed
-externally to the security returns data
 
 # Exploratory Analysis
 
@@ -240,8 +229,7 @@ Descriptive statistics for the macroeconomic factors can be seen in the table be
 ```{r Descriptive Stats}
 # Creating Table with descriptive statistics for Macro Factors
 data.frame(pastecs::stat.desc(Factors[, -1], basic=F)) %>% 
-  dplyr::mutate_at(c("Real.GDP", "Real.INV"), funs(as.character(signif(., 3)))) %>%
-  kable(caption="Summary Statistics: Macro Factors", digits=3, align="l", longtable=TRUE) #%>%  kable_styling(latex_options = "HOLD_position")
+  kable(caption="Summary Statistics: Macroeconomic Factors", digits=4, align="l", longtable=TRUE)#%>%  kable_styling(latex_options = "HOLD_position")
 
 ```
 
@@ -321,56 +309,56 @@ T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% 
 
 This section presents figures for the relevant macroeconomic factors, and the asset returns (disaggregated) by industry. 
 
-```{r, fig.cap="US Long-Term Bond Yields"}
+```{r, fig.cap="US Long-Term Bond Yields \\label{Fig1}"}
 p.US <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, US_10Yr)) + labs(x="", y="", title="US 10Year") + theme_bw()
 
 fmxdat::finplot(p.US, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="USDZAR Spot Price"}
+```{r, fig.cap="USDZAR Spot Price \\label{Fig2}"}
 p.USDZAR <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, USDZAR)) + labs(x="", y="", title="USDZAR") + theme_bw()
 
 fmxdat::finplot(p.USDZAR, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="CBOE VIX Volatility Index"}
+```{r, fig.cap="CBOE VIX Volatility Index \\label{Fig3}"}
 p.VIX <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, VIX)) + labs(x="", y="", title="VIX Volatility") + theme_bw()
 
 fmxdat::finplot(p.VIX, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="Bloomberg Commodity Price Index"}
+```{r, fig.cap="Bloomberg Commodity Price Index \\label{Fig4}"}
 p.Bcom_Index <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Bcom_Index)) + labs(x="", y="", title="Commodity Price") + theme_bw()
 
 fmxdat::finplot(p.Bcom_Index, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="South Africa Money Market Rate"}
+```{r, fig.cap="South Africa Money Market Rate \\label{Fig5}"}
 p.MM.Rate <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, MM.Rate)) + labs(x="", y="", title="SA Money Market Rate") + theme_bw()
 
 fmxdat::finplot(p.MM.Rate, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="South Africa Real GDP"}
+```{r, fig.cap="South Africa Real GDP \\label{Fig6}"}
 p.Real.GDP <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Real.GDP)) + labs(x="", y="", title="SA Real GDP") + theme_bw()
 
 fmxdat::finplot(p.Real.GDP, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="South Africa Real Gross Fixed Capital Formation"}
+```{r, fig.cap="South Africa Real Gross Fixed Capital Formation \\label{Fig7}"}
 p.Real.Inv <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Real.INV)) + labs(x="", y="", title="SA Real Investment") + theme_bw()
 
 fmxdat::finplot(p.Real.Inv, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
 
 ```
 
-```{r, fig.cap="South Africa Consumer Price Inflation"}
+```{r, fig.cap="South Africa Consumer Price Inflation \\label{Fig8}"}
 p.CPI <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Inflation)) + labs(x="", y="", title="SA Inflation") + theme_bw()
 
 fmxdat::finplot(p.CPI, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
@@ -378,7 +366,7 @@ fmxdat::finplot(p.CPI, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.c
 ```
 
 
-```{r, fig.cap="Asset Returns by Industry"}
+```{r, fig.cap="Asset Returns by Industry \\label{Fig9}", fig.height=4.5, fig.width=7}
 p.Indus <- new_dat %>%
     filter(Tickers %in% T40) %>%
     mutate(date=as.Date(date)) %>%
@@ -391,22 +379,34 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 
 # Empirical Analysis
 
-## Methodology
+The model used to estimate covariance matrix parameters comprises of 8 macroeconomic factors, and 35 assets, disaggregated into their respective super-industries. The macroeconomic factor model was then applied to the three different industries, as these factors may affect assets in different industries differently. These three industry classes comprise of 10, 14, and 11 observations for the financial, industrial, and resources sectors, respectively. This section presents the main contribution of this paper, and the rest of it is set up as follows. Section \ref{Meth} presents the methodology used when constructing the macroeconomic factor model, Section \ref{Est} presents the results from estimating the model, and finally, Section \ref{Disc} provides a discussion of the main results. 
 
-8 Macro Factors and 40 Assets
+## Methodology \label{Meth}
 
-## Model Estimation
+The equation of the model is given by: 
 
+\begin{align}
+R_{ji,t}=\alpha_{ji} + \beta_{ji1}F_{1t} + ... + \beta_{jik}F_{kt} +...+\beta_{jiK}F_{Kt} +\epsilon_{it}
+\end{align}
 
+With **$F$** representing the 8 factors included in estimation, $\beta_{ik}$ representing the sensitivity of asset $i$ to factor $k$, $(k=1,...,K)$, for industry $j=(F,I,R)$. Factor models rely on three main assumptions. Firstly, individual factor realizations have zero expected value: $\mathbb{E}(f_k)=0$. Secondly, asset-specific errors are uncorrelated with each of the factors: $cov(f_{kt}, \epsilon_{it})=0$ $\forall$ $k$, $i$, & $t$. And, finally, that error terms are serially uncorrelated: $cov(\epsilon_{it}, \epsilon{ds})=0$ $\forall$ $i\neq d$, and $t \neq s$. From this, one then essentially has that: 
 
-```{r xts transformation by industry}
+\begin{align}
+Var(r_{i}) = L\phi L' + \sigma
+\end{align}
+
+With the above implying that the variance of individual assets is given by the sum of both the systematic and idiosyncratic risk components.
+
+## Model Estimation \label{Est}
+This section presents the results from estimating the macroeconomic factor model, with \ref{Fig10}-\ref{Fig12} displaying the estimated **$\alpha$'s** and **$\beta$'s** for each industry, where $\beta$ represents each assets sensitivity to the factors, and alpha the constant (excess) returns.
+
+```{r xts transformation}
 Factors_xts <- Factors %>% 
   tbl2xts::tbl_xts()
 
 Financials_xts <- Financials_clean %>% tbl_xts()
 Industrial_xts <- Industrial_clean %>% tbl_xts()
 Resources_xts <- Resources_clean %>% tbl_xts()
-
 
 ```
 
@@ -418,7 +418,7 @@ FM_Res_Fin <- FM_Fin$residual
 
 ```
 
-```{r}
+```{r, fig.cap="Factor Analysis: Financials \\label{Fig10}", fig.height=4.5, fig.width=7}
 par(mfrow = c(1, 2))
 barplot(FM_Fin$alpha, horiz = TRUE, 
         main = "alpha", col = "red", cex.names = 0.75, las = 1)
@@ -433,7 +433,7 @@ covmat_Ind <- FM_Ind$Sigma  # Covariance Matrix
 FM_Res_Ind <- FM_Ind$residual
 ```
 
-```{r}
+```{r, fig.cap="Factor Analysis: Industrial \\label{Fig11}", fig.height=4.5, fig.width=7}
 par(mfrow = c(1, 2))
 barplot(FM_Ind$alpha, horiz = TRUE, 
         main = "alpha", col = "red", cex.names = 0.75, las = 1)
@@ -448,7 +448,7 @@ covmat_Res <- FM_Res$Sigma  # Covariance Matrix
 FM_Res_Res <- FM_Res$residual
 ```
 
-```{r}
+```{r, fig.cap="Factor Analysis: Resources \\label{Fig12}", fig.height=4.5, fig.width=7}
 par(mfrow = c(1, 2))
 barplot(FM_Res$alpha, horiz = TRUE, 
         main = "alpha", col = "red", cex.names = 0.75, las = 1)
@@ -457,17 +457,66 @@ barplot(t(FM_Res$beta), horiz = TRUE,
 ```
 
 
+## Discussion of Results \label{Disc}
+
+
 # Conclusion
+
+\newpage
 
 # References
 
-# Appendices
+<div id="refs"></div>
 
+\newpage
 
+# Appendix: Supplementary Tables
 
+## Financial
 
+```{r Beta_F}
+FM_Fin$beta %>% kable(caption="Factor Beta's: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
 
+```{r Alpha_F}
+FM_Fin$alpha %>% kable(caption="Factor Alpha's: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
 
+```{r Covariance Matrix_F}
+covmat_Fin %>% kable(caption="Covariance Matrix: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+\newpage
+
+## Industrial
+
+```{r Beta_I}
+FM_Ind$beta  %>% kable(caption="Factor Beta's: Industrial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+```{r Alpha_I}
+FM_Ind$alpha %>% kable(caption="Factor Alpha's: Industrial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+```{r Covariance Matrix_I}
+covmat_Ind %>% kable(caption="Covariance Matrix: Industrial", align="l", digits = 4) %>%  kable_styling(latex_options = "HOLD_position")
+```
+
+\newpage
+
+## Resources
+
+```{r, Beta_R}
+FM_Res$beta %>% kable(caption="Factor Beta's: Resources", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+```{r, Alpha_R}
+FM_Res$alpha %>% kable(caption="Factor Alpha's: Resources", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+```{r Covariance Matrix_R}
+covmat_Res %>% kable(caption="Covariance Matrix: Resources", align="l", digits = 4) %>%  kable_styling(latex_options = "HOLD_position")
+```
 
 
 

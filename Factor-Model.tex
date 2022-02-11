@@ -149,14 +149,6 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\usepackage{caption}
-\usepackage{graphicx}
-\usepackage{siunitx}
-\usepackage{hhline}
-\usepackage{calc}
-\usepackage{tabularx}
-\usepackage{adjustbox}
-\usepackage{hyperref}
 
 %%% Hard setting column skips for reports - this ensures greater consistency and control over the length settings in the document.
 %% page layout
@@ -225,8 +217,8 @@ during periods of high volatility in South Africa.
 
 \begin{keyword}
 \footnotesize{
-Asset Allocation \sep Risk Parity \sep Mean Variance Optimisation
-\sep Volatility \\
+Factor Modeling \sep Macroeconomic Factors \sep Asset Returns
+\sep Covariance Matrix \\
 \vspace{0.3cm}
 }
 \end{keyword}
@@ -264,46 +256,77 @@ Asset Allocation \sep Risk Parity \sep Mean Variance Optimisation
 \section{\texorpdfstring{Introduction
 \label{Intro}}{Introduction }}\label{introduction}}
 
-References are to be made as follows:
-\protect\hyperlink{ref-fama1997}{Fama \& French}
-(\protect\hyperlink{ref-fama1997}{1997: 33}) and
-\protect\hyperlink{ref-grinold2000}{Grinold \& Kahn}
-(\protect\hyperlink{ref-grinold2000}{2000}) Such authors could also be
-referenced in brackets (\protect\hyperlink{ref-grinold2000}{Grinold \&
-Kahn, 2000}) and together \protect\hyperlink{ref-grinold2000}{Grinold \&
-Kahn} (\protect\hyperlink{ref-grinold2000}{2000}). Source the reference
-code from scholar.google.com by clicking on ``cite'\,' below article
-name. Then select BibTeX at the bottom of the Cite window, and proceed
-to copy and paste this code into your ref.bib file, located in the
-directory's Tex folder. Open this file in Rstudio for ease of
-management, else open it in your preferred Tex environment. Add and
-manage your article details here for simplicity - once saved, it will
-self-adjust in your paper.
+Macroeconomic factor models use observable economic time series to
+explain the common variation in asset returns, with the unexplained,
+idiosyncratic, variance being asset-specific.
 
-As per \protect\hyperlink{ref-Flannery}{Flannery \& Protopapadakis}
-(\protect\hyperlink{ref-Flannery}{2002}).. factor models are good shit!
-
-\begin{quote}
-I suggest renaming the top line after @article, as done in the template
-ref.bib file, to something more intuitive for you to remember. Do not
-change the rest of the code. Also, be mindful of the fact that bib
-references from google scholar may at times be incorrect. Reference
-Latex forums for correct bibtex notation.
-\end{quote}
-
-To reference a section, you have to set a label using
-``\textbackslash label'\,' in R, and then reference it in-text as
-e.g.~referencing a later section, Section \ref{Meth}.
+Overall investment risk is typically classified as being either
+systematic (market), affecting the broader market, or idiosyncratic
+risk, which is unique to individual assets. While the latter can, in
+effect, be diversified away, the former affects a large portion of
+assets. Factor models can be used to explain the common (systematic)
+variation in asset returns, with the remaining variance, not explained
+by the factors, being unique to each individual security.
 
 \hypertarget{literature-review}{%
 \section{\texorpdfstring{Literature Review
 \label{Lit}}{Literature Review }}\label{literature-review}}
 
+The use of modern, multivariate, factor models can be seen as an
+extension of the seminal work of
+\protect\hyperlink{ref-Sharpe1964}{Sharpe}
+(\protect\hyperlink{ref-Sharpe1964}{1964})'s Capital Asset Pricing Model
+(CAPM), which used a single factor- the market portfolio- to estimate
+asset returns. In most cases, however, there are potentially,
+infinitely, many factors which can influence asset returns. Modern
+factor models allow one to address the curse of dimensionality by
+assuming stock returns are driven by a, more, limited set of factors.
+Factor models thus decompose asset returns into two components: one
+driven by the common variation between stocks, due to the factors, and
+another idiosyncratic component, unique to each asset. Using a factor
+model can therefore be a useful way of reducing the number of possible
+parameters which can, possibly, drive asset returns; assuming that what
+is not explained by the, common, factors is idiosyncratic risk unique to
+each asset.
+
+Factor models have gained in prominence since
+\protect\hyperlink{ref-Sharpe1964}{Sharpe}
+(\protect\hyperlink{ref-Sharpe1964}{1964}), and have been extended to
+include more than one factor. In particular, this class of models can
+generally be split into three types
+(\protect\hyperlink{ref-Connor}{Connor, 1995}); macroeconomic,
+statistical, and fundamental factor models. Whilst statistical factor
+models use only the input (data) to determine the relevant factors for
+asset returns, macroeceonmic and fundamental factor models rely on the
+researcher to supplement the asset returns data with factors. One of the
+most prominent fundamental factor model was developed by
+\protect\hyperlink{ref-Fama1992}{Fama \& French}
+(\protect\hyperlink{ref-Fama1992}{1992}), who use firm-specific
+variables including relevant firm financial ratios, firm-size, and
+market beta in order to explain the variation in asset returns.
+
+In using macroeconomic factor models to study the behavior of asset
+returns, \protect\hyperlink{ref-Chen1986}{Chen, Roll \& Ross}
+(\protect\hyperlink{ref-Chen1986}{1986}) propose a set of candidate
+economic variables as factors to explain systematic asset risk. They
+found that industrial production, changes in risk premium, some measures
+of inflation, and changes in the yield curve were all significant in
+explaining expected asset returns. In a similar vein,
+\protect\hyperlink{ref-Kim1987}{Kim \& Wu}
+(\protect\hyperlink{ref-Kim1987}{1987}) find that an economic factor
+model, generally, performs better than a multivariate CAPM. The factors
+that they found to be significant were split into three categories:
+general, economy-wide, variables, the second category focused on the
+monetary side of the economy and included the interest rate and money
+supply. And the final factor comprised of labor market variables.
+
 \hypertarget{exploratory-analysis}{%
 \section{\texorpdfstring{Exploratory Analysis
 \label{Explor}}{Exploratory Analysis }}\label{exploratory-analysis}}
 
-As can be seen in Section \ref{Lit}
+This section aims to provide a, brief, exploration of the data,
+justifying the choice of macroeconomic variables used as factors, as
+well as the treatment of the relevant assets.
 
 \hypertarget{data-and-descriptive-statistics}{%
 \subsection{Data and Descriptive
@@ -327,7 +350,7 @@ Real.GDP & SA Real Gross Domestic Product & IMF International Financial Statisti
 \hline
 Real.INV & SA Real Gross Fixed Capital Formation & IMF International Financial Statistics\\
 \hline
-US\_10Yr & US 10 Year Bond Yields & N. Katzke\\
+US\_10Yr & US Long-Term Bond Yields & N. Katzke\\
 \hline
 USDZAR & USD/ZAR Spot Price & N. Katzke\\
 \hline
@@ -341,176 +364,296 @@ VIX & CBOE Volatility Index & N. Katzke\\
 \hline
   & US\_10Yr & Bcom\_Index & VIX & USDZAR & MM.Rate & Real.GDP & Real.INV & Inflation\\
 \hline
-median & 2.490 & 125.747 & 16.520 & 9.881 & 6.530 & 1.07e+12 & 1.86e+11 & 1.236\\
+median & 1.250 & 0.003 & -0.027 & 0.003 & 2.019 & 0.009 & 0.011 & 0.805\\
 \hline
-mean & 2.745 & 123.179 & 19.383 & 10.563 & 6.513 & 1.04e+12 & 1.79e+11 & 1.295\\
+mean & 1.274 & -0.005 & 0.008 & 0.013 & 1.988 & 0.004 & 0.003 & 0.786\\
 \hline
-SE.mean & 0.138 & 4.753 & 1.076 & 0.415 & 0.230 & 1.08e+10 & 2.36e+09 & 0.082\\
+SE.mean & 0.038 & 0.012 & 0.040 & 0.008 & 0.029 & 0.004 & 0.005 & 0.038\\
 \hline
-CI.mean.0.95 & 0.276 & 9.490 & 2.148 & 0.829 & 0.459 & 2.15e+10 & 4.71e+09 & 0.164\\
+CI.mean.0.95 & 0.077 & 0.024 & 0.080 & 0.017 & 0.058 & 0.007 & 0.011 & 0.076\\
 \hline
-var & 1.282 & 1513.671 & 77.528 & 11.563 & 3.534 & 7.78e+21 & 3.73e+20 & 0.453\\
+var & 0.098 & 0.010 & 0.107 & 0.005 & 0.058 & 0.001 & 0.002 & 0.096\\
 \hline
-std.dev & 1.132 & 38.906 & 8.805 & 3.400 & 1.880 & 8.82e+10 & 1.93e+10 & 0.673\\
+std.dev & 0.314 & 0.099 & 0.326 & 0.069 & 0.240 & 0.030 & 0.044 & 0.310\\
 \hline
-coef.var & 0.412 & 0.316 & 0.454 & 0.322 & 0.289 & 0.0848 & 0.108 & 0.519\\
+coef.var & 0.246 & -18.243 & 41.716 & 5.248 & 0.121 & 6.827 & 13.362 & 0.394\\
 \hline
 \end{longtable}
 
+Tables 3.1 and 3.2, respectively, provide a description of the factors
+included along with their sources, and summary statistics for the
+factors. Macroeconomic factors for South Africa were chosen on the basis
+of their possible influence in driving asset returns in South Africa. US
+10 Year bond yields were used to quantify the influence of US Monetary
+Policy decisions in driving global liquidity. This is based on the
+direct relationship between bond yields and interest rates, whereby
+lower interest rates depress bond yields and these thus become a less
+attractive investment option; potentially leading investors to seek
+higher returns in domestic and foreign asset markets. The Bloomberg
+commodities index was used to measure the influence that changing
+commodity prices may have on asset returns, given that the South African
+economy is still influenced to a large extent by fluctuating commodity
+prices. The CBOE VIX volatility index was included to account for the
+effect that changing risk perceptions may have on domestic asset
+returns. Similarly to changes in US long term bond yields, lower risk
+perceptions may lead to capital flowing more towards developing
+(periphery) and could thus influence South African asset returns. The
+USDZAR spot rate was also included as changes in the price of foreign
+exchange can influence asset returns through, for example, increasing
+the cost of financing outstanding debt, or increasing input costs. The
+money market rate was used to represent the domestic monetary policy
+stance, this can affect the cost of borrowing for businesses, as well as
+changing investor incentives when it comes to investing in asset
+markets; both of which can influence returns. Real gross fixed capital
+formation was used to account for the level of investment in the economy
+for any given quarter. Finally, inflation was measured using the
+quarterly growth in the Consumer Price Index (CPI).
+
 \begin{table}[H]
 
-\caption{\label{tab:T40 constituents}T40 Constituents}
+\caption{\label{tab:T40 constituents}T40 Constituents: Financials}
 \centering
-\begin{tabular}[t]{l|l|l}
+\begin{tabular}[t]{l|l}
 \hline
-Ticker & Constituent & Super Industry\\
+Ticker & Constituent\\
 \hline
-ABG & ABSA GROUP LTD & Financials\\
+ABG & ABSA GROUP LTD\\
 \hline
-AGL & ANGLO AMER PLC & Resources\\
+CPI & CAPITEC BANK HOL\\
 \hline
-AMS & ANGLO AMERICAN P & Resources\\
+DSY & DISCOVERY LTD\\
 \hline
-ANG & ANGLOGOLD ASHANT & Resources\\
+FSR & FIRSTRAND LTD\\
 \hline
-APN & ASPEN PHARMACARE & Industrials\\
+GRT & GROWTHPOINT PROP\\
 \hline
-BHP & BHP GROUP PLC & Resources\\
+INL & INVESTEC LTD\\
 \hline
-BID & BID CORP LTD & Industrials\\
+INP & INVESTEC PLC\\
 \hline
-BVT & BIDVEST GROUP & Industrials\\
+NED & NEDBANK GROUP\\
 \hline
-BTI & BRIT AMER TOBACC & Industrials\\
+NRP & NEPI ROCKCASTLE\\
 \hline
-CPI & CAPITEC BANK HOL & Financials\\
+OMU & OLD MUTUAL LTD\\
 \hline
-CLS & CLICKS GROUP LTD & Industrials\\
+RNI & Reinet Investments SCA\\
 \hline
-DSY & DISCOVERY LTD & Financials\\
+SLM & SANLAM LTD\\
 \hline
-EXX & EXXARO RESOURCES & Resources\\
-\hline
-FSR & FIRSTRAND LTD & Financials\\
-\hline
-GLN & GLENCORE PLC & Resources\\
-\hline
-GFI & GOLD FIELDS LTD & Resources\\
-\hline
-GRT & GROWTHPOINT PROP & Financials\\
-\hline
-IMP & IMPALA PLATINUM & Resources\\
-\hline
-INL & INVESTEC LTD & Financials\\
-\hline
-INP & INVESTEC PLC & Financials\\
-\hline
-MNP & MONDI PLC & Industrials\\
-\hline
-MRP & MR PRICE GROUP & Industrials\\
-\hline
-MTN & MTN GROUP LTD & Industrials\\
-\hline
-MCG & MULTICHOICE GROU & Industrials\\
-\hline
-NPN & NASPERS LTD-N & Industrials\\
-\hline
-NED & NEDBANK GROUP & Financials\\
-\hline
-NRP & NEPI ROCKCASTLE & Financials\\
-\hline
-NPH & NORTHAM PLATINUM & Resources\\
-\hline
-OMU & OLD MUTUAL LTD & Financials\\
-\hline
-PRX & PROSUS NV & Industrials\\
-\hline
-RNI & Reinet Investments SCA & Financials\\
-\hline
-CFR & RICHEMONT-DR & Industrials\\
-\hline
-SLM & SANLAM LTD & Financials\\
-\hline
-SOL & SASOL LTD & Resources\\
-\hline
-SHP & SHOPRITE HLDGS & Industrials\\
-\hline
-SSW & SIBANYE STILLWAT & Resources\\
-\hline
-SPP & SPAR GRP LTD/THE & Industrials\\
-\hline
-SBK & STANDARD BANK GR & Financials\\
-\hline
-VOD & VODACOM GROUP & Industrials\\
-\hline
-WHL & WOOLWORTHS HLDGS & Industrials\\
+SBK & STANDARD BANK GR\\
 \hline
 \end{tabular}
 \end{table}
 
-\hypertarget{factor-and-industry-plots}{%
-\subsection{Factor and Industry Plots}\label{factor-and-industry-plots}}
+\begin{table}[H]
+
+\caption{\label{tab:unnamed-chunk-1}T40 Constituents: Industrials}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Ticker & Constituent\\
+\hline
+APN & ASPEN PHARMACARE\\
+\hline
+BID & BID CORP LTD\\
+\hline
+BVT & BIDVEST GROUP\\
+\hline
+BTI & BRIT AMER TOBACC\\
+\hline
+CLS & CLICKS GROUP LTD\\
+\hline
+MNP & MONDI PLC\\
+\hline
+MRP & MR PRICE GROUP\\
+\hline
+MTN & MTN GROUP LTD\\
+\hline
+MCG & MULTICHOICE GROU\\
+\hline
+NPN & NASPERS LTD-N\\
+\hline
+PRX & PROSUS NV\\
+\hline
+CFR & RICHEMONT-DR\\
+\hline
+SHP & SHOPRITE HLDGS\\
+\hline
+SPP & SPAR GRP LTD/THE\\
+\hline
+VOD & VODACOM GROUP\\
+\hline
+WHL & WOOLWORTHS HLDGS\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+\caption{\label{tab:unnamed-chunk-2}T40 Constituents: Resources}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Ticker & Constituent\\
+\hline
+AGL & ANGLO AMER PLC\\
+\hline
+AMS & ANGLO AMERICAN P\\
+\hline
+ANG & ANGLOGOLD ASHANT\\
+\hline
+BHP & BHP GROUP PLC\\
+\hline
+EXX & EXXARO RESOURCES\\
+\hline
+GLN & GLENCORE PLC\\
+\hline
+GFI & GOLD FIELDS LTD\\
+\hline
+IMP & IMPALA PLATINUM\\
+\hline
+NPH & NORTHAM PLATINUM\\
+\hline
+SOL & SASOL LTD\\
+\hline
+SSW & SIBANYE STILLWAT\\
+\hline
+\end{tabular}
+\end{table}
+
+For this analysis, only variables in the Top 40 stocks in the JSE with
+the highest market capitalization were included. This was done to
+account for the fact that larger companies will be more exposed to
+global macroeconomic factors, relative to those with smaller market
+caps. The variables chosen as part of this ``T40'' are based on the FTSE
+Russell classification, as of the end of 2021 Q3 (see
+(\protect\hyperlink{ref-FTSE}{{``Factsheet (ZAR) FTSE/JSE top 40
+index''}, n.d.})). After subsetting the Top 40 stocks, these were
+stratified into their respective super-industries. The stocks included,
+as well as their relevant industries, can be found in Tables 3.3-3.5
+above. In order to estimate the covariance matrix, there could be no
+missing values in the asset returns data. Firstly, only those securities
+which had more than 70\% of observations were considered, this led to
+five assets dropping out: NRP, OMU, RNI, MCG, and PRX. The former three
+were in financials, while the latter two were classified as industrials.
+And secondly, returns were imputed according to their own probability
+distribution. After this, there were no more missing values in the asset
+returns data.
+
+\hypertarget{data-visualization}{%
+\subsection{Data Visualization}\label{data-visualization}}
+
+This section presents figures for the relevant macroeconomic factors,
+and the asset returns (disaggregated) by industry. All macro factors
+entered the model in log terms, and, in addition, non-stationary
+variables were taken as quarterly changes.
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-1-1} \caption{US Long-Term Bond Yields}\label{fig:unnamed-chunk-1}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-3-1} \caption{US Long-Term Bond Yields \label{Fig1}}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-2-1} \caption{USDZAR Spot Price}\label{fig:unnamed-chunk-2}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-4-1} \caption{USDZAR Spot Price \label{Fig2}}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-3-1} \caption{CBOE VIX Volatility Index}\label{fig:unnamed-chunk-3}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-5-1} \caption{CBOE VIX Volatility Index \label{Fig3}}\label{fig:unnamed-chunk-5}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-4-1} \caption{Bloomberg Commodity Price Index}\label{fig:unnamed-chunk-4}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-6-1} \caption{Bloomberg Commodity Price Index \label{Fig4}}\label{fig:unnamed-chunk-6}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-5-1} \caption{South Africa Money Market Rate}\label{fig:unnamed-chunk-5}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-7-1} \caption{South Africa Money Market Rate \label{Fig5}}\label{fig:unnamed-chunk-7}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-6-1} \caption{South Africa Real GDP}\label{fig:unnamed-chunk-6}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-8-1} \caption{South Africa Real GDP \label{Fig6}}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-7-1} \caption{South Africa Real Gross Fixed Capital Formation}\label{fig:unnamed-chunk-7}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-9-1} \caption{South Africa Real Gross Fixed Capital Formation \label{Fig7}}\label{fig:unnamed-chunk-9}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-8-1} \caption{South Africa Consumer Price Inflation}\label{fig:unnamed-chunk-8}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-10-1} \caption{South Africa Consumer Price Inflation \label{Fig8}}\label{fig:unnamed-chunk-10}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-9-1} \caption{Asset Returns by Industry}\label{fig:unnamed-chunk-9}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-11-1} \caption{Asset Returns by Industry \label{Fig9}}\label{fig:unnamed-chunk-11}
 \end{figure}
 
 \hypertarget{empirical-analysis}{%
 \section{Empirical Analysis}\label{empirical-analysis}}
 
+The model used to estimate covariance matrix parameters comprises of 8
+macroeconomic factors, and 35 assets, disaggregated into their
+respective super-industries. The macroeconomic factor model was then
+applied to the three different industries, as these factors may affect
+assets in different industries differently. These three industry classes
+comprise of 10, 14, and 11 observations for the financial, industrial,
+and resources sectors, respectively. This section presents the main
+contribution of this paper, and the rest of it is set up as follows.
+Section \ref{Meth} presents the methodology used when constructing the
+macroeconomic factor model, Section \ref{Est} presents the results from
+estimating the model, and finally, Section \ref{Disc} provides a
+discussion of the main results.
+
 \hypertarget{methodology}{%
-\subsection{Methodology}\label{methodology}}
+\subsection{\texorpdfstring{Methodology
+\label{Meth}}{Methodology }}\label{methodology}}
 
-\hypertarget{model-estimation-by-industry}{%
-\subsection{Model Estimation (by
-Industry)}\label{model-estimation-by-industry}}
+The equation of the model is given by:
+
+\begin{align}
+R_{ji,t}=\alpha_{ji} + \beta_{ji1}F_{1t} + ... + \beta_{jik}F_{kt} +...+\beta_{jiK}F_{Kt} +\epsilon_{it}
+\end{align}
+
+With \textbf{\(F\)} representing the 8 factors included in estimation,
+\(\beta_{ik}\) representing the sensitivity of asset \(i\) to factor
+\(k\), \((k=1,...,K)\), for industry \(j=(F,I,R)\). Factor models rely
+on three main assumptions. Firstly, individual factor realizations have
+zero expected value: \(\mathbb{E}(f_k)=0\). Secondly, asset-specific
+errors are uncorrelated with each of the factors:
+\(cov(f_{kt}, \epsilon_{it})=0\) \(\forall\) \(k\), \(i\), \& \(t\).
+And, finally, that error terms are serially uncorrelated:
+\(cov(\epsilon_{it}, \epsilon{ds})=0\) \(\forall\) \(i\neq d\), and
+\(t \neq s\). From this, one then essentially has that:
+
+\begin{align}
+Var(r_{i}) = L\phi L' + \sigma
+\end{align}
+
+With the above implying that the variance of individual assets is given
+by the sum of both the systematic and idiosyncratic risk components.
+
+\hypertarget{model-estimation}{%
+\subsection{\texorpdfstring{Model Estimation
+\label{Est}}{Model Estimation }}\label{model-estimation}}
+
+This section presents the results from estimating the macroeconomic
+factor model, with \ref{Fig10}-\ref{Fig12} displaying the estimated
+\textbf{\(\alpha\)'s} and \textbf{\(\beta\)'s} for each industry, where
+\(\beta\) represents each assets sensitivity to the factors, and alpha
+the constant (excess) returns.
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-10-1} \caption{Factor Analysis: Financials}\label{fig:unnamed-chunk-10}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-12-1} \caption{Factor Analysis: Financials \label{Fig10}}\label{fig:unnamed-chunk-12}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-11-1} \caption{Factor Analysis: Industrial}\label{fig:unnamed-chunk-11}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-13-1} \caption{Factor Analysis: Industrial \label{Fig11}}\label{fig:unnamed-chunk-13}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-12-1} \caption{Factor Analysis: Resources}\label{fig:unnamed-chunk-12}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-14-1} \caption{Factor Analysis: Resources \label{Fig12}}\label{fig:unnamed-chunk-14}
 \end{figure}
 
 \hypertarget{discussion-of-results}{%
-\subsection{Discussion of Results}\label{discussion-of-results}}
+\subsection{\texorpdfstring{Discussion of Results
+\label{Disc}}{Discussion of Results }}\label{discussion-of-results}}
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -522,251 +665,360 @@ Industry)}\label{model-estimation-by-industry}}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-fama1997}{}%
-Fama, E.F. \& French, K.R. 1997. Industry costs of equity. \emph{Journal
-of financial economics}. 43(2):153--193.
+\leavevmode\hypertarget{ref-Chen1986}{}%
+Chen, N.-F., Roll, R. \& Ross, S. 1986. Economic forces and the stock
+market. \emph{The Journal of Business}. 59(3):383--403.
 
-\leavevmode\hypertarget{ref-Flannery}{}%
-Flannery, M. \& Protopapadakis, A.A. 2002. Macroeconomic factors do
-influence aggregate stock returns. \emph{Review of Financial Studies}.
-15(3):751--782.
+\leavevmode\hypertarget{ref-Connor}{}%
+Connor, G. 1995. The three types of factor models: A comparison of their
+explanatory power. \emph{Financial Analysts Journal}. 51:42--46.
 
-\leavevmode\hypertarget{ref-grinold2000}{}%
-Grinold, R.C. \& Kahn, R.N. 2000. Active portfolio management.
+\leavevmode\hypertarget{ref-FTSE}{}%
+{``Factsheet (ZAR) FTSE/JSE top 40 index''}. n.d. {[}Online{]},
+Available:
+\url{https://research.ftserussell.com/Analytics/Factsheets/Home/DownloadSingleIssue?issueName=J200\&amp;IsManual=false}.
+
+\leavevmode\hypertarget{ref-Fama1992}{}%
+Fama, E.F. \& French, K.R. 1992. {The Cross-Section of Expected Stock
+Returns}. \emph{Journal of Finance}. 47(2):427--465.
+
+\leavevmode\hypertarget{ref-Kim1987}{}%
+Kim, M.K. \& Wu, C. 1987. {Macro-Economic Factors And Stock Returns}.
+\emph{Journal of Financial Research}. 10(2):87--98.
+
+\leavevmode\hypertarget{ref-Sharpe1964}{}%
+Sharpe, W. 1964. Capital asset prices: A theory of market equilibrium
+under conditions of risk. \emph{Journal of Finance}. 19(3):425--442.
 
 \end{CSLReferences}
 
 \newpage
 
-\hypertarget{appendices}{%
-\section{Appendices}\label{appendices}}
+\hypertarget{appendix-supplementary-tables}{%
+\section{Appendix: Supplementary
+Tables}\label{appendix-supplementary-tables}}
 
-To reference the plot above, add a ``\textbackslash label'\,' after the
-caption in the chunk heading, as done above. Then reference the plot as
-such: As can be seen, Figures \ref{Figure1} and \ref{Figure2} are
-excellent, with Figure \ref{Figure2} being particularly aesthetically
-pleasing due to its device setting of Tikz. The nice thing now is that
-it correctly numbers all your figures (and sections or tables) and will
-update if it moves. The links are also dynamic.
-
-\footnote{This is an example of a footnote by the way. Something that
-  should also not be overused.}
-
-Equations should be written as such:
-
-\begin{align}
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \label{eq1} \\
-\int_{x = 1}^{\infty}x_{i} = 1 \notag
-\end{align}
-
-If you would like to see the equations as you type in Rmarkdown, use \$
-symbols instead (see this for yourself by adjusted the equation):
-
-\[
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\
-\int_{x = 1}^{\infty}x_{i} = 1
-\]
-
-Note again the reference to equation \ref{eq1}. Writing nice math
-requires practice. Note I used a forward slashes to make a space in the
-equations.
+\hypertarget{financial}{%
+\subsection{Financial}\label{financial}}
 
 \begin{table}[H]
+
+\caption{\label{tab:Beta_F}Factor Beta's: Financial}
 \centering
-\begin{tabular}{rrrrrrrrrrrr}
-  \hline
- & mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb \\ 
-  \hline
-1 & 21.00 & 6.00 & 160.00 & 110.00 & 3.90 & 2.62 & 16.46 & 0.00 & 1.00 & 4.00 & 4.00 \\ 
-  2 & 21.00 & 6.00 & 160.00 & 110.00 & 3.90 & 2.88 & 17.02 & 0.00 & 1.00 & 4.00 & 4.00 \\ 
-  3 & 22.80 & 4.00 & 108.00 & 93.00 & 3.85 & 2.32 & 18.61 & 1.00 & 1.00 & 4.00 & 1.00 \\ 
-  4 & 21.40 & 6.00 & 258.00 & 110.00 & 3.08 & 3.21 & 19.44 & 1.00 & 0.00 & 3.00 & 1.00 \\ 
-  5 & 18.70 & 8.00 & 360.00 & 175.00 & 3.15 & 3.44 & 17.02 & 0.00 & 0.00 & 3.00 & 2.00 \\ 
-   \hline
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l}
+\hline
+  & US\_10Yr & Bcom\_Index & VIX & USDZAR & MM.Rate & Real.GDP & Real.INV & Inflation\\
+\hline
+ABG & -0.0133 & -0.0056 & 0.0306 & 0.0976 & 0.0133 & 0.1730 & -0.0981 & 0.0000\\
+\hline
+CPI & -0.0113 & 0.0554 & 0.0137 & 0.0435 & 0.0275 & 0.3649 & -0.1153 & -0.0192\\
+\hline
+DSY & -0.0011 & 0.0344 & 0.0168 & 0.1036 & 0.0003 & 0.1265 & -0.0930 & -0.0001\\
+\hline
+FSR & -0.0084 & 0.0091 & 0.0097 & 0.0494 & 0.0034 & -0.1884 & 0.0182 & 0.0034\\
+\hline
+GRT & -0.0063 & 0.0230 & 0.0164 & 0.0834 & 0.0047 & 0.1469 & -0.0032 & 0.0006\\
+\hline
+INL & -0.0017 & 0.0076 & 0.0077 & 0.0339 & 0.0088 & 0.0102 & -0.0150 & 0.0013\\
+\hline
+INP & -0.0026 & 0.0340 & 0.0083 & 0.0686 & 0.0051 & 0.1847 & -0.1322 & -0.0077\\
+\hline
+NED & -0.0117 & 0.0071 & 0.0245 & 0.0863 & 0.0086 & 0.1478 & -0.0415 & 0.0035\\
+\hline
+SBK & -0.0022 & -0.0311 & 0.0093 & 0.0319 & 0.0065 & -0.1362 & 0.1003 & 0.0023\\
+\hline
+SLM & -0.0061 & -0.0567 & 0.0035 & 0.0030 & -0.0116 & -0.0363 & 0.0530 & 0.0059\\
+\hline
 \end{tabular}
-\caption{Short Table Example \label{tab1}} 
 \end{table}
 
-To reference calculations \textbf{in text}, \emph{do this:} From table
-\ref{tab1} we see the average value of mpg is 20.98.
+\begin{table}[H]
 
-Including tables that span across pages, use the following (note that I
-add below the table: ``continue on the next page'\,'). This is a neat
-way of splitting your table across a page.
-
-Use the following default settings to build your own possibly long
-tables. Note that the following will fit on one page if it can, but
-cleanly spreads over multiple pages:
-
-\begingroup\fontsize{12pt}{13pt}\selectfont
-\begin{longtable}{rrrrrrrrrrr}
-\caption{Long Table Example} \\ 
-  \toprule
-mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb \\ 
-  \hline 
-\endhead 
-\hline 
-{\footnotesize Continued on next page} 
-\endfoot 
-\endlastfoot 
- \midrule
-21.00 & 6.00 & 160.00 & 110.00 & 3.90 & 2.62 & 16.46 & 0.00 & 1.00 & 4.00 & 4.00 \\ 
-  21.00 & 6.00 & 160.00 & 110.00 & 3.90 & 2.88 & 17.02 & 0.00 & 1.00 & 4.00 & 4.00 \\ 
-  22.80 & 4.00 & 108.00 & 93.00 & 3.85 & 2.32 & 18.61 & 1.00 & 1.00 & 4.00 & 1.00 \\ 
-  21.40 & 6.00 & 258.00 & 110.00 & 3.08 & 3.21 & 19.44 & 1.00 & 0.00 & 3.00 & 1.00 \\ 
-  18.70 & 8.00 & 360.00 & 175.00 & 3.15 & 3.44 & 17.02 & 0.00 & 0.00 & 3.00 & 2.00 \\ 
-  18.10 & 6.00 & 225.00 & 105.00 & 2.76 & 3.46 & 20.22 & 1.00 & 0.00 & 3.00 & 1.00 \\ 
-  14.30 & 8.00 & 360.00 & 245.00 & 3.21 & 3.57 & 15.84 & 0.00 & 0.00 & 3.00 & 4.00 \\ 
-  24.40 & 4.00 & 146.70 & 62.00 & 3.69 & 3.19 & 20.00 & 1.00 & 0.00 & 4.00 & 2.00 \\ 
-  22.80 & 4.00 & 140.80 & 95.00 & 3.92 & 3.15 & 22.90 & 1.00 & 0.00 & 4.00 & 2.00 \\ 
-  19.20 & 6.00 & 167.60 & 123.00 & 3.92 & 3.44 & 18.30 & 1.00 & 0.00 & 4.00 & 4.00 \\ 
-  17.80 & 6.00 & 167.60 & 123.00 & 3.92 & 3.44 & 18.90 & 1.00 & 0.00 & 4.00 & 4.00 \\ 
-  16.40 & 8.00 & 275.80 & 180.00 & 3.07 & 4.07 & 17.40 & 0.00 & 0.00 & 3.00 & 3.00 \\ 
-  17.30 & 8.00 & 275.80 & 180.00 & 3.07 & 3.73 & 17.60 & 0.00 & 0.00 & 3.00 & 3.00 \\ 
-  15.20 & 8.00 & 275.80 & 180.00 & 3.07 & 3.78 & 18.00 & 0.00 & 0.00 & 3.00 & 3.00 \\ 
-  10.40 & 8.00 & 472.00 & 205.00 & 2.93 & 5.25 & 17.98 & 0.00 & 0.00 & 3.00 & 4.00 \\ 
-  10.40 & 8.00 & 460.00 & 215.00 & 3.00 & 5.42 & 17.82 & 0.00 & 0.00 & 3.00 & 4.00 \\ 
-  14.70 & 8.00 & 440.00 & 230.00 & 3.23 & 5.34 & 17.42 & 0.00 & 0.00 & 3.00 & 4.00 \\ 
-  32.40 & 4.00 & 78.70 & 66.00 & 4.08 & 2.20 & 19.47 & 1.00 & 1.00 & 4.00 & 1.00 \\ 
-  30.40 & 4.00 & 75.70 & 52.00 & 4.93 & 1.61 & 18.52 & 1.00 & 1.00 & 4.00 & 2.00 \\ 
-  33.90 & 4.00 & 71.10 & 65.00 & 4.22 & 1.83 & 19.90 & 1.00 & 1.00 & 4.00 & 1.00 \\ 
-  21.50 & 4.00 & 120.10 & 97.00 & 3.70 & 2.46 & 20.01 & 1.00 & 0.00 & 3.00 & 1.00 \\ 
-  15.50 & 8.00 & 318.00 & 150.00 & 2.76 & 3.52 & 16.87 & 0.00 & 0.00 & 3.00 & 2.00 \\ 
-  15.20 & 8.00 & 304.00 & 150.00 & 3.15 & 3.44 & 17.30 & 0.00 & 0.00 & 3.00 & 2.00 \\ 
-  13.30 & 8.00 & 350.00 & 245.00 & 3.73 & 3.84 & 15.41 & 0.00 & 0.00 & 3.00 & 4.00 \\ 
-  19.20 & 8.00 & 400.00 & 175.00 & 3.08 & 3.85 & 17.05 & 0.00 & 0.00 & 3.00 & 2.00 \\ 
-  27.30 & 4.00 & 79.00 & 66.00 & 4.08 & 1.94 & 18.90 & 1.00 & 1.00 & 4.00 & 1.00 \\ 
-  26.00 & 4.00 & 120.30 & 91.00 & 4.43 & 2.14 & 16.70 & 0.00 & 1.00 & 5.00 & 2.00 \\ 
-  30.40 & 4.00 & 95.10 & 113.00 & 3.77 & 1.51 & 16.90 & 1.00 & 1.00 & 5.00 & 2.00 \\ 
-  15.80 & 8.00 & 351.00 & 264.00 & 4.22 & 3.17 & 14.50 & 0.00 & 1.00 & 5.00 & 4.00 \\ 
-  19.70 & 6.00 & 145.00 & 175.00 & 3.62 & 2.77 & 15.50 & 0.00 & 1.00 & 5.00 & 6.00 \\ 
-  15.00 & 8.00 & 301.00 & 335.00 & 3.54 & 3.57 & 14.60 & 0.00 & 1.00 & 5.00 & 8.00 \\ 
-  21.40 & 4.00 & 121.00 & 109.00 & 4.11 & 2.78 & 18.60 & 1.00 & 1.00 & 4.00 & 2.00 \\ 
-   \bottomrule
-\end{longtable}
-\endgroup
-
-\hfill
-
-Note that I do not include this in the ordinary template, as some latex
-users have complained it breaks when they build their Rmds (especially
-those using tidytex - I don't have this problem as I have the full
-Miktex installed on mine). Up to you, but I strongly recommend
-installing the package manually and using huxtable. To make this work,
-uncomment the \emph{Adding additional latex packages} part in yaml at
-the top of the Rmd file. Then comment out the huxtable example in the
-template below this line. Reknit, and enjoy.
-
- 
-  \providecommand{\huxb}[2]{\arrayrulecolor[RGB]{#1}\global\arrayrulewidth=#2pt}
-  \providecommand{\huxvb}[2]{\color[RGB]{#1}\vrule width #2pt}
-  \providecommand{\huxtpad}[1]{\rule{0pt}{#1}}
-  \providecommand{\huxbpad}[1]{\rule[-#1]{0pt}{#1}}
-
-\begin{table}[ht]
-\begin{centerbox}
-\begin{threeparttable}
-\captionsetup{justification=centering,singlelinecheck=off}
-\caption{Regression Output}
- \label{Reg01}
-\setlength{\tabcolsep}{0pt}
-\begin{tabular}{l l l l}
-
-
-\hhline{>{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}-}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}c!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\centering \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont } \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{c!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\centering \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont Reg1} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{c!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\centering \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont Reg2} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{c!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\centering \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont Reg3} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{>{\huxb{255, 255, 255}{0.4}}->{\huxb{0, 0, 0}{0.4}}->{\huxb{0, 0, 0}{0.4}}->{\huxb{0, 0, 0}{0.4}}-}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (Intercept)} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont -2256.361 ***} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 5763.668 ***} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 4045.333 ***} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont } \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (13.055)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (740.556)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (286.205)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont carat} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 7756.426 ***} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont \hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 7765.141 ***} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont } \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (14.067)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont \hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (14.009)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont depth} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont \hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont -29.650 *\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont -102.165 ***} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont } \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont \hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (11.990)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont (4.635)\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{>{\huxb{255, 255, 255}{0.4}}->{\huxb{0, 0, 0}{0.4}}->{\huxb{0, 0, 0}{0.4}}->{\huxb{0, 0, 0}{0.4}}-}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont N} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 53940\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 53940\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 53940\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
-
-\multicolumn{1}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont R2} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 0.849\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 0.000\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} &
-\multicolumn{1}{r!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedleft \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont 0.851\hphantom{0}\hphantom{0}\hphantom{0}\hphantom{0}} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{>{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}->{\huxb{0, 0, 0}{0.8}}-}
-\arrayrulecolor{black}
-
-\multicolumn{4}{!{\huxvb{0, 0, 0}{0}}l!{\huxvb{0, 0, 0}{0}}}{\huxtpad{6pt + 1em}\raggedright \hspace{6pt} {\fontsize{12pt}{14.4pt}\selectfont  *** p $<$ 0.001;  ** p $<$ 0.01;  * p $<$ 0.05.} \hspace{6pt}\huxbpad{6pt}} \tabularnewline[-0.5pt]
-
-
-\hhline{}
-\arrayrulecolor{black}
+\caption{\label{tab:Alpha_F}Factor Alpha's: Financial}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+  & x\\
+\hline
+ABG & -0.0073\\
+\hline
+CPI & -0.0193\\
+\hline
+DSY & 0.0025\\
+\hline
+FSR & 0.0029\\
+\hline
+GRT & -0.0009\\
+\hline
+INL & -0.0151\\
+\hline
+INP & -0.0026\\
+\hline
+NED & -0.0045\\
+\hline
+SBK & -0.0123\\
+\hline
+SLM & 0.0286\\
+\hline
 \end{tabular}
-\end{threeparttable}\par\end{centerbox}
-
 \end{table}
- 
+
+\begin{table}[H]
+
+\caption{\label{tab:Covariance Matrix_F}Covariance Matrix: Financial}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l|l|l}
+\hline
+  & ABG & CPI & DSY & FSR & GRT & INL & INP & NED & SBK & SLM\\
+\hline
+ABG & 9e-04 & 1e-04 & 1e-04 & 1e-04 & 1e-04 & 1e-04 & 1e-04 & 2e-04 & 1e-04 & 1e-04\\
+\hline
+CPI & 1e-04 & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00\\
+\hline
+DSY & 1e-04 & 0e+00 & 4e-04 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00\\
+\hline
+FSR & 1e-04 & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00\\
+\hline
+GRT & 1e-04 & 1e-04 & 1e-04 & 0e+00 & 4e-04 & 0e+00 & 0e+00 & 1e-04 & 1e-04 & 0e+00\\
+\hline
+INL & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 1e-04 & 0e+00 & 0e+00\\
+\hline
+INP & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 4e-04 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+NED & 2e-04 & 1e-04 & 1e-04 & 1e-04 & 1e-04 & 1e-04 & 0e+00 & 6e-04 & 1e-04 & 1e-04\\
+\hline
+SBK & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 6e-04 & 0e+00\\
+\hline
+SLM & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 4e-04\\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+\hypertarget{industrial}{%
+\subsection{Industrial}\label{industrial}}
+
+\begin{table}[H]
+
+\caption{\label{tab:Beta_I}Factor Beta's: Industrial}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l}
+\hline
+  & US\_10Yr & Bcom\_Index & VIX & USDZAR & MM.Rate & Real.GDP & Real.INV & Inflation\\
+\hline
+APN & 0.0005 & -0.0506 & 0.0028 & 0.0265 & 0.0018 & -0.0411 & 0.0063 & 0.0220\\
+\hline
+BID & 0.0001 & 0.0802 & 0.0059 & 0.0928 & 0.0088 & 0.1476 & -0.0809 & 0.0003\\
+\hline
+BTI & -0.0100 & 0.0125 & 0.0086 & 0.0274 & 0.0247 & 0.0569 & -0.0162 & -0.0127\\
+\hline
+BVT & -0.0087 & 0.0050 & 0.0150 & 0.0690 & 0.0030 & 0.0046 & 0.0404 & 0.0001\\
+\hline
+CFR & 0.0029 & -0.0017 & -0.0094 & 0.0403 & 0.0212 & 0.0651 & -0.0622 & -0.0011\\
+\hline
+CLS & -0.0029 & -0.0040 & 0.0004 & 0.0153 & 0.0116 & -0.0488 & 0.0009 & 0.0089\\
+\hline
+MNP & -0.0005 & 0.0083 & 0.0101 & 0.0532 & 0.0188 & -0.0453 & -0.0316 & 0.0002\\
+\hline
+MRP & 0.0069 & -0.0046 & 0.0045 & 0.0441 & -0.0104 & -0.2065 & 0.1566 & 0.0037\\
+\hline
+MTN & -0.0051 & -0.0701 & 0.0312 & 0.0190 & -0.0010 & 0.0230 & 0.0244 & 0.0001\\
+\hline
+NPN & 0.0005 & -0.0068 & -0.0086 & 0.0493 & 0.0081 & -0.0125 & -0.0537 & 0.0027\\
+\hline
+SHP & 0.0026 & -0.0013 & 0.0016 & 0.0038 & 0.0013 & -0.1616 & 0.1257 & -0.0009\\
+\hline
+SPP & 0.0048 & -0.0038 & 0.0081 & -0.0091 & 0.0023 & -0.1399 & 0.1479 & 0.0016\\
+\hline
+VOD & 0.0024 & -0.0065 & 0.0059 & -0.0181 & 0.0055 & -0.0323 & 0.0666 & -0.0075\\
+\hline
+WHL & 0.0082 & 0.0223 & 0.0030 & 0.0183 & 0.0042 & -0.2556 & 0.1899 & 0.0032\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+\caption{\label{tab:Alpha_I}Factor Alpha's: Industrial}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+  & x\\
+\hline
+APN & -0.0154\\
+\hline
+BID & -0.0169\\
+\hline
+BTI & -0.0263\\
+\hline
+BVT & 0.0087\\
+\hline
+CFR & -0.0469\\
+\hline
+CLS & -0.0246\\
+\hline
+MNP & -0.0339\\
+\hline
+MRP & 0.0128\\
+\hline
+MTN & 0.0098\\
+\hline
+NPN & -0.0137\\
+\hline
+SHP & -0.0016\\
+\hline
+SPP & -0.0059\\
+\hline
+VOD & -0.0069\\
+\hline
+WHL & -0.0160\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+\caption{\label{tab:Covariance Matrix_I}Covariance Matrix: Industrial}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
+\hline
+  & APN & BID & BTI & BVT & CFR & CLS & MNP & MRP & MTN & NPN & SHP & SPP & VOD & WHL\\
+\hline
+APN & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+BID & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+BTI & 0e+00 & 0e+00 & 2e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+BVT & 1e-04 & 0e+00 & 0e+00 & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+CFR & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+CLS & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+MNP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+MRP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 4e-04 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+MTN & 1e-04 & 0e+00 & 1e-04 & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 1e-04 & 0.0011 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+NPN & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+SHP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+SPP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 2e-04 & 0e+00 & 0e+00\\
+\hline
+VOD & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 2e-04 & 0e+00\\
+\hline
+WHL & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04\\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+\hypertarget{resources}{%
+\subsection{Resources}\label{resources}}
+
+\begin{table}[H]
+
+\caption{\label{tab:Beta_R}Factor Beta's: Resources}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l}
+\hline
+  & US\_10Yr & Bcom\_Index & VIX & USDZAR & MM.Rate & Real.GDP & Real.INV & Inflation\\
+\hline
+AGL & -0.0206 & 0.0168 & -0.0002 & 0.0548 & 0.0347 & 0.0327 & -0.0416 & 0.0011\\
+\hline
+AMS & 0.0009 & 0.0040 & 0.0093 & 0.0655 & -0.0169 & -0.1244 & 0.0329 & -0.0044\\
+\hline
+ANG & 0.0158 & 0.0556 & 0.0015 & 0.0786 & -0.0093 & -0.3271 & 0.1507 & -0.0053\\
+\hline
+BHP & -0.0040 & 0.0021 & -0.0007 & 0.0409 & 0.0232 & -0.0461 & -0.0156 & -0.0022\\
+\hline
+EXX & -0.0074 & 0.0331 & 0.0033 & 0.0174 & 0.0187 & 0.1998 & -0.1114 & -0.0073\\
+\hline
+GFI & 0.0197 & -0.0179 & -0.0084 & -0.0029 & -0.0194 & -0.3582 & 0.1927 & -0.0074\\
+\hline
+GLN & -0.0068 & 0.0015 & 0.0193 & 0.0039 & 0.0320 & -0.2825 & 0.1495 & 0.0145\\
+\hline
+IMP & -0.0134 & -0.0604 & -0.0120 & -0.0134 & -0.0073 & -0.1765 & 0.1362 & 0.0055\\
+\hline
+NPH & 0.0016 & -0.0527 & 0.0093 & -0.0315 & 0.0003 & -0.3881 & 0.2661 & 0.0167\\
+\hline
+SOL & -0.0109 & -0.0287 & 0.0319 & 0.0201 & 0.0004 & 0.0549 & -0.0442 & 0.0076\\
+\hline
+SSW & 0.0214 & -0.0425 & -0.0038 & -0.0478 & -0.0094 & -0.2192 & 0.0661 & -0.0014\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+\caption{\label{tab:Alpha_R}Factor Alpha's: Resources}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+  & x\\
+\hline
+AGL & -0.0429\\
+\hline
+AMS & 0.0383\\
+\hline
+ANG & 0.0063\\
+\hline
+BHP & -0.0398\\
+\hline
+EXX & -0.0184\\
+\hline
+GFI & 0.0222\\
+\hline
+GLN & -0.0557\\
+\hline
+IMP & 0.0317\\
+\hline
+NPH & -0.0072\\
+\hline
+SOL & 0.0095\\
+\hline
+SSW & 0.0000\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+\caption{\label{tab:Covariance Matrix_R}Covariance Matrix: Resources}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l|l|l|l|l|l}
+\hline
+  & AGL & AMS & ANG & BHP & EXX & GFI & GLN & IMP & NPH & SOL & SSW\\
+\hline
+AGL & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+AMS & 0e+00 & 6e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 1e-04 & 0e+00\\
+\hline
+ANG & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+BHP & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+EXX & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+GFI & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 6e-04 & 0.0000 & 0e+00 & 0e+00 & -1e-04 & 1e-04\\
+\hline
+GLN & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0.0015 & 0e+00 & 1e-04 & 1e-04 & 0e+00\\
+\hline
+IMP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 6e-04 & 0e+00 & 0e+00 & 0e+00\\
+\hline
+NPH & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 8e-04 & 1e-04 & 0e+00\\
+\hline
+SOL & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & -1e-04 & 0.0001 & 0e+00 & 1e-04 & 7e-04 & 0e+00\\
+\hline
+SSW & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 7e-04\\
+\hline
+\end{tabular}
+\end{table}
 
 \bibliography{Tex/ref}
 

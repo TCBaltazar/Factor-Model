@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.5.23)  11 FEB 2022 12:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.5.23)  11 FEB 2022 20:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -645,79 +645,40 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
-) (/usr/local/texlive/2021/texmf-dist/tex/latex/adjustbox/adjustbox.sty
-Package: adjustbox 2020/08/19 v1.3 Adjusting TeX boxes (trim, clip, ...)
-(/usr/local/texlive/2021/texmf-dist/tex/latex/xkeyval/xkeyval.sty
-Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
-(/usr/local/texlive/2021/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/local
-/texlive/2021/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks45
-\XKV@tempa@toks=\toks46
-)
-\XKV@depth=\count332
-File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-)) (/usr/local/texlive/2021/texmf-dist/tex/latex/adjustbox/adjcalc.sty
-Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
--ends (calc, etex, pgfmath)
-) (/usr/local/texlive/2021/texmf-dist/tex/latex/adjustbox/trimclip.sty
-Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
-(/usr/local/texlive/2021/texmf-dist/tex/latex/collectbox/collectbox.sty
-Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
-\collectedbox=\box81
-)
-\tc@llx=\dimen284
-\tc@lly=\dimen285
-\tc@urx=\dimen286
-\tc@ury=\dimen287
-Package trimclip Info: Using driver 'tc-pdftex.def'.
-(/usr/local/texlive/2021/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
-File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
-))
-\adjbox@Width=\dimen288
-\adjbox@Height=\dimen289
-\adjbox@Depth=\dimen290
-\adjbox@Totalheight=\dimen291
-\adjbox@pwidth=\dimen292
-\adjbox@pheight=\dimen293
-\adjbox@pdepth=\dimen294
-\adjbox@ptotalheight=\dimen295
-(/usr/local/texlive/2021/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
-Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
-\c@checkoddpage=\count333
-)) (./Factor-Model.aux)
+) (./Factor-Model.aux)
 \openout1 = `Factor-Model.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 188.
-LaTeX Font Info:    ... okay on input line 188.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
 (/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count334
-\scratchdimen=\dimen296
-\scratchbox=\box82
-\nofMPsegments=\count335
-\nofMParguments=\count336
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count337
-\MPscratchDim=\dimen297
-\MPnumerator=\count338
-\makeMPintoPDFobject=\count339
-\everyMPtoPDFconversion=\toks48
+\scratchcounter=\count332
+\scratchdimen=\dimen284
+\scratchbox=\box81
+\nofMPsegments=\count333
+\nofMParguments=\count334
+\everyMPshowfont=\toks45
+\MPscratchCnt=\count335
+\MPscratchDim=\dimen285
+\MPnumerator=\count336
+\makeMPintoPDFobject=\count337
+\everyMPtoPDFconversion=\toks46
 ) (/usr/local/texlive/2021/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -760,7 +721,7 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 188.
+Package hyperref Info: Link coloring ON on input line 180.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/usr/local/texlive/2021/texmf-dist/tex/latex/refcount/refcount.sty
@@ -770,11 +731,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count340
+\c@section@level=\count338
 )
-LaTeX Info: Redefining \ref on input line 188.
-LaTeX Info: Redefining \pageref on input line 188.
-LaTeX Info: Redefining \nameref on input line 188.
+LaTeX Info: Redefining \ref on input line 180.
+LaTeX Info: Redefining \pageref on input line 180.
+LaTeX Info: Redefining \nameref on input line 180.
 (./Factor-Model.out) (./Factor-Model.out)
 \@outlinefile=\write4
 \openout4 = `Factor-Model.out'.
@@ -792,68 +753,73 @@ Package caption Info: threeparttable package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-88.
+80.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-88.
+80.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-188.
+180.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-188.
+180.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 188.
+(Font)              <10.95> on input line 180.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 188.
+(Font)              <8> on input line 180.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 188.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 188
+(Font)              <6> on input line 180.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 180
 .
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 188
+LaTeX Font Info:    Trying to load font information for U+msb on input line 180
 .
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 
-188.
+180.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 
-188.
+180.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 238.
+(Font)              <9> on input line 230.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 238.
+(Font)              <5> on input line 230.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-38.
+30.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Warning: Reference `Meth' on page 1 undefined on input line 296.
-
-[1
+) [1
 
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (54.02943pt too wide) in alignment at lines 339--358
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[2]
+Overfull \hbox (54.02943pt too wide) in alignment at lines 362--381
  [] [] [] [] [] [] [] [] [] 
  []
 
@@ -865,34 +831,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[2]
-Overfull \vbox (69.98494pt too high) has occurred while \output is active []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
 [3]
-<Factor-Model_files/figure-latex/unnamed-chunk-1-1.pdf, id=95, 410.53375pt x 33
-8.26375pt>
-File: Factor-Model_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type 
-pdf)
-<use Factor-Model_files/figure-latex/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-1-1.pdf 
- used on input line 455.
-(pdftex.def)             Requested size: 410.53275pt x 338.26291pt.
-<Factor-Model_files/figure-latex/unnamed-chunk-2-1.pdf, id=96, 409.53pt x 338.2
-6375pt>
-File: Factor-Model_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type 
-pdf)
-<use Factor-Model_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-2-1.pdf 
- used on input line 459.
-(pdftex.def)             Requested size: 409.52899pt x 338.26291pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -901,32 +840,32 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[4 <./Factor-Model_files/figure-latex/unnamed-chunk-1-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf, id=110, 410.53375pt x 3
-38.26375pt>
+[4]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[5]
+<Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf, id=123, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf 
- used on input line 463.
-(pdftex.def)             Requested size: 410.53275pt x 338.26291pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[5 <./Factor-Model_files/figure-latex/unnamed-chunk-2-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf, id=123, 410.53375pt x 3
-38.26375pt>
+ used on input line 553.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
+<Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf, id=124, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf 
- used on input line 467.
-(pdftex.def)             Requested size: 410.53275pt x 338.26291pt.
+ used on input line 557.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -936,31 +875,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [6 <./Factor-Model_files/figure-latex/unnamed-chunk-3-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf, id=136, 409.53pt x 338.
-26375pt>
+<Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf, id=140, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf 
- used on input line 471.
-(pdftex.def)             Requested size: 409.52899pt x 338.26291pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[7 <./Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf, id=150, 410.53375pt x 3
-38.26375pt>
+ used on input line 561.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
+<Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf, id=141, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf 
- used on input line 475.
-(pdftex.def)             Requested size: 410.53275pt x 338.26291pt.
+ used on input line 565.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -969,32 +899,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[8 <./Factor-Model_files/figure-latex/unnamed-chunk-5-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf, id=164, 411.5375pt x 33
-8.26375pt>
+[7 <./Factor-Model_files/figure-latex/unnamed-chunk-4-1.pdf> <./Factor-Model_fi
+les/figure-latex/unnamed-chunk-5-1.pdf>]
+<Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf, id=164, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf 
- used on input line 479.
-(pdftex.def)             Requested size: 411.5365pt x 338.26291pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[9 <./Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf, id=177, 410.53375pt x 3
-38.26375pt>
+ used on input line 569.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
+<Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf, id=165, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf 
- used on input line 483.
-(pdftex.def)             Requested size: 410.53275pt x 338.26291pt.
+ used on input line 573.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1003,32 +925,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[10 <./Factor-Model_files/figure-latex/unnamed-chunk-7-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf, id=190, 427.5975pt x 34
-9.305pt>
+[8 <./Factor-Model_files/figure-latex/unnamed-chunk-6-1.pdf> <./Factor-Model_fi
+les/figure-latex/unnamed-chunk-7-1.pdf>]
+<Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf, id=186, 339.2675pt x 19
+3.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type 
 pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf 
- used on input line 487.
-(pdftex.def)             Requested size: 427.59645pt x 349.30414pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[11 <./Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf, id=203, 379.4175pt x 2
-90.08376pt>
+ used on input line 577.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
+<Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf, id=187, 339.2675pt x 1
+93.72375pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type
  pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf
-  used on input line 501.
-(pdftex.def)             Requested size: 379.41656pt x 290.08304pt.
+  used on input line 581.
+(pdftex.def)             Requested size: 339.26666pt x 193.72327pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1037,15 +951,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[12 <./Factor-Model_files/figure-latex/unnamed-chunk-9-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf, id=222, 380.42125pt x 
-290.08376pt>
+[9 <./Factor-Model_files/figure-latex/unnamed-chunk-8-1.pdf> <./Factor-Model_fi
+les/figure-latex/unnamed-chunk-9-1.pdf>]
+<Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf, id=208, 499.8675pt x 3
+13.17pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type
  pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf
-  used on input line 505.
-(pdftex.def)             Requested size: 380.4203pt x 290.08304pt.
+  used on input line 585.
+(pdftex.def)             Requested size: 499.86627pt x 313.16922pt.
+
+Overfull \hbox (16.45412pt too wide) in paragraph at lines 585--585
+[][] 
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1054,15 +974,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[13 <./Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf>]
-<Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf, id=237, 383.4325pt x 2
-90.08376pt>
+[10 <./Factor-Model_files/figure-latex/unnamed-chunk-10-1.pdf> <./Factor-Model_
+files/figure-latex/unnamed-chunk-11-1.pdf>]
+<Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf, id=238, 451.6875pt x 2
+53.94875pt>
 File: Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type
  pdf)
 <use Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf
-  used on input line 509.
-(pdftex.def)             Requested size: 383.43156pt x 290.08304pt.
+  used on input line 643.
+(pdftex.def)             Requested size: 451.68639pt x 253.94812pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1071,7 +992,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[14 <./Factor-Model_files/figure-latex/unnamed-chunk-11-1.pdf>]
+[11]
+<Factor-Model_files/figure-latex/unnamed-chunk-13-1.pdf, id=256, 452.69125pt x 
+253.94875pt>
+File: Factor-Model_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type
+ pdf)
+<use Factor-Model_files/figure-latex/unnamed-chunk-13-1.pdf>
+Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-13-1.pdf
+  used on input line 647.
+(pdftex.def)             Requested size: 452.69014pt x 253.94812pt.
+<Factor-Model_files/figure-latex/unnamed-chunk-14-1.pdf, id=257, 452.69125pt x 
+253.94875pt>
+File: Factor-Model_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type
+ pdf)
+<use Factor-Model_files/figure-latex/unnamed-chunk-14-1.pdf>
+Package pdftex.def Info: Factor-Model_files/figure-latex/unnamed-chunk-14-1.pdf
+  used on input line 651.
+(pdftex.def)             Requested size: 452.69014pt x 253.94812pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1080,7 +1017,39 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[15 <./Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf>]
+[12 <./Factor-Model_files/figure-latex/unnamed-chunk-12-1.pdf> <./Factor-Model_
+files/figure-latex/unnamed-chunk-13-1.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[13 <./Factor-Model_files/figure-latex/unnamed-chunk-14-1.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[14]
+Overfull \hbox (15.62866pt too wide) in paragraph at lines 708--733
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1090,14 +1059,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [16]
-
-LaTeX Warning: Reference `Figure1' on page 17 undefined on input line 546.
-
-
-LaTeX Warning: Reference `Figure2' on page 17 undefined on input line 546.
+Overfull \hbox (21.02846pt too wide) in paragraph at lines 806--839
+ [][] 
+ []
 
 
-LaTeX Warning: Reference `Figure2' on page 17 undefined on input line 547.
+Overfull \hbox (146.4267pt too wide) in paragraph at lines 884--917
+ [][] 
+ []
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1108,15 +1077,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [17]
-Underfull \vbox (badness 10000) detected at line 633
- []
-
-pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
- been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.633   2
-         1.50 & 4.00 & 120.10 & 97.00 & 3.70 & 2.46 & 20.01 & 1.00 & 0.00 & ...
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1126,10 +1086,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [18]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14> on input line 760.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 760.
+Overfull \hbox (19.73528pt too wide) in paragraph at lines 928--955
+ [][] 
+ []
+
+
+Overfull \hbox (18.50775pt too wide) in paragraph at lines 994--1021
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[19]
 No file Factor-Model.bbl.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1139,43 +1113,38 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[19] (./Factor-Model.aux)
-
-LaTeX Warning: There were undefined references.
-
+[20] (./Factor-Model.aux)
 Package rerunfilecheck Info: File `Factor-Model.out' has not changed.
-(rerunfilecheck)             Checksum: FE38E54D62A22B7990008614DCB0D468;1736.
+(rerunfilecheck)             Checksum: 1239F25705B2790CD06166447BD6B5EB;2057.
  ) 
 Here is how much of TeX's memory you used:
- 18179 strings out of 478994
- 307172 string characters out of 5858184
- 631179 words of memory out of 5000000
- 35209 multiletter control sequences out of 15000+600000
- 490439 words of font info for 91 fonts, out of 8000000 for 9000
+ 17200 strings out of 478994
+ 290354 string characters out of 5858184
+ 606367 words of memory out of 5000000
+ 34246 multiletter control sequences out of 15000+600000
+ 473337 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,15n,88p,306b,879s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/lo
-cal/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/20
-21/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2021/texmf-dist/
-fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2021/texmf-dist/fonts/enc/
-dvips/lm/lm-mathsy.enc}</usr/local/texlive/2021/texmf-dist/fonts/type1/public/l
-m/lmbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmex10.p
-fb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/l
-ocal/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texli
-ve/2021/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2021/tex
-mf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2021/texmf-dist/fon
-ts/type1/public/lm/lmr12.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/pu
-blic/lm/lmr6.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr8
-.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr9.pfb></usr/l
-ocal/texlive/2021/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texli
-ve/2021/texmf-dist/fonts/type1/public/lm/lmri7.pfb></usr/local/texlive/2021/tex
-mf-dist/fonts/type1/public/lm/lmri9.pfb></usr/local/texlive/2021/texmf-dist/fon
-ts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/pu
-blic/lm/lmtt9.pfb>
-Output written on Factor-Model.pdf (19 pages, 330415 bytes).
+ 83i,11n,88p,277b,748s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/lo
+cal/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/20
+21/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2021/texmf-d
+ist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2021/texmf-dist/fonts/type
+1/public/lm/lmbx10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/l
+m/lmmi10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi8.pf
+b></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/loc
+al/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/
+2021/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2021/texmf-d
+ist/fonts/type1/public/lm/lmr9.pfb></usr/local/texlive/2021/texmf-dist/fonts/ty
+pe1/public/lm/lmri10.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public
+/lm/lmri7.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmri9.p
+fb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/l
+ocal/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texliv
+e/2021/texmf-dist/fonts/type1/public/lm/lmtt9.pfb></usr/local/texlive/2021/texm
+f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Factor-Model.pdf (20 pages, 325369 bytes).
 PDF statistics:
- 375 PDF objects out of 1000 (max. 8388607)
- 300 compressed objects within 3 object streams
- 69 named destinations out of 1000 (max. 500000)
- 157 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 414 PDF objects out of 1000 (max. 8388607)
+ 338 compressed objects within 4 object streams
+ 87 named destinations out of 1000 (max. 500000)
+ 181 words of extra memory for PDF output out of 10000 (max. 10000000)
 
