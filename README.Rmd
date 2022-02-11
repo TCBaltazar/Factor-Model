@@ -3,9 +3,10 @@ title: Covariance Matrix Estimation via Macroeconomic Factor Modeling
 output:
   md_document:
     variant: markdown_github
+always_allow_html: yes
 ---
 
-```{r setup}
+```{r setup, results=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "left", fig.height = 3, fig.pos = "H", fig.width = 5,
                       message=FALSE, warning=FALSE, comment = NA)
 library(pacman)
@@ -17,13 +18,16 @@ rm(list = ls()) # Cleaning environment:
 gc() # garbage collection 
 ```
 
-# Overview
+# File Overview
 
-This README is intended to guide the reader through the code used 
+This README is intended to guide the reader through the code used in completing the investigation on the use of factor modeling for estimating the asset returns covariance matrix. The final PDF document compiled can be found in this folder, titled "Factor Model". 
 
-## Uploading and Tidying Data
+Certain sections included here, such as those discussing the process of uploading and tidying the data, as well as the treatment of missing values are excluded from the final PDF output, but are included here for illustration purposes. In addition, much of the output found in this document, and none of the code, are available in the final PDF. The first section presents the code used in uploading and tidying the data for both the macroeconomic factors and the asset returns. The second consists of the introduction, as in the final PDF document, this is followed by a brief exploratory analysis, and finally a presentation of the empirical analysis. The final section concludes the document. 
 
-Macroeconomic factors **rationale**
+
+
+# Uploading and Tidying Data
+
 
 ```{r Loading Data and Tidying: Factor data}
 dat_Fac <- read.csv("./data/Factors_New.csv")
@@ -34,8 +38,7 @@ dat_Factors <- dat_Fac %>%
     mutate_at("date", str_replace, "X", "") %>%
     arrange(date) %>% mutate(date=as.yearqtr(date, format = "%Y Q%q")) %>%
     mutate(Inflation=((CPI-lag(CPI))/lag(CPI))*100) %>% 
-    select(-c("CPI", "GDP.Deflator")) %>%
-    filter(date>"2004 Q4")
+    select(-c("CPI", "GDP.Deflator"))  # previously had experimented with calculating inflation using GDP deflator, decided CPI inflation was better choice.
 
 ### Daily Factors
 
@@ -67,22 +70,21 @@ dat_Factors_K <- left_join(US_10Yr, comms, by="date") %>%
   filter(date==max(date)) %>%
   ungroup() %>%
   select(Date, US_10Yr, Bcom_Index, VIX, USDZAR) %>%
-  rename(., date=Date) %>%
-  filter(date>"2004 Q4") 
+  rename(., date=Date) 
 
 ### Consolidated factors dataset
 Factors <- left_join(dat_Factors_K, dat_Factors, by="date")  %>%
-  filter(date<"2021 Q4")
+  mutate(across(.cols=-c("date", "US_10Yr", "MM.Rate", "Inflation"), .fns = ~log(.+1)-log(lag(.+1)) )) %>% #log differences taken for relevant variables
+  mutate(across(.cols=c("US_10Yr", "MM.Rate", "Inflation"), .fns= ~log(.+1))) %>% # where differences not needed to be taken, variables were still converted to log terms
+  filter(date<"2021 Q4" & date>"2004 Q4")
 
 ```
 
 
-For Assets, **xyz** was done. 
-
 ```{r Using new ALSI Data}
 new_dat_0 <- read_rds("./data/alsi.rds")
 
-new_dat_0$Tickers <- gsub(" SJ Equity", "", new_dat_0$Tickers)
+new_dat_0$Tickers <- gsub(" SJ Equity", "", new_dat_0$Tickers)  # to make life easier
 
 # Ticker MNP classified as being in both Resources and Industrials.
 new_dat_0 %>% filter(Tickers=="MNP") %>%
@@ -160,7 +162,7 @@ Assets_Financials <- new_dat %>%
 
 # Project Intro: Covariance Matrix Estimation via Macro Factor Modeling
 
-- using factor models to estimat covariance matrix parameters
+- using factor models to estimate covariance matrix parameters
 - assume stock returns are driven by a limited set of factors
 - curse of dimensionality, need to reduce the number of parameters. Can use factor model
 
@@ -197,9 +199,6 @@ The macroeconomic factors used are still based on the data used for the practica
 - VIX volatility index
 - Bloomberg commodities index
 
-Going forward, still want to consider GDP, and CPI figures -> data used so far is daily, and most macro data is monthly or quarterly -> will have to convert figures.
-
-
 
 Macroeconomic factor models use observable economic time series as the factors. 
 
@@ -228,20 +227,26 @@ Fac_Names <- colnames(Factors[, -1])
 Fac_Desc <- c("US 10 Year Bond Yields", "Bloomberg Commodities Index", "CBOE Volatility Index", "USD/ZAR Spot Price", "SA Money Market Rate", "SA Real Gross Domestic Product", "SA Real Gross Fixed Capital Formation", "Inflation (Consumer Prices)")
 Fac_Source <- c("N. Katzke", "N. Katzke", "N. Katzke", "N. Katzke", "IMF International Financial Statistics", "IMF International Financial Statistics", "IMF International Financial Statistics", "IMF International Financial Statistics")
 
-data.frame(Fac_Names, Fac_Desc, Fac_Source) %>% arrange(Fac_Names) %>% kable(caption="Macroeconomic Factors", align="l", col.names = c("Name", "Description", "Source"))%>%
-  kable_styling(latex_options = "HOLD_position")
+data.frame(Fac_Names, Fac_Desc, Fac_Source) %>% arrange(Fac_Names) %>% kable(caption="Macroeconomic Factors", align="l", col.names = c("Name", "Description", "Source")) #%>%  kable_styling(latex_options = "HOLD_position")
 
 ```
+
+Macroeconomic factors for South Africa were chosen on the basis of their possible influence in driving asset returns in South Africa. US 10 Year bond yields were used to quantify the influence of US Monetary Policy decisions in driving global liquidity. This is based on the direct relationship between bond yields and interest rates, whereby lower interest rates depress bond yields and these thus become a less attractive investment option; potentially leading investors to seek higher returns in domestic and foreign asset markets. The Bloomberg commodities index was used to measure the influence that changing commodity prices may have on asset returns, given that the South African economy is still influenced to a large extent by fluctuating commodity prices. The CBOE VIX volatility index was included to account for the effect that changing risk perceptions may have on domestic asset returns. Similarly to changes in US long term bond yields, lower risk perceptions may lead to capital flowing more towards developing (periphery) and could thus influence South African asset returns. The USDZAR spot rate was also included as changes in the price of foreign exchange can influence asset returns through, for example, increasing the cost of financing outstanding debt, or increasing input costs. The money market rate was used to represent the domestic monetary policy stance, this can affect the cost of borrowing for businesses, as well as changing investor incentives when it comes to investing in asset markets; both of which can influence returns. Real gross fixed capital formation was used to account for the level of investment in the economy for any given quarter. Finally, inflation was measured using the Consumer Price Index (CPI) and the formula $Inflation_{t}=\frac{CPI_{t}-CPI_{t-1}}{CPI_{t-1}}$. All macro factors entered the model in log terms, and, in addition, non-stationary variables were taken as quarterly changes. 
+
+Descriptive statistics for the macroeconomic factors can be seen in the table below.
+
+
 
 ```{r Descriptive Stats}
 # Creating Table with descriptive statistics for Macro Factors
 data.frame(pastecs::stat.desc(Factors[, -1], basic=F)) %>% 
   dplyr::mutate_at(c("Real.GDP", "Real.INV"), funs(as.character(signif(., 3)))) %>%
-  kable(caption="Summary Statistics: Macro Factors", digits=3, align="l", longtable=TRUE)%>%
-  kable_styling(latex_options = "HOLD_position")
+  kable(caption="Summary Statistics: Macro Factors", digits=3, align="l", longtable=TRUE) #%>%  kable_styling(latex_options = "HOLD_position")
 
 ```
 
+
+For this analysis, only variables in the Top 40 of the JSE, by market capitalization, were included. This was done to account for the fact that larger companies will be more exposed to global macroeconomic factors, relative to those with smaller market caps. The variables chosen as part of this "T40" are based on the FTSE Russell classification, as of the end of 2021 Q4 (see [@FTSE]). After subsetting the Top 40 stocks, these were stratified into their respective super-industries. When constructing the dataset by industry classification, Mondi PLC (MNP) had the majority of it's observations classified as being in resources, rather than the industrial sector the JSE claims it belongs to. As such, MNP was reclassified as being part of Industrials. The stocks included, as well as their relevant industries, can be found in the table below. 
 
 ```{r T40 constituents}
 # Creating Descriptive Table of T40 stocks and Industries
@@ -249,33 +254,34 @@ new_dat_0 %>% filter(Tickers %in% T40) %>%
   filter(Superindustryname=="Financials") %>%
   distinct(Tickers, Short.Name) %>%
   arrange(Short.Name) %>%
-  kable(caption="T40 Constituents: Financials", align="l", col.names = c("Ticker", "Constituent"))%>%
-  kable_styling(latex_options = "HOLD_position")
+  kable(caption="T40 Constituents: Financials", align="l", col.names = c("Ticker", "Constituent")) #%>% kable_styling(latex_options = "HOLD_position")
 
 new_dat_0 %>% filter(Tickers %in% T40) %>%
   filter(Superindustryname=="Industrials") %>%
   distinct(Tickers, Short.Name) %>%
   arrange(Short.Name) %>%
-  kable(caption="T40 Constituents: Industrials", align="l", col.names = c("Ticker", "Constituent"))%>%
-  kable_styling(latex_options = "HOLD_position")
+  kable(caption="T40 Constituents: Industrials", align="l", col.names = c("Ticker", "Constituent")) #%>% kable_styling(latex_options = "HOLD_position")
 
 new_dat_0 %>% filter(Tickers %in% T40) %>%
   filter(Superindustryname=="Resources") %>%
   distinct(Tickers, Short.Name) %>%
   arrange(Short.Name) %>%
-  kable(caption="T40 Constituents: Resources", align="l", col.names = c("Ticker", "Constituent"))%>%
-  kable_styling(latex_options = "HOLD_position")
+  kable(caption="T40 Constituents: Resources", align="l", col.names = c("Ticker", "Constituent")) #%>% kable_styling(latex_options = "HOLD_position")
 
 ```
 
 ### Treatment of Missing Values
 
-```{r Count NA's}
+The code below was run in order to check if there were missing values in the asset returns dataset, with column "n" representing the number of missing values. 
+
+```{r Count Missing Values}
 # Checking number of NA's for each asset
-colSums(is.na(Assets[, -1])) %>% kable(caption="Assets Missing Values", align="l", col.names = "n") %>% kable_styling(latex_options = "HOLD_position") 
+data.frame(colSums(is.na(Assets[, -1])))%>% kable(caption="Assets Missing Values", align="l", col.names = "n") #%>% kable_styling(latex_options = "HOLD_position") 
 
 ```
 
+
+Removing the data was done as in the chunk below. Firstly, for each industry, assets which had more than 70% of observations missing were dropped. The reason for this is that the second step involves imputing the missing returns from the distribution of asset i's returns. Having a high proportion of missing observations would inevitably lead to biased results from using the "missingreturns" function.
 
 ```{r Clean Data}
 # Cleaning data and creating log returns series
@@ -302,15 +308,18 @@ Resources_clean <- Assets_Resources %>%
 
 ```
 
+From the table below, one can see the 5 tickers that dropped out of the final asset returns dataset. Tickers NRP, OMU, RNI, MCG, PRX dropping out, with the former 3 being part of the financials group, and the latter 2 belonging to industrials.
 
 ```{r Excluded Assets}
 # Checking which assets dropped out
 
-T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Missing Variables", align="l", col.names = "n") %>% kable_styling(latex_options = "HOLD_position")
+T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Missing Variables", align="l", col.names = "Tickers") #%>% kable_styling(latex_options = "HOLD_position")
 
 ```
 
-## Factor and Industry Plots
+## Data Visualization
+
+This section presents figures for the relevant macroeconomic factors, and the asset returns (disaggregated) by industry. 
 
 ```{r, fig.cap="US Long-Term Bond Yields"}
 p.US <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, US_10Yr)) + labs(x="", y="", title="US 10Year") + theme_bw()
@@ -392,7 +401,6 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 
 ```{r xts transformation by industry}
 Factors_xts <- Factors %>% 
-    mutate(across(.cols=-date, .fns=~log(.+1))) %>%   # log transformation of macro factors
   tbl2xts::tbl_xts()
 
 Financials_xts <- Financials_clean %>% tbl_xts()
@@ -403,7 +411,7 @@ Resources_xts <- Resources_clean %>% tbl_xts()
 ```
 
 ```{r Factor Model: Financials}
-FM_Fin <- covFactorModel::factorModel(Financials_xts, type="Macro", econ_fact = Facs_xts, rtn_Sigma = TRUE)
+FM_Fin <- covFactorModel::factorModel(Financials_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
 
 covmat_Fin <- FM_Fin$Sigma  # Covariance Matrix
 FM_Res_Fin <- FM_Fin$residual
@@ -419,7 +427,7 @@ barplot(t(FM_Fin$beta), horiz = TRUE,
 ```
 
 ```{r Factor Model: Industrial}
-FM_Ind <- covFactorModel::factorModel(Industrial_xts, type="Macro", econ_fact = Facs_xts, rtn_Sigma = TRUE)
+FM_Ind <- covFactorModel::factorModel(Industrial_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
 
 covmat_Ind <- FM_Ind$Sigma  # Covariance Matrix
 FM_Res_Ind <- FM_Ind$residual
@@ -434,7 +442,7 @@ barplot(t(FM_Ind$beta), horiz = TRUE,
 ```
 
 ```{r Factor Model: Resources}
-FM_Res <- covFactorModel::factorModel(Resources_xts, type="Macro", econ_fact = Facs_xts, rtn_Sigma = TRUE)
+FM_Res <- covFactorModel::factorModel(Resources_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
 
 covmat_Res <- FM_Res$Sigma  # Covariance Matrix
 FM_Res_Res <- FM_Res$residual
@@ -455,30 +463,6 @@ barplot(t(FM_Res$beta), horiz = TRUE,
 
 # Appendices
 
-### Attempted PCA using estimated COV matrix
-
-```{r}
-evec1 <- eigen(covmat_Full, symmetric=TRUE)$vector
-eval1 <- eigen(covmat_Full, symmetric = TRUE)$values
-
-prop1 <- eval1/sum(eval1)
-
-prop1 <- tibble(Loadings=prop1) %>% mutate(PC=paste0("PC_", row_number()))
-prop1[, "PC"][[1]] <- factor(prop1[, "PC"][[1]], levels = prop1$PC)
-
-prop1 %>% filter(Loadings>0.0300) %>% kable(caption="Assets Principal Components", align="l") %>% kable_styling(latex_options = "HOLD_position") 
-
-g <- prop1 %>% filter(Loadings>0.0300) %>% # only interested in first 10 PC's
-ggplot() + geom_bar(aes(PC, Loadings), stat = "identity", fill = "steelblue") + 
-    
-fmxdat::theme_fmx(axis.size.title = fmxdat::ggpts(38), axis.size = fmxdat::ggpts(35), 
-    title.size = fmxdat::ggpts(42), CustomCaption = T) + 
-scale_y_continuous(breaks = scales::pretty_breaks(10), labels = scales::percent_format(accuracy = 1)) + 
-labs(x = "Principal Components", y = "Loadings", title = "Eigenvalue proportions", 
-    caption = "Source: Fmxdat Package")
-
-g
-```
 
 
 

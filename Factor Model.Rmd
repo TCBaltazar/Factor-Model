@@ -95,12 +95,9 @@ abstract: |
   This report compares the performance of two asset allocation strategies namely; Risk Parity and Mean Variance during periods of volatility in South Africa. Using South African financial data, the risk adjusted and information ratio of a unleverd Risk Parity Index porfolio and Tangency Index porfolio are compared. The research paper found that the Mean Variance Optimisation approach is an superior asset allocation strategy during periods of high volatility in South Africa.
 ---
 
-<!-- First: Set your default preferences for chunk options: -->
-
-<!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment=NA, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H', fig.align = "l")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment=NA, fig.width = 5, fig.height = 3, fig.pos="H", fig.align = "l")
 
 options(tinytex.verbose = TRUE)
 
@@ -158,7 +155,9 @@ dat_Factors_K <- left_join(US_10Yr, comms, by="date") %>%
 
 ### Consolidated factors dataset
 Factors <- left_join(dat_Factors_K, dat_Factors, by="date")  %>%
-  filter(date<"2021 Q4")
+  mutate(across(.cols=-c("date", "US_10Yr", "MM.Rate", "Inflation"), .fns = ~log(.+1)-log(lag(.+1)) )) %>% #log differences taken for relevant variables
+  mutate(across(.cols=c("US_10Yr", "MM.Rate", "Inflation"), .fns= ~log(.+1))) %>% # where differences not needed to be taken, variables were still converted to log terms
+  filter(date<"2021 Q4" & date>"2004 Q4")
 
 
 ## Assets
@@ -218,16 +217,15 @@ Assets_Financials <- new_dat %>%
 
 # Introduction \label{Intro}
 
-References are to be made as follows: @fama1997[p. 33] and @grinold2000 Such authors could also be referenced in brackets [@grinold2000] and together [@fama1997 \& @grinold2000]. Source the reference code from scholar.google.com by clicking on ``cite'' below article name. Then select BibTeX at the bottom of the Cite window, and proceed to copy and paste this code into your ref.bib file, located in the directory's Tex folder. Open this file in Rstudio for ease of management, else open it in your preferred Tex environment. Add and manage your article details here for simplicity - once saved, it will self-adjust in your paper.
+
 
 As per @Flannery.. factor models are good shit!
 
-> I suggest renaming the top line after \@article, as done in the template ref.bib file, to something more intuitive for you to remember. Do not change the rest of the code. Also, be mindful of the fact that bib references from google scholar may at times be incorrect. Reference Latex forums for correct bibtex notation.
-
-To reference a section, you have to set a label using ``\\label'' in R, and then reference it in-text as e.g. referencing a later section, Section \ref{Meth}.
 
 
 # Literature Review \label{Lit}
+
+
 
 # Exploratory Analysis \label{Explor}
 
@@ -402,7 +400,6 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 
 ```{r xts transformation}
 Factors_xts <- Factors %>% 
-    mutate(across(.cols=-date, .fns=~log(.+1))) %>%   # log transformation of macro factors
   tbl2xts::tbl_xts()
 
 Financials_xts <- Financials_clean %>% tbl_xts()
