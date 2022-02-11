@@ -59,7 +59,7 @@
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{1.3ex plus 0.5ex minus 0.3ex}
 \usepackage{textcomp}
-\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0.3pt}
 
 \usepackage{array}
@@ -135,18 +135,26 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 
 %%% Include extra packages specified by user
+\usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{siunitx}
-\usepackage[normalem]{ulem}
-\usepackage{colortbl}
-\usepackage{multirow}
 \usepackage{hhline}
 \usepackage{calc}
 \usepackage{tabularx}
-\usepackage{threeparttable}
-\usepackage{wrapfig}
 \usepackage{adjustbox}
 \usepackage{hyperref}
 
@@ -183,42 +191,32 @@
 
 \begin{frontmatter}  %
 
-\title{Helping You Write Academic Papers in R using Texevier}
+\title{Covariance Matrix Estimation via Macroeconomic Factor Modeling}
 
 % Set to FALSE if wanting to remove title (for submission)
 
 
 
 
-\author[Add1]{Nico Katzke\footnote{\textbf{Contributions:}
-  \newline \emph{The authors would like to thank no institution for
-  money donated to this project. Thank you sincerely.}}}
-\ead{nfkatzke@gmail.com}
-
-\author[Add1,Add2]{John Smith}
-\ead{John@gmail.com}
-
-\author[Add1,Add2]{John Doe}
-\ead{Joe@gmail.com}
+\author[Add1]{Tiago Baltazar (19776209)}
+\ead{tiagobaltazar15@gmail.com}
 
 
 
-\address[Add1]{Prescient Securities, Cape Town, South Africa}
-\address[Add2]{Some other Institution, Cape Town, South Africa}
 
-\cortext[cor]{Corresponding author: Nico Katzke\footnote{\textbf{Contributions:}
-  \newline \emph{The authors would like to thank no institution for
-  money donated to this project. Thank you sincerely.}}}
+
+\address[Add1]{Stellenbosch University, Western Cape, South Africa}
+
 
 \begin{abstract}
 \small{
-Abstract to be written here. The abstract should not be too long and
-should provide the reader with a good understanding what you are writing
-about. Academic papers are not like novels where you keep the reader in
-suspense. To be effective in getting others to read your paper, be as
-open and concise about your findings here as possible. Ideally, upon
-reading your abstract, the reader should feel he / she must read your
-paper in entirety.
+This report compares the performance of two asset allocation strategies
+namely; Risk Parity and Mean Variance during periods of volatility in
+South Africa. Using South African financial data, the risk adjusted and
+information ratio of a unleverd Risk Parity Index porfolio and Tangency
+Index porfolio are compared. The research paper found that the Mean
+Variance Optimisation approach is an superior asset allocation strategy
+during periods of high volatility in South Africa.
 }
 \end{abstract}
 
@@ -227,11 +225,9 @@ paper in entirety.
 
 \begin{keyword}
 \footnotesize{
-Multivariate GARCH \sep Kalman Filter \sep Copula \\
+Asset Allocation \sep Risk Parity \sep Mean Variance Optimisation
+\sep Volatility \\
 \vspace{0.3cm}
-}
-\footnotesize{
-\textit{JEL classification} L250 \sep L100
 }
 \end{keyword}
 
@@ -248,10 +244,10 @@ Multivariate GARCH \sep Kalman Filter \sep Copula \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{fancy}
 \chead{}
-\rhead{}
+\rhead{19776209}
 \lfoot{}
 \rfoot{\footnotesize Page \thepage}
-\lhead{}
+\lhead{\leftmark}
 %\rfoot{\footnotesize Page \thepage } % "e.g. Page 2"
 \cfoot{}
 
@@ -266,7 +262,7 @@ Multivariate GARCH \sep Kalman Filter \sep Copula \\
 
 \hypertarget{introduction}{%
 \section{\texorpdfstring{Introduction
-\label{Introduction}}{Introduction }}\label{introduction}}
+\label{Intro}}{Introduction }}\label{introduction}}
 
 References are to be made as follows:
 \protect\hyperlink{ref-fama1997}{Fama \& French}
@@ -284,6 +280,9 @@ management, else open it in your preferred Tex environment. Add and
 manage your article details here for simplicity - once saved, it will
 self-adjust in your paper.
 
+As per \protect\hyperlink{ref-Flannery}{Flannery \& Protopapadakis}
+(\protect\hyperlink{ref-Flannery}{2002}).. factor models are good shit!
+
 \begin{quote}
 I suggest renaming the top line after @article, as done in the template
 ref.bib file, to something more intuitive for you to remember. Do not
@@ -296,49 +295,251 @@ To reference a section, you have to set a label using
 ``\textbackslash label'\,' in R, and then reference it in-text as
 e.g.~referencing a later section, Section \ref{Meth}.
 
-Writing in Rmarkdown is surprizingly easy - see
-\href{https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf}{this
-website} cheatsheet for a summary on writing Rmd writing tips.
+\hypertarget{literature-review}{%
+\section{\texorpdfstring{Literature Review
+\label{Lit}}{Literature Review }}\label{literature-review}}
 
-\hypertarget{data}{%
-\section*{Data}\label{data}}
-\addcontentsline{toc}{section}{Data}
+\hypertarget{exploratory-analysis}{%
+\section{\texorpdfstring{Exploratory Analysis
+\label{Explor}}{Exploratory Analysis }}\label{exploratory-analysis}}
 
-Notice how I used the curly brackets and dash to remove the numbering of
-the data section.
+As can be seen in Section \ref{Lit}
 
-Discussion of data should be thorough with a table of statistics and
-ideally a figure.
+\hypertarget{data-and-descriptive-statistics}{%
+\subsection{Data and Descriptive
+Statistics}\label{data-and-descriptive-statistics}}
 
-In your tempalte folder, you will find a Data and a Code folder. In
-order to keep your data files neat, store all of them in your Data
-folder. Also, I strongly suggest keeping this Rmd file for writing and
-executing commands, not writing out long pieces of data-wrangling. In
-the example below, I simply create a ggplot template for scatter plot
-consistency. I suggest keeping all your data in a data folder.
+\begin{table}[H]
+
+\caption{\label{tab:Factors Description}Macroeconomic Factors}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+Name & Description & Source\\
+\hline
+Bcom\_Index & Bloomberg Commodities Index & N. Katzke\\
+\hline
+Inflation & Inflation (Consumer Prices) & IMF International Financial Statistics\\
+\hline
+MM.Rate & SA Money Market Rate & IMF International Financial Statistics\\
+\hline
+Real.GDP & SA Real Gross Domestic Product & IMF International Financial Statistics\\
+\hline
+Real.INV & SA Real Gross Fixed Capital Formation & IMF International Financial Statistics\\
+\hline
+US\_10Yr & US 10 Year Bond Yields & N. Katzke\\
+\hline
+USDZAR & USD/ZAR Spot Price & N. Katzke\\
+\hline
+VIX & CBOE Volatility Index & N. Katzke\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{longtable}[t]{l|l|l|l|l|l|l|l|l}
+\caption{\label{tab:Descriptive Stats}Summary Statistics: Macroeconomic Factors}\\
+\hline
+  & US\_10Yr & Bcom\_Index & VIX & USDZAR & MM.Rate & Real.GDP & Real.INV & Inflation\\
+\hline
+median & 2.490 & 125.747 & 16.520 & 9.881 & 6.530 & 1.07e+12 & 1.86e+11 & 1.236\\
+\hline
+mean & 2.745 & 123.179 & 19.383 & 10.563 & 6.513 & 1.04e+12 & 1.79e+11 & 1.295\\
+\hline
+SE.mean & 0.138 & 4.753 & 1.076 & 0.415 & 0.230 & 1.08e+10 & 2.36e+09 & 0.082\\
+\hline
+CI.mean.0.95 & 0.276 & 9.490 & 2.148 & 0.829 & 0.459 & 2.15e+10 & 4.71e+09 & 0.164\\
+\hline
+var & 1.282 & 1513.671 & 77.528 & 11.563 & 3.534 & 7.78e+21 & 3.73e+20 & 0.453\\
+\hline
+std.dev & 1.132 & 38.906 & 8.805 & 3.400 & 1.880 & 8.82e+10 & 1.93e+10 & 0.673\\
+\hline
+coef.var & 0.412 & 0.316 & 0.454 & 0.322 & 0.289 & 0.0848 & 0.108 & 0.519\\
+\hline
+\end{longtable}
+
+\begin{table}[H]
+
+\caption{\label{tab:T40 constituents}T40 Constituents}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+Ticker & Constituent & Super Industry\\
+\hline
+ABG & ABSA GROUP LTD & Financials\\
+\hline
+AGL & ANGLO AMER PLC & Resources\\
+\hline
+AMS & ANGLO AMERICAN P & Resources\\
+\hline
+ANG & ANGLOGOLD ASHANT & Resources\\
+\hline
+APN & ASPEN PHARMACARE & Industrials\\
+\hline
+BHP & BHP GROUP PLC & Resources\\
+\hline
+BID & BID CORP LTD & Industrials\\
+\hline
+BVT & BIDVEST GROUP & Industrials\\
+\hline
+BTI & BRIT AMER TOBACC & Industrials\\
+\hline
+CPI & CAPITEC BANK HOL & Financials\\
+\hline
+CLS & CLICKS GROUP LTD & Industrials\\
+\hline
+DSY & DISCOVERY LTD & Financials\\
+\hline
+EXX & EXXARO RESOURCES & Resources\\
+\hline
+FSR & FIRSTRAND LTD & Financials\\
+\hline
+GLN & GLENCORE PLC & Resources\\
+\hline
+GFI & GOLD FIELDS LTD & Resources\\
+\hline
+GRT & GROWTHPOINT PROP & Financials\\
+\hline
+IMP & IMPALA PLATINUM & Resources\\
+\hline
+INL & INVESTEC LTD & Financials\\
+\hline
+INP & INVESTEC PLC & Financials\\
+\hline
+MNP & MONDI PLC & Industrials\\
+\hline
+MRP & MR PRICE GROUP & Industrials\\
+\hline
+MTN & MTN GROUP LTD & Industrials\\
+\hline
+MCG & MULTICHOICE GROU & Industrials\\
+\hline
+NPN & NASPERS LTD-N & Industrials\\
+\hline
+NED & NEDBANK GROUP & Financials\\
+\hline
+NRP & NEPI ROCKCASTLE & Financials\\
+\hline
+NPH & NORTHAM PLATINUM & Resources\\
+\hline
+OMU & OLD MUTUAL LTD & Financials\\
+\hline
+PRX & PROSUS NV & Industrials\\
+\hline
+RNI & Reinet Investments SCA & Financials\\
+\hline
+CFR & RICHEMONT-DR & Industrials\\
+\hline
+SLM & SANLAM LTD & Financials\\
+\hline
+SOL & SASOL LTD & Resources\\
+\hline
+SHP & SHOPRITE HLDGS & Industrials\\
+\hline
+SSW & SIBANYE STILLWAT & Resources\\
+\hline
+SPP & SPAR GRP LTD/THE & Industrials\\
+\hline
+SBK & STANDARD BANK GR & Financials\\
+\hline
+VOD & VODACOM GROUP & Industrials\\
+\hline
+WHL & WOOLWORTHS HLDGS & Industrials\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{factor-and-industry-plots}{%
+\subsection{Factor and Industry Plots}\label{factor-and-industry-plots}}
 
 \begin{figure}[H]
-
-{\centering \includegraphics{Factor-Model_files/figure-latex/Figure1-1} 
-
-}
-
-\caption{Caption Here \label{Figure1}}\label{fig:Figure1}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-1-1} \caption{US Long-Term Bond Yields}\label{fig:unnamed-chunk-1}
 \end{figure}
-
-To make your graphs look extra nice in latex world, you could use Tikz
-device. Replace dev - `png' with `tikz' in the chunk below. Notice this
-makes the build time longer and produces extra tex files - so if you are
-comfortable with this, set your device to Tikz and try it out:
 
 \begin{figure}[H]
-
-{\centering \includegraphics{Factor-Model_files/figure-latex/Figure2-1} 
-
-}
-
-\caption{Caption Here \label{Figure2}}\label{fig:Figure2}
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-2-1} \caption{USDZAR Spot Price}\label{fig:unnamed-chunk-2}
 \end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-3-1} \caption{CBOE VIX Volatility Index}\label{fig:unnamed-chunk-3}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-4-1} \caption{Bloomberg Commodity Price Index}\label{fig:unnamed-chunk-4}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-5-1} \caption{South Africa Money Market Rate}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-6-1} \caption{South Africa Real GDP}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-7-1} \caption{South Africa Real Gross Fixed Capital Formation}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-8-1} \caption{South Africa Consumer Price Inflation}\label{fig:unnamed-chunk-8}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-9-1} \caption{Asset Returns by Industry}\label{fig:unnamed-chunk-9}
+\end{figure}
+
+\hypertarget{empirical-analysis}{%
+\section{Empirical Analysis}\label{empirical-analysis}}
+
+\hypertarget{methodology}{%
+\subsection{Methodology}\label{methodology}}
+
+\hypertarget{model-estimation-by-industry}{%
+\subsection{Model Estimation (by
+Industry)}\label{model-estimation-by-industry}}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-10-1} \caption{Factor Analysis: Financials}\label{fig:unnamed-chunk-10}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-11-1} \caption{Factor Analysis: Industrial}\label{fig:unnamed-chunk-11}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-12-1} \caption{Factor Analysis: Resources}\label{fig:unnamed-chunk-12}
+\end{figure}
+
+\hypertarget{discussion-of-results}{%
+\subsection{Discussion of Results}\label{discussion-of-results}}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\hypertarget{ref-fama1997}{}%
+Fama, E.F. \& French, K.R. 1997. Industry costs of equity. \emph{Journal
+of financial economics}. 43(2):153--193.
+
+\leavevmode\hypertarget{ref-Flannery}{}%
+Flannery, M. \& Protopapadakis, A.A. 2002. Macroeconomic factors do
+influence aggregate stock returns. \emph{Review of Financial Studies}.
+15(3):751--782.
+
+\leavevmode\hypertarget{ref-grinold2000}{}%
+Grinold, R.C. \& Kahn, R.N. 2000. Active portfolio management.
+
+\end{CSLReferences}
+
+\newpage
+
+\hypertarget{appendices}{%
+\section{Appendices}\label{appendices}}
 
 To reference the plot above, add a ``\textbackslash label'\,' after the
 caption in the chunk heading, as done above. Then reference the plot as
@@ -348,35 +549,8 @@ pleasing due to its device setting of Tikz. The nice thing now is that
 it correctly numbers all your figures (and sections or tables) and will
 update if it moves. The links are also dynamic.
 
-I very strongly suggest using ggplot2 (ideally in combination with
-dplyr) using the ggtheme package to change the themes of your figures.
-
-Also note the information that I have placed above the chunks in the
-code chunks for the figures. You can edit any of these easily - visit
-the Rmarkdown webpage for more information.
-
-\hypertarget{splitting-a-page}{%
-\section{Splitting a page}\label{splitting-a-page}}
-
-You can also very easily split a page using built-in Pandoc formatting.
-I comment this out in the code (as this has caused issues building the
-pdf for some users - which I presume to be a Pandoc issue), but you are
-welcome to try it out yourself by commenting out the following section
-in your Rmd file.
-
-\hypertarget{methodology}{%
-\section{\texorpdfstring{Methodology
-\label{Meth}}{Methodology }}\label{methodology}}
-
-\hypertarget{subsection}{%
-\subsection{Subsection}\label{subsection}}
-
-Ideally do not overuse subsections. It equates to bad
-writing.\footnote{This is an example of a footnote by the way. Something
-  that should also not be overused.}
-
-\hypertarget{math-section}{%
-\subsection{Math section}\label{math-section}}
+\footnote{This is an example of a footnote by the way. Something that
+  should also not be overused.}
 
 Equations should be written as such:
 
@@ -395,33 +569,7 @@ symbols instead (see this for yourself by adjusted the equation):
 
 Note again the reference to equation \ref{eq1}. Writing nice math
 requires practice. Note I used a forward slashes to make a space in the
-equations. I can also align equations using \textbf{\&}, and set to
-numbering only the first line. Now I will have to type ``begin
-equation'\,' which is a native \LaTeX command. Here follows a more
-complicated equation:
-
-\begin{align}
-    y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag
-    e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
-        D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
-        \sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
-        R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
-        Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
-\end{align}
-
-Note that in \ref{eq2} I have aligned the equations by the equal signs.
-I also want only one tag, and I create spaces using ``quads'\,'.
-
-See if you can figure out how to do complex math using the two examples
-provided in \ref{eq1} and \ref{eq2}.
-
-\hypertarget{results}{%
-\section{Results}\label{results}}
-
-Tables can be included as follows. Use the \emph{xtable} (or kable)
-package for tables. Table placement = H implies Latex tries to place the
-table Here, and not on a new page (there are, however, very many ways to
-skin this cat. Luckily there are many forums online!).
+equations.
 
 \begin{table}[H]
 \centering
@@ -499,25 +647,6 @@ mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb \\
 \endgroup
 
 \hfill
-
-\hypertarget{huxtable}{%
-\subsection{Huxtable}\label{huxtable}}
-
-Huxtable is a very nice package for making working with tables between
-Rmarkdown and Tex easier.
-
-This cost some adjustment to the Tex templates to make it work, but it
-now works nicely.
-
-See documentation for this package
-\href{https://hughjonesd.github.io/huxtable/huxtable.html}{here}. A
-particularly nice addition of this package is for making the printing of
-regression results a joy (see
-\href{https://hughjonesd.github.io/huxtable/huxtable.html\#creating-a-regression-table}{here}).
-Here follows an example:
-
-If you are eager to use huxtable, comment out the Huxtable table in the
-Rmd template, and uncomment the colortbl package in your Rmd's root.
 
 Note that I do not include this in the ordinary template, as some latex
 users have complained it breaks when they build their Rmds (especially
@@ -638,76 +767,6 @@ template below this line. Reknit, and enjoy.
 
 \end{table}
  
-
-FYI - R also recently introduced the gt package, which is worthwhile
-exploring too.
-
-\hypertarget{lists}{%
-\section{Lists}\label{lists}}
-
-To add lists, simply using the following notation
-
-\begin{itemize}
-\item
-  This is really simple
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Just note the spaces here - writing in R you have to sometimes be
-    pedantic about spaces\ldots{}
-  \end{itemize}
-\item
-  Note that Rmarkdown notation removes the pain of defining
-  \LaTeX environments!
-\end{itemize}
-
-\hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
-
-I hope you find this template useful. Remember, stackoverflow is your
-friend - use it to find answers to questions. Feel free to write me a
-mail if you have any questions regarding the use of this package. To
-cite this package, simply type citation(``Texevier'') in Rstudio to get
-the citation for \protect\hyperlink{ref-Texevier}{Katzke}
-(\protect\hyperlink{ref-Texevier}{2017}) (Note that uncited references
-in your bibtex file will not be included in References).
-
-\newpage
-
-\hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
-
-\hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-fama1997}{}%
-Fama, E.F. \& French, K.R. 1997. Industry costs of equity. \emph{Journal
-of financial economics}. 43(2):153--193.
-
-\leavevmode\hypertarget{ref-grinold2000}{}%
-Grinold, R.C. \& Kahn, R.N. 2000. Active portfolio management.
-
-\leavevmode\hypertarget{ref-Texevier}{}%
-Katzke, N.F. 2017. \emph{{Texevier}: {P}ackage to create elsevier
-templates for rmarkdown}. Stellenbosch, South Africa: Bureau for
-Economic Research.
-
-\end{CSLReferences}
-
-\hypertarget{appendix}{%
-\section*{Appendix}\label{appendix}}
-\addcontentsline{toc}{section}{Appendix}
-
-\hypertarget{appendix-a}{%
-\subsection*{Appendix A}\label{appendix-a}}
-\addcontentsline{toc}{subsection}{Appendix A}
-
-Some appendix information here
-
-\hypertarget{appendix-b}{%
-\subsection*{Appendix B}\label{appendix-b}}
-\addcontentsline{toc}{subsection}{Appendix B}
 
 \bibliography{Tex/ref}
 

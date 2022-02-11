@@ -1,6 +1,10 @@
 ---
-title: "Helping You Write Academic Papers in R using Texevier"
-#subtitle: "This will appear as Right Header"
+# IMPORTANT: Change settings here, but DO NOT change the spacing.
+# Remove comments and add values where applicable.
+# The descriptions below should be self-explanatory
+
+title: "Covariance Matrix Estimation via Macroeconomic Factor Modeling"
+subtitle: "19776209"
 
 documentclass: "elsarticle"
 
@@ -21,30 +25,30 @@ Thesis_FP: FALSE
 # --------- Front Page
 # Comment: ----- Follow this pattern for up to 5 authors
 AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
-Author1: "Nico Katzke^[__Contributions:__  \\newline _The authors would like to thank no institution for money donated to this project. Thank you sincerely._]"  # First Author - note the thanks message displayed as an italic footnote of first page.
-Ref1: "Prescient Securities, Cape Town, South Africa" # First Author's Affiliation
-Email1: "nfkatzke\\@gmail.com" # First Author's Email address
+Author1: "Tiago Baltazar (19776209)"  # First Author - note the thanks message displayed as an italic footnote of first page.
+Ref1: "Stellenbosch University, Western Cape, South Africa" # First Author's Affiliation
+Email1: "tiagobaltazar15\\@gmail.com" # First Author's Email address
 
-Author2: "John Smith"
-Ref2: "Some other Institution, Cape Town, South Africa"
-Email2: "John\\@gmail.com"
-CommonAffiliation_12: TRUE # If Author 1 and 2 have a common affiliation. Works with _13, _23, etc.
+#Author2: "John Smith"
+#Ref2: "Some other Institution, Cape Town, South Africa"
+#Email2: "John\\@gmail.com"
+#CommonAffiliation_12: FALSE # If Author 1 and 2 have a common affiliation. Works with _13, _23, etc.
 
-Author3: "John Doe"
-Email3: "Joe\\@gmail.com"
+#Author3: "John Doe"
+#Email3: "Joe\\@gmail.com"
 
-CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
+CorrespAuthor_1: FALSE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
 
 # Comment out below to remove both. JEL Codes only given if keywords also given.
-keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
-JELCodes: "L250 \\sep L100"
+keywords: "Asset Allocation \\sep Risk Parity \\sep Mean Variance Optimisation \\sep Volatility" # Use \\sep to separate
+#JELCodes: "L250 \\sep L100"
 
 # ----- Manage headers and footers:
-#BottomLFooter: $Title$
+#BottomLFooter: $19776209$
 #BottomCFooter:
-#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
+TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
 BottomRFooter: "\\footnotesize Page \\thepage" # Add a '#' before this line to remove footer.
-addtoprule: TRUE
+#addtoprule: TRUE
 addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
 
 # --------- page margins:
@@ -70,7 +74,7 @@ csl: Tex/harvard-stellenbosch-university.csl # referencing format used.
 
 # ---------- General:
 RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
-Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
+Journal: ""   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
 toc: FALSE                       # Add a table of contents
 numbersections: TRUE             # Should sections (and thus figures and tables) be numbered?
 fontsize: 11pt                  # Set fontsize
@@ -88,7 +92,7 @@ output:
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
 abstract: |
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+  This report compares the performance of two asset allocation strategies namely; Risk Parity and Mean Variance during periods of volatility in South Africa. Using South African financial data, the risk adjusted and information ratio of a unleverd Risk Parity Index porfolio and Tangency Index porfolio are compared. The research paper found that the Mean Variance Optimisation approach is an superior asset allocation strategy during periods of high volatility in South Africa.
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -96,138 +100,382 @@ abstract: |
 <!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
-# Note: Include = FALSE implies the code is executed, but not printed in your pdf.
-# warning and message = FALSE implies ugly messages and warnings are removed from your pdf.
-# These should be picked up when you execute the command chunks (code sections below) in your rmd, not printed in your paper!
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment=NA, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H', fig.align = "l")
 
-# Lets load in example data, and see how this can be stored and later called from your 'data' folder.
-if(!require("tidyverse")) install.packages("tidyverse")
-library(tidyverse)
-Example_data <- Texevier::Ex_Dat
+options(tinytex.verbose = TRUE)
 
-# Notice that as you are working in a .Rproj file (I am assuming you are) - the relative paths of your directories start at your specified root.
-# This means that when working in a .Rproj file, you never need to use getwd() - it is assumed as your base root automatically.
-write_rds(Example_data, path = "data/Example_data.rds")
+# Loading Packages
+library(pacman)
+pacman::p_load(fmxdat, Texevier, knitr, kableExtra, tidyverse, dplyr, readr, covFactorModel,
+               FinCovRegularization, xts, quantmod,
+               lubridate, tbl2xts, corrplot, rmsfuns)
+
+# Loading Data
+## Factors
+dat_Fac <- read.csv("./data/Factors_New.csv")
+
+dat_Factors <- dat_Fac %>%
+    pivot_longer(cols = starts_with("X"), names_to="date", values_drop_na = FALSE) %>%
+    pivot_wider(names_from="Indicator.Name") %>%
+    mutate_at("date", str_replace, "X", "") %>%
+    arrange(date) %>% mutate(date=as.yearqtr(date, format = "%Y Q%q")) %>%
+    mutate(Inflation=((CPI-lag(CPI))/lag(CPI))*100) %>% 
+    select(-c("CPI", "GDP.Deflator")) %>%
+    filter(date>"2004 Q4")
+
+### Daily Factors
+
+US_10Yr <- read_rds("./data/bonds_10y.rds")%>%
+    filter(Name=="US_10Yr") %>%
+    spread(Name, Bond_10Yr) 
+
+comms <- read_rds("./data/comms.rds")
+comms <- comms %>%
+    filter(Name=="Bcom_Index") %>%
+    spread(Name, Price)
+
+
+VIX <- read_rds("./data/IV.rds")
+VIX <- VIX %>%
+    filter(Name=="VIX") %>%
+    spread(Name, Price)
+
+usdzar <- read_rds("./data/usdzar.rds")
+usdzar$Name <- gsub("SouthAfrica_Cncy", "USDZAR", usdzar$Name)
+usdzar <- usdzar %>% spread(Name, Price)
+
+### Full (Daily) factors convert to Quarterly
+dat_Factors_K <- left_join(US_10Yr, comms, by="date") %>%
+  left_join(., VIX, by="date") %>%
+  left_join(., usdzar, by="date") %>%   # First, combining the relevant datasets
+  mutate(Date=as.yearqtr(date)) %>%     # Second, converting to quarterly
+  group_by(Date) %>%                 
+  filter(date==max(date)) %>%
+  ungroup() %>%
+  select(Date, US_10Yr, Bcom_Index, VIX, USDZAR) %>%
+  rename(., date=Date) %>%
+  filter(date>"2004 Q4") 
+
+### Consolidated factors dataset
+Factors <- left_join(dat_Factors_K, dat_Factors, by="date")  %>%
+  filter(date<"2021 Q4")
+
+
+## Assets
+new_dat_0 <- read_rds("./data/alsi.rds")
+
+new_dat_0$Tickers <- gsub(" SJ Equity", "", new_dat_0$Tickers)
+new_dat_0$Superindustryname[which(new_dat_0$Tickers == "MNP")] <- "Industrials"
+
+### Tidying original data
+new_dat <- new_dat_0 %>% 
+  select(-c("Short.Name", "J203")) %>%
+  mutate(Date=as.yearqtr(date)) %>%   # steps below construct the quarterly dataset to be used 
+  group_by(Date) %>%                  # Macro factors only available at (minimum) quarterly frequency
+  filter(date==max(date)) %>%
+  ungroup() %>% 
+  select(Date, Tickers, Return, Superindustryname) %>%
+  rename(., date=Date) %>%
+  filter(date<"2021 Q4")
+
+T40 <- c("ABG", "AMS", "AGL", "ANG", "APN", "BHP", "BID",   # Creating vector of T40 constituents
+         "BVT", "BTI", "CPI", "CLS", "CFR", "DSY", "EXX",
+         "FSR", "GLN", "GFI", "GRT", "IMP", "INL", "INP",
+         "MNP", "MRP", "MTN", "MCG", "NPN", "NED", "NRP",
+         "NPH", "OMU", "PRX", "RNI", "SLM", "SOL", "SHP",
+         "SSW", "SBK", "SPP", "VOD", "WHL")
+
+### Final assets dataset
+Assets <- new_dat %>% 
+  filter(Tickers %in% T40) %>%
+  select(-Superindustryname) %>%
+  pivot_wider(names_from = Tickers, values_from = Return) 
+  
+
+### Separating Assets by industry
+
+Assets_Industrial <- new_dat %>%
+    filter(Tickers %in% T40) %>%
+    filter(Superindustryname=="Industrials") %>%
+    select(date, Tickers, Return) %>%
+    pivot_wider(names_from = Tickers, values_from = Return)
+
+Assets_Resources <- new_dat %>%
+    filter(Tickers %in% T40) %>%
+    filter(Superindustryname=="Resources") %>%
+    select(date, Tickers, Return) %>% 
+    pivot_wider(names_from = Tickers, values_from = Return) 
+
+Assets_Financials <- new_dat %>%
+    filter(Tickers %in% T40) %>%
+    filter(Superindustryname=="Financials") %>%
+    select(date, Tickers, Return) %>%
+    pivot_wider(names_from = Tickers, values_from = Return) 
 
 ```
 
 
-<!-- ############################## -->
-<!-- # Start Writing here: -->
-<!-- ############################## -->
 
-# Introduction \label{Introduction}
+# Introduction \label{Intro}
 
 References are to be made as follows: @fama1997[p. 33] and @grinold2000 Such authors could also be referenced in brackets [@grinold2000] and together [@fama1997 \& @grinold2000]. Source the reference code from scholar.google.com by clicking on ``cite'' below article name. Then select BibTeX at the bottom of the Cite window, and proceed to copy and paste this code into your ref.bib file, located in the directory's Tex folder. Open this file in Rstudio for ease of management, else open it in your preferred Tex environment. Add and manage your article details here for simplicity - once saved, it will self-adjust in your paper.
+
+As per @Flannery.. factor models are good shit!
 
 > I suggest renaming the top line after \@article, as done in the template ref.bib file, to something more intuitive for you to remember. Do not change the rest of the code. Also, be mindful of the fact that bib references from google scholar may at times be incorrect. Reference Latex forums for correct bibtex notation.
 
 To reference a section, you have to set a label using ``\\label'' in R, and then reference it in-text as e.g. referencing a later section, Section \ref{Meth}.
 
-Writing in Rmarkdown is surprizingly easy - see [this website](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) cheatsheet for a summary on writing Rmd writing tips.
 
-# Data  {-}
+# Literature Review \label{Lit}
 
-Notice how I used the curly brackets and dash to remove the numbering of the data section.
+# Exploratory Analysis \label{Explor}
 
-Discussion of data should be thorough with a table of statistics and ideally a figure.
+As can be seen in Section \ref{Lit}
 
-In your tempalte folder, you will find a Data and a Code folder. In order to keep your data files neat, store all of them in your Data folder. Also, I strongly suggest keeping this Rmd file for writing and executing commands, not writing out long pieces of data-wrangling. In the example below, I simply create a ggplot template for scatter plot consistency. I suggest keeping all your data in a data folder.
+## Data and Descriptive Statistics
 
-<!-- The following is a code chunk. It must have its own unique name (after the r), or no name. After the comma follows commands for R which are self-explanatory. By default, the code and messages will not be printed in your pdf, just the output: -->
+```{r Factors Description}
 
-```{r Figure1,  warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.ext = 'png', fig.height = 3, fig.width = 6}
+# Creating Table with Variable Descriptions
 
-  # This is just a random plot to show you a plot. This is done if the getwd() does not point to your Template's directory.
-  # Set WD below to your project's working directory.
+Fac_Names <- colnames(Factors[, -1])
+Fac_Desc <- c("US Long-Term Bond Yields", "Bloomberg Commodities Index", "CBOE Volatility Index", "USD/ZAR Spot Price", "SA Money Market Rate", "SA Real Gross Domestic Product", "SA Real Gross Fixed Capital Formation", "Inflation (Consumer Prices)")
+Fac_Source <- c("N. Katzke", "N. Katzke", "N. Katzke", "N. Katzke", "IMF International Financial Statistics", "IMF International Financial Statistics", "IMF International Financial Statistics", "IMF International Financial Statistics")
 
-  g <-
-  ggplot(data = mtcars) +
-  geom_point(aes(x = disp, y = hp, color = cyl)) +
-  theme_bw() +
-  # theme(legend.position = "none") +
-  theme(plot.title = element_text(size = 10)) +
-  theme(axis.title = element_text(size = 10),
-        axis.title.x = element_text()) +
-  labs(y = "y-axis", x = "x-axis", title = "Some amazing plot")
-
-g
+data.frame(Fac_Names, Fac_Desc, Fac_Source) %>% arrange(Fac_Names) %>% kable(caption="Macroeconomic Factors", align="l", col.names = c("Name", "Description", "Source"))%>%
+  kable_styling(latex_options = "HOLD_position")
 
 ```
 
-To make your graphs look extra nice in latex world, you could use Tikz device. Replace dev - 'png' with 'tikz' in the chunk below. Notice this makes the build time longer and produces extra tex files - so if you are comfortable with this, set your device to Tikz and try it out:
 
-```{r Figure2, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
-
-ExampleData <- read_rds( "data/Example_data.rds")
-
-source("code/Example_Plot_Scatter.R") # Load a function from your 'code' folder. This e.g. plots scatters to your own preferences.
-source( "code/Data_Create.R") #
-
-ExampleData <- Data_Create(N = 100) # Same as the ExampleData loaded above - this is just a function to create the stored data.
-
-g <- Example_Plot_Scatter(DataInput = ExampleData,
-                          X = "Height_Score",
-                          Y = "Weight_Score",
-                          Z = "Agility_Score",
-                          Theme = theme_bw(), # run ?ggthemes for other themes.
-                          Title = "", # I prefer to use the caption set above.
-                          Ylab = "Height",
-                          Xlab = "Lenght",
-                          LegendTitle = "Agility",
-                          TitleSize = 10,
-                          LabSize = 10)
-
-g
-
-# Although the functions above are really simple, the principle is simple: containing calculations and data wrangling in their own functions will make this template much cleaner and more manageable.
-# When you start working, delete these meaningless functions and replace with your own...
+```{r Descriptive Stats}
+# Creating Table with descriptive statistics for Macro Factors
+data.frame(pastecs::stat.desc(Factors[, -1], basic=F)) %>% 
+  dplyr::mutate_at(c("Real.GDP", "Real.INV"), funs(as.character(signif(., 3)))) %>%
+  kable(caption="Summary Statistics: Macroeconomic Factors", digits=3, align="l", longtable=TRUE)%>%
+  kable_styling(latex_options = "HOLD_position")
 
 ```
 
-To reference the plot above, add a ``\\label'' after the caption in the chunk heading, as done above. Then reference the plot as such: As can be seen, Figures \ref{Figure1}  and \ref{Figure2} are excellent, with Figure \ref{Figure2} being particularly aesthetically pleasing due to its device setting of Tikz. The nice thing now is that it correctly numbers all your figures (and sections or tables) and will update if it moves. The links are also dynamic.
+```{r T40 constituents}
+# Creating Descriptive Table of T40 stocks and Industries
 
-I very strongly suggest using ggplot2 (ideally in combination with dplyr) using the ggtheme package to change the themes of your figures.
+new_dat_0 %>% filter(Tickers %in% T40) %>%
+  filter(Superindustryname=="Financials") %>%
+  distinct(Tickers, Short.Name) %>%
+  arrange(Short.Name) %>%
+  kable(caption="T40 Constituents: Financials", align="l", col.names = c("Ticker", "Constituent"))%>%
+  kable_styling(latex_options = "HOLD_position")
 
-Also note the information that I have placed above the chunks in the code chunks for the figures. You can edit any of these easily - visit the Rmarkdown webpage for more information.
+new_dat_0 %>% filter(Tickers %in% T40) %>%
+  filter(Superindustryname=="Industrials") %>%
+  distinct(Tickers, Short.Name) %>%
+  arrange(Short.Name) %>%
+  kable(caption="T40 Constituents: Industrials", align="l", col.names = c("Ticker", "Constituent"))%>%
+  kable_styling(latex_options = "HOLD_position")
 
-# Splitting a page
-
-You can also very easily split a page using built-in Pandoc formatting. I comment this out in the code (as this has caused issues building the pdf for some users - which I presume to be a Pandoc issue), but you are welcome to try it out yourself by commenting out the following section in your Rmd file.
-
-
-<!-- :::::: {.columns data-latex="[T]"} -->
-<!-- ::: {.column data-latex="{0.7\textwidth}"} -->
-<!-- ```{r, echo=FALSE, fig.width=4, fig.height=4} -->
-<!-- par(mar = c(4, 4, .2, .1)) -->
-<!-- plot(cars, pch = 19) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ::: {.column data-latex="{0.05\textwidth}"} -->
-<!-- \ -->
-<!-- ::: -->
-<!-- ::: {.column data-latex="{0.2\textwidth}"} -->
-<!-- \scriptsize -->
-
-<!-- ## Data {-} -->
-<!-- The figure on the left-hand side shows the `cars` data. -->
-
-<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do -->
-<!-- eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut -->
-<!-- enim ad minim veniam, quis nostrud exercitation ullamco laboris -->
-<!-- nisi ut aliquip ex ea commodo consequat. -->
-<!-- ::: -->
-<!-- :::::: -->
+new_dat_0 %>% filter(Tickers %in% T40) %>%
+  filter(Superindustryname=="Resources") %>%
+  distinct(Tickers, Short.Name) %>%
+  arrange(Short.Name) %>%
+  kable(caption="T40 Constituents: Resources", align="l", col.names = c("Ticker", "Constituent"))%>%
+  kable_styling(latex_options = "HOLD_position")
+```
 
 
+```{r Treatment of Missing Values, include=FALSE}
 
-#  Methodology \label{Meth}
+# Checking number of NA's for each asset
 
-## Subsection
-Ideally do not overuse subsections. It equates to bad writing.^[This is an example of a footnote by the way. Something that should also not be overused.]
+colSums(is.na(Assets[, -1])) %>% kable(caption="Assets Missing Values", align="l", col.names = "n") %>% kable_styling(latex_options = "HOLD_position") 
 
-## Math section
+
+```
+
+```{r Cleaning Data, include=FALSE}
+# Cleaning data and creating log returns series
+source("./code/missingreturns.R")
+
+# Assets split by industry
+## First select assets with less than 30% of observations missing. Then impute missing values using the above (sourced) function.
+## Finally, take logs of the returns, use log(x+1) to account for periods with zero returns.
+
+Financials_clean <- Assets_Financials %>% 
+  select(where(~mean(is.na(.))< 0.7)) %>% 
+  impute_missing_returns(., impute_returns_method = "Drawn_Distribution_Own", Seed = as.numeric(format( Sys.time(), "%Y%d%H%M"))) %>%
+  mutate(across(.cols=-date, .fns=~log(.+1))) 
+
+Industrial_clean <- Assets_Industrial %>% 
+  select(where(~mean(is.na(.))< 0.7)) %>% 
+  impute_missing_returns(., impute_returns_method = "Drawn_Distribution_Own", Seed = as.numeric(format( Sys.time(), "%Y%d%H%M"))) %>%
+  mutate(across(.cols=-date, .fns=~log(.+1))) 
+
+Resources_clean <- Assets_Resources %>% 
+  select(where(~mean(is.na(.))< 0.7)) %>%
+  impute_missing_returns(., impute_returns_method = "Drawn_Distribution_Own", Seed = as.numeric(format( Sys.time(), "%Y%d%H%M"))) %>%
+  mutate(across(.cols=-date, .fns=~log(.+1))) 
+
+```
+
+```{r Excluded Assets, include=FALSE}
+# Checking which assets dropped out
+
+T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Missing Variables", align="l", col.names = "n") %>% kable_styling(latex_options = "HOLD_position")
+
+```
+
+## Factor and Industry Plots
+
+```{r, fig.cap="US Long-Term Bond Yields \\label{Fig1}"}
+p.US <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, US_10Yr)) + labs(x="", y="", title="US 10Year") + theme_bw()
+
+fmxdat::finplot(p.US, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="USDZAR Spot Price \\label{Fig2}"}
+p.USDZAR <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, USDZAR)) + labs(x="", y="", title="USDZAR") + theme_bw()
+
+fmxdat::finplot(p.USDZAR, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="CBOE VIX Volatility Index \\label{Fig3}"}
+p.VIX <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, VIX)) + labs(x="", y="", title="VIX Volatility") + theme_bw()
+
+fmxdat::finplot(p.VIX, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="Bloomberg Commodity Price Index \\label{Fig4}"}
+p.Bcom_Index <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Bcom_Index)) + labs(x="", y="", title="Commodity Price") + theme_bw()
+
+fmxdat::finplot(p.Bcom_Index, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="South Africa Money Market Rate \\label{Fig5}"}
+p.MM.Rate <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, MM.Rate)) + labs(x="", y="", title="SA Money Market Rate") + theme_bw()
+
+fmxdat::finplot(p.MM.Rate, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="South Africa Real GDP \\label{Fig6}"}
+p.Real.GDP <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Real.GDP)) + labs(x="", y="", title="SA Real GDP") + theme_bw()
+
+fmxdat::finplot(p.Real.GDP, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="South Africa Real Gross Fixed Capital Formation \\label{Fig7}"}
+p.Real.Inv <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Real.INV)) + labs(x="", y="", title="SA Real Investment") + theme_bw()
+
+fmxdat::finplot(p.Real.Inv, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+```{r, fig.cap="South Africa Consumer Price Inflation \\label{Fig8}"}
+p.CPI <- Factors %>% mutate(date=as.Date(date)) %>% ggplot() + geom_line(aes(date, Inflation)) + labs(x="", y="", title="SA Inflation") + theme_bw()
+
+fmxdat::finplot(p.CPI, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+
+```{r, fig.cap="Asset Returns by Industry \\label{Fig9}"}
+p.Indus <- new_dat %>%
+    filter(Tickers %in% T40) %>%
+    mutate(date=as.Date(date)) %>%
+    ggplot() + geom_line(aes(date, Return), color="steelblue", size=1.2, alpha=0.8) + theme_bw() + fmxdat::fmx_cols() + facet_wrap(~Superindustryname) + labs(x="Year")
+
+fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.comma.sep=TRUE)
+
+```
+
+# Empirical Analysis
+
+## Methodology
+
+## Model Estimation (by Industry)
+
+```{r xts transformation}
+Factors_xts <- Factors %>% 
+    mutate(across(.cols=-date, .fns=~log(.+1))) %>%   # log transformation of macro factors
+  tbl2xts::tbl_xts()
+
+Financials_xts <- Financials_clean %>% tbl_xts()
+Industrial_xts <- Industrial_clean %>% tbl_xts()
+Resources_xts <- Resources_clean %>% tbl_xts()
+
+```
+
+```{r Factor Model: Financials}
+FM_Fin <- covFactorModel::factorModel(Financials_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
+
+covmat_Fin <- FM_Fin$Sigma  # Covariance Matrix
+FM_Res_Fin <- FM_Fin$residual
+
+```
+
+```{r, fig.cap="Factor Analysis: Financials \\label{Fig10}"}
+par(mfrow = c(1, 2))
+barplot(FM_Fin$alpha, horiz = TRUE, 
+        main = "alpha", col = "red", cex.names = 0.75, las = 1)
+barplot(t(FM_Fin$beta), horiz = TRUE, 
+        main = "beta", col = "blue", cex.names = 0.75, las = 1)
+```
+
+```{r Factor Model: Industrial}
+FM_Ind <- covFactorModel::factorModel(Industrial_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
+
+covmat_Ind <- FM_Ind$Sigma  # Covariance Matrix
+FM_Res_Ind <- FM_Ind$residual
+```
+
+```{r, fig.cap="Factor Analysis: Industrial \\label{Fig11}"}
+par(mfrow = c(1, 2))
+barplot(FM_Ind$alpha, horiz = TRUE, 
+        main = "alpha", col = "red", cex.names = 0.75, las = 1)
+barplot(t(FM_Ind$beta), horiz = TRUE, 
+        main = "beta", col = "blue", cex.names = 0.75, las = 1)
+```
+
+```{r Factor Model: Resources}
+FM_Res <- covFactorModel::factorModel(Resources_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
+
+covmat_Res <- FM_Res$Sigma  # Covariance Matrix
+FM_Res_Res <- FM_Res$residual
+```
+
+```{r, fig.cap="Factor Analysis: Resources \\label{Fig12}"}
+par(mfrow = c(1, 2))
+barplot(FM_Res$alpha, horiz = TRUE, 
+        main = "alpha", col = "red", cex.names = 0.75, las = 1)
+barplot(t(FM_Res$beta), horiz = TRUE, 
+        main = "beta", col = "blue", cex.names = 0.75, las = 1)
+```
+
+
+## Discussion of Results
+
+\ref{Fig12}
+
+# Conclusion
+
+\newpage
+
+# References
+
+<div id="refs"></div>
+
+\newpage
+
+# Appendices
+
+
+^[This is an example of a footnote by the way. Something that should also not be overused.]
 
 Equations should be written as such:
 
@@ -243,33 +491,7 @@ $$
 \int_{x = 1}^{\infty}x_{i} = 1
 $$
 
-Note again the reference to equation \ref{eq1}. Writing nice math requires practice. Note I used a forward slashes to make a space in the equations. I can also align equations using  __\&__, and set to numbering only the first line. Now I will have to type ``begin equation'' which is a native \LaTeX command. Here follows a more complicated equation:
-
-
-\begin{align}
-	y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag
-	e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
-		D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
-		\sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
-		R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
-		Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
-\end{align}
-
-Note that in \ref{eq2} I have aligned the equations by the equal signs. I also want only one tag, and I create spaces using ``quads''.
-
-See if you can figure out how to do complex math using the two examples provided in \ref{eq1} and \ref{eq2}.
-
-<!-- $$ -->
-<!-- This is a commented out section in the writing part. -->
-<!-- Comments are created by highlighting text, amnd pressing CTL+C -->
-<!-- \\begin{align} -->
-<!-- \\beta = \\alpha^2 -->
-<!-- \end{align} -->
-<!-- $$ -->
-
-# Results
-
-Tables can be included as follows. Use the _xtable_ (or kable) package for tables. Table placement = H implies Latex tries to place the table Here, and not on a new page (there are, however, very many ways to skin this cat. Luckily there are many forums online!).
+Note again the reference to equation \ref{eq1}. Writing nice math requires practice. Note I used a forward slashes to make a space in the equations.
 
 
 ```{r ShortTable, results = 'asis'}
@@ -326,23 +548,10 @@ table <- xtable(data, caption = "Long Table Example")
 
 \hfill
 
-<!-- hfill can be used to create a space, like here between text and table. -->
 
-
-## Huxtable
-
-Huxtable is a very nice package for making working with tables between Rmarkdown and Tex easier.
-
-This cost some adjustment to the Tex templates to make it work, but it now works nicely.
-
-See documentation for this package [here](https://hughjonesd.github.io/huxtable/huxtable.html). A particularly nice addition of this package is for making the printing of regression results a joy (see [here](https://hughjonesd.github.io/huxtable/huxtable.html#creating-a-regression-table)). Here follows an example:
-
-
-If you are eager to use huxtable, comment out the Huxtable table in the Rmd template, and uncomment the colortbl package in your Rmd's root.
-
-Note that I do not include this in the ordinary template, as some latex users have complained it breaks when they build their Rmds (especially those using tidytex - I don't have this problem as I have the full Miktex installed on mine). Up to you, but I strongly recommend installing the package manually and using huxtable. To make this work, uncomment the _Adding additional latex packages_ part in yaml at the top of the Rmd file. Then comment out the huxtable example in the template below this line. Reknit, and enjoy.
 
 ```{r, results = 'asis'}
+
 
 if(!require(huxtable)) install.packages(huxtable)
 library(huxtable)
@@ -370,37 +579,7 @@ htab
 
 ```
 
-FYI - R also recently introduced the gt package, which is worthwhile exploring too.
-
-# Lists
-
-To add lists, simply using the following notation
-
-* This is really simple
-
-    + Just note the spaces here - writing in R you have to sometimes be pedantic about spaces...
-
-* Note that Rmarkdown notation removes the pain of defining \LaTeX environments!
-
-# Conclusion
-
-I hope you find this template useful. Remember, stackoverflow is your friend - use it to find answers to questions. Feel free to write me a mail if you have any questions regarding the use of this package. To cite this package, simply type citation("Texevier") in Rstudio to get the citation for @Texevier (Note that uncited references in your bibtex file will not be included in References).
-
-<!-- Make title of bibliography here: -->
-<!-- \newpage -->
-
-\newpage
-
-# References {-}
-
-<div id="refs"></div>
 
 
-# Appendix {-}
 
-## Appendix A {-}
-
-Some appendix information here
-
-## Appendix B {-}
 
