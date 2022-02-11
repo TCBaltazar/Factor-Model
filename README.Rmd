@@ -267,7 +267,7 @@ From the table below, one can see the 5 tickers that dropped out of the final as
 ```{r Excluded Assets}
 # Checking which assets dropped out
 
-T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Missing Variables", align="l", col.names = "Tickers") #%>% kable_styling(latex_options = "HOLD_position")
+T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Removed Variables", align="l", col.names = "Tickers") #%>% kable_styling(latex_options = "HOLD_position")
 
 ```
 

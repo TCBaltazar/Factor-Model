@@ -1455,12 +1455,12 @@ latter 2 belonging to industrials.
 ``` r
 # Checking which assets dropped out
 
-T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Missing Variables", align="l", col.names = "Tickers") #%>% kable_styling(latex_options = "HOLD_position")
+T40[!T40%in%colnames(Assets[, -1] %>% select(where(~mean(is.na(.))< 0.7)))] %>% kable(caption="Assets Removed Variables", align="l", col.names = "Tickers") #%>% kable_styling(latex_options = "HOLD_position")
 ```
 
 <table>
 <caption>
-Assets Missing Variables
+Assets Removed Variables
 </caption>
 <thead>
 <tr>
@@ -2707,28 +2707,28 @@ APN
 BID
 </td>
 <td style="text-align:left;">
--0.0221
+0.0026
 </td>
 <td style="text-align:left;">
--0.0173
+0.0544
 </td>
 <td style="text-align:left;">
-0.0083
+0.0079
 </td>
 <td style="text-align:left;">
--0.0282
+0.0817
 </td>
 <td style="text-align:left;">
-0.0016
+0.0051
 </td>
 <td style="text-align:left;">
--0.1634
+0.0147
 </td>
 <td style="text-align:left;">
-0.1681
+0.0092
 </td>
 <td style="text-align:left;">
-0.0046
+0.0040
 </td>
 </tr>
 <tr>
@@ -2736,28 +2736,28 @@ BID
 BTI
 </td>
 <td style="text-align:left;">
--0.0116
+-0.0091
 </td>
 <td style="text-align:left;">
-0.0115
+0.0024
 </td>
 <td style="text-align:left;">
-0.0116
+0.0071
 </td>
 <td style="text-align:left;">
-0.0114
+0.0452
 </td>
 <td style="text-align:left;">
-0.0275
+0.0213
 </td>
 <td style="text-align:left;">
--0.0094
+0.0587
 </td>
 <td style="text-align:left;">
-0.0167
+-0.0265
 </td>
 <td style="text-align:left;">
--0.0064
+-0.0105
 </td>
 </tr>
 <tr>
@@ -2855,25 +2855,25 @@ MNP
 -0.0017
 </td>
 <td style="text-align:left;">
--0.0390
+-0.0269
 </td>
 <td style="text-align:left;">
-0.0069
+0.0074
 </td>
 <td style="text-align:left;">
--0.0087
+0.0035
 </td>
 <td style="text-align:left;">
-0.0140
+0.0145
 </td>
 <td style="text-align:left;">
--0.0546
+-0.0753
 </td>
 <td style="text-align:left;">
--0.0099
+-0.0151
 </td>
 <td style="text-align:left;">
--0.0026
+0.0041
 </td>
 </tr>
 <tr>
@@ -3026,28 +3026,28 @@ SPP
 VOD
 </td>
 <td style="text-align:left;">
-0.0027
+0.0052
 </td>
 <td style="text-align:left;">
-0.0164
+-0.0131
 </td>
 <td style="text-align:left;">
-0.0108
+0.0098
 </td>
 <td style="text-align:left;">
--0.0188
+-0.0441
 </td>
 <td style="text-align:left;">
-0.0138
+0.0014
 </td>
 <td style="text-align:left;">
-0.0173
+-0.0985
 </td>
 <td style="text-align:left;">
-0.0025
+0.1094
 </td>
 <td style="text-align:left;">
--0.0028
+-0.0045
 </td>
 </tr>
 <tr>
@@ -3113,7 +3113,7 @@ APN
 BID
 </td>
 <td style="text-align:left;">
-0.0247
+-0.0145
 </td>
 </tr>
 <tr>
@@ -3121,7 +3121,7 @@ BID
 BTI
 </td>
 <td style="text-align:left;">
--0.0344
+-0.0232
 </td>
 </tr>
 <tr>
@@ -3153,7 +3153,7 @@ CLS
 MNP
 </td>
 <td style="text-align:left;">
--0.0205
+-0.0270
 </td>
 </tr>
 <tr>
@@ -3201,7 +3201,7 @@ SPP
 VOD
 </td>
 <td style="text-align:left;">
--0.0266
+-0.0045
 </td>
 </tr>
 <tr>
@@ -3295,7 +3295,7 @@ APN
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+1e-04
 </td>
 <td style="text-align:left;">
 0e+00
@@ -3348,7 +3348,7 @@ BID
 0e+00
 </td>
 <td style="text-align:left;">
-0.0001
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -3377,7 +3377,7 @@ BTI
 0e+00
 </td>
 <td style="text-align:left;">
-3e-04
+2e-04
 </td>
 <td style="text-align:left;">
 0e+00
@@ -3559,7 +3559,7 @@ CLS
 MNP
 </td>
 <td style="text-align:left;">
-0e+00
+1e-04
 </td>
 <td style="text-align:left;">
 0e+00
@@ -3577,7 +3577,7 @@ MNP
 0e+00
 </td>
 <td style="text-align:left;">
-3e-04
+2e-04
 </td>
 <td style="text-align:left;">
 0e+00
@@ -3656,7 +3656,7 @@ MTN
 1e-04
 </td>
 <td style="text-align:left;">
-1e-04
+0e+00
 </td>
 <td style="text-align:left;">
 1e-04
@@ -3877,7 +3877,7 @@ VOD
 0e+00
 </td>
 <td style="text-align:left;">
-2e-04
+3e-04
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4152,28 +4152,28 @@ GFI
 GLN
 </td>
 <td style="text-align:left;">
-0.0046
+-0.0010
 </td>
 <td style="text-align:left;">
--0.0238
+-0.1338
 </td>
 <td style="text-align:left;">
-0.0236
+-0.0163
 </td>
 <td style="text-align:left;">
-0.0477
+0.0086
 </td>
 <td style="text-align:left;">
--0.0052
+0.0226
 </td>
 <td style="text-align:left;">
--0.0321
+-0.1703
 </td>
 <td style="text-align:left;">
--0.0573
+0.1232
 </td>
 <td style="text-align:left;">
-0.0069
+0.0044
 </td>
 </tr>
 <tr>
@@ -4268,28 +4268,28 @@ SOL
 SSW
 </td>
 <td style="text-align:left;">
-0.0110
+0.0014
 </td>
 <td style="text-align:left;">
--0.0319
+-0.0323
 </td>
 <td style="text-align:left;">
--0.0116
+-0.0092
 </td>
 <td style="text-align:left;">
--0.0249
+-0.0881
 </td>
 <td style="text-align:left;">
--0.0150
+-0.0098
 </td>
 <td style="text-align:left;">
--0.2844
+-0.1598
 </td>
 <td style="text-align:left;">
-0.0837
+-0.0211
 </td>
 <td style="text-align:left;">
-0.0159
+0.0051
 </td>
 </tr>
 </tbody>
@@ -4366,7 +4366,7 @@ GFI
 GLN
 </td>
 <td style="text-align:left;">
-0.0036
+-0.0349
 </td>
 </tr>
 <tr>
@@ -4398,7 +4398,7 @@ SOL
 SSW
 </td>
 <td style="text-align:left;">
-0.0064
+0.0173
 </td>
 </tr>
 </tbody>
@@ -4475,7 +4475,7 @@ AGL
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0001
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4513,7 +4513,7 @@ AMS
 0e+00
 </td>
 <td style="text-align:left;">
-1e-04
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4551,7 +4551,7 @@ ANG
 1e-04
 </td>
 <td style="text-align:left;">
-0e+00
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4589,7 +4589,7 @@ BHP
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0001
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4627,7 +4627,7 @@ EXX
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4665,7 +4665,7 @@ GFI
 6e-04
 </td>
 <td style="text-align:left;">
-0e+00
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4685,6 +4685,12 @@ GFI
 GLN
 </td>
 <td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
 0e+00
 </td>
 <td style="text-align:left;">
@@ -4697,16 +4703,10 @@ GLN
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0014
 </td>
 <td style="text-align:left;">
-0e+00
-</td>
-<td style="text-align:left;">
-1e-03
-</td>
-<td style="text-align:left;">
-0e+00
+1e-04
 </td>
 <td style="text-align:left;">
 1e-04
@@ -4741,7 +4741,7 @@ IMP
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0001
 </td>
 <td style="text-align:left;">
 6e-04
@@ -4779,7 +4779,7 @@ NPH
 0e+00
 </td>
 <td style="text-align:left;">
-1e-04
+0.0001
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4817,7 +4817,7 @@ SOL
 -1e-04
 </td>
 <td style="text-align:left;">
-1e-04
+0.0001
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4829,7 +4829,7 @@ SOL
 7e-04
 </td>
 <td style="text-align:left;">
-0e+00
+-1e-04
 </td>
 </tr>
 <tr>
@@ -4855,7 +4855,7 @@ SSW
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+0.0000
 </td>
 <td style="text-align:left;">
 0e+00
@@ -4864,10 +4864,10 @@ SSW
 0e+00
 </td>
 <td style="text-align:left;">
-0e+00
+-1e-04
 </td>
 <td style="text-align:left;">
-9e-04
+8e-04
 </td>
 </tr>
 </tbody>
