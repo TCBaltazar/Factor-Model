@@ -202,13 +202,14 @@
 
 \begin{abstract}
 \small{
-This report compares the performance of two asset allocation strategies
-namely; Risk Parity and Mean Variance during periods of volatility in
-South Africa. Using South African financial data, the risk adjusted and
-information ratio of a unleverd Risk Parity Index porfolio and Tangency
-Index porfolio are compared. The research paper found that the Mean
-Variance Optimisation approach is an superior asset allocation strategy
-during periods of high volatility in South Africa.
+This report aims to study the relationship between macroeconomic factors
+and South African asset returns. To this end, a macroeconomic factor
+model was fit for the top 40 assets listed on the JSE. By using a series
+of domestic, and global, macroeconomic factors, this study was able to
+determine the sensitivity of each of the assets to the macroeconomic
+factors. In addition to this, a covariance matrix of returns for the
+financial, industrial, and resource sectors was constructed using the
+macroeconomic factor model.
 }
 \end{abstract}
 
@@ -256,17 +257,26 @@ Factor Modeling \sep Macroeconomic Factors \sep Asset Returns
 \section{\texorpdfstring{Introduction
 \label{Intro}}{Introduction }}\label{introduction}}
 
-Macroeconomic factor models use observable economic time series to
-explain the common variation in asset returns, with the unexplained,
-idiosyncratic, variance being asset-specific.
-
 Overall investment risk is typically classified as being either
 systematic (market), affecting the broader market, or idiosyncratic
 risk, which is unique to individual assets. While the latter can, in
 effect, be diversified away, the former affects a large portion of
 assets. Factor models can be used to explain the common (systematic)
 variation in asset returns, with the remaining variance, not explained
-by the factors, being unique to each individual security.
+by the factors, being unique to each individual security. Macroeconomic
+factor models use observable economic time series to explain the common
+variation in asset returns, with the remaining, unexplained, variance
+being asset-specific. This paper presents a series of eight
+macroeconomic factors to be used in studying the relationship between
+macroeconomic variables and the top 40 assets on the JSE. Factor
+loadings, describing each assets sensitivity to the macroeconomic
+factors, are presented, along with the estimated covariance matrix of
+asset returns for each super-industry, namely, the financial,
+industrial, and resource sectors. The rest of the paper is outlined as
+follows: Section \ref{Lit} presents a brief literature review, Section
+\ref{Explor} consists of an exploratory analysis of the variables used
+in the study. Section \ref{Emp} presents the results from the empirical
+analysis, and Section \ref{Conc} concludes.
 
 \hypertarget{literature-review}{%
 \section{\texorpdfstring{Literature Review
@@ -319,6 +329,8 @@ that they found to be significant were split into three categories:
 general, economy-wide, variables, the second category focused on the
 monetary side of the economy and included the interest rate and money
 supply. And the final factor comprised of labor market variables.
+
+\newpage
 
 \hypertarget{exploratory-analysis}{%
 \section{\texorpdfstring{Exploratory Analysis
@@ -446,6 +458,15 @@ SBK & STANDARD BANK GR\\
 \end{tabular}
 \end{table}
 
+For this analysis, only variables in the Top 40 stocks in the JSE with
+the highest market capitalization were included. This was done to
+account for the fact that larger companies will be more exposed to
+global macroeconomic factors, relative to those with smaller market
+caps. The variables chosen as part of this ``T40'' are based on the FTSE
+Russell classification, as of the end of 2021 Q3 (see
+\protect\hyperlink{ref-FTSE}{{``Factsheet (ZAR) FTSE/JSE top 40
+index''}} (\protect\hyperlink{ref-FTSE}{n.d.})).
+
 \begin{table}[H]
 
 \caption{\label{tab:unnamed-chunk-1}T40 Constituents: Industrials}
@@ -522,24 +543,18 @@ SSW & SIBANYE STILLWAT\\
 \end{tabular}
 \end{table}
 
-For this analysis, only variables in the Top 40 stocks in the JSE with
-the highest market capitalization were included. This was done to
-account for the fact that larger companies will be more exposed to
-global macroeconomic factors, relative to those with smaller market
-caps. The variables chosen as part of this ``T40'' are based on the FTSE
-Russell classification, as of the end of 2021 Q3 (see
-(\protect\hyperlink{ref-FTSE}{{``Factsheet (ZAR) FTSE/JSE top 40
-index''}, n.d.})). After subsetting the Top 40 stocks, these were
-stratified into their respective super-industries. The stocks included,
-as well as their relevant industries, can be found in Tables 3.3-3.5
-above. In order to estimate the covariance matrix, there could be no
-missing values in the asset returns data. Firstly, only those securities
-which had more than 70\% of observations were considered, this led to
-five assets dropping out: NRP, OMU, RNI, MCG, and PRX. The former three
-were in financials, while the latter two were classified as industrials.
-And secondly, returns were imputed according to their own probability
-distribution. After this, there were no more missing values in the asset
-returns data.
+\newpage
+
+After subsetting the Top 40 stocks, these were stratified into their
+respective super-industries. The stocks included, as well as their
+relevant industries, can be found in Tables 3.3-3.5 above. In order to
+estimate the covariance matrix, there could be no missing values in the
+asset returns data. Firstly, only those securities which had more than
+70\% of observations were considered, this led to five assets dropping
+out: NRP, OMU, RNI, MCG, and PRX. The former three were in financials,
+while the latter two were classified as industrials. And secondly,
+returns were imputed according to their own probability distribution.
+After this, there were no more missing values in the asset returns data.
 
 \hypertarget{data-visualization}{%
 \subsection{Data Visualization}\label{data-visualization}}
@@ -585,8 +600,11 @@ variables were taken as quarterly changes.
 \includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-11-1} \caption{Asset Returns by Industry \label{Fig9}}\label{fig:unnamed-chunk-11}
 \end{figure}
 
+\newpage
+
 \hypertarget{empirical-analysis}{%
-\section{Empirical Analysis}\label{empirical-analysis}}
+\section{\texorpdfstring{Empirical Analysis
+\label{Emp}}{Empirical Analysis }}\label{empirical-analysis}}
 
 The model used to estimate covariance matrix parameters comprises of 8
 macroeconomic factors, and 35 assets, disaggregated into their
@@ -634,10 +652,10 @@ by the sum of both the systematic and idiosyncratic risk components.
 \label{Est}}{Model Estimation }}\label{model-estimation}}
 
 This section presents the results from estimating the macroeconomic
-factor model, with \ref{Fig10}-\ref{Fig12} displaying the estimated
-\textbf{\(\alpha\)'s} and \textbf{\(\beta\)'s} for each industry, where
-\(\beta\) represents each assets sensitivity to the factors, and alpha
-the constant (excess) returns.
+factor model, with Figures \ref{Fig10}-\ref{Fig12} displaying the
+estimated \textbf{\(\alpha\)'s} and \textbf{\(\beta\)'s} for each
+industry, where \(\beta\) represents each assets sensitivity to the
+factors, and \(\alpha\) the constant (excess) returns.
 
 \begin{figure}[H]
 \includegraphics{Factor-Model_files/figure-latex/unnamed-chunk-12-1} \caption{Factor Analysis: Financials \label{Fig10}}\label{fig:unnamed-chunk-12}
@@ -655,8 +673,39 @@ the constant (excess) returns.
 \subsection{\texorpdfstring{Discussion of Results
 \label{Disc}}{Discussion of Results }}\label{discussion-of-results}}
 
+Figure \ref{Fig10} displays the output from the factor analysis for
+stocks in the financial sector. From this, one can see that these assets
+tend to have a greater (positive) sensitivity to the macroeconomic
+factors, whilst Sanlam (SLM) appears to generate the greatest excess
+return. Similarly, Figure \ref{Fig11} displays these results for the
+industrial sector, and Figure \ref{Fig12} for resources. In addition to
+this, Tables 7.3, 7.6, and 7.9 in the appendix present that estimated
+covariance matrices for each of the assets in each industry. From these,
+one can see that there are many assets which exhibit zero covariance
+relative to the others, implying that after controlling for the common
+macroeconomic factors, the variance between many of the asset returns is
+null.
+
 \hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
+\section{\texorpdfstring{Conclusion
+\label{Conc}}{Conclusion }}\label{conclusion}}
+
+This paper attempted to investigate the relationship between South
+African assets in different industries and a series of macroeconomic
+factors. To this end, 35 securities, from the financial, industrial, and
+resources sectors, were considered, along with eight macroeconomic
+factors. The sensitivities (loadings) of each asset to the macroeconomic
+factors were presented in Section \ref{Est}, as well as the covariance
+matrices for each industry. Whilst the aim of this study was to consider
+macroeconomic factors in estimating the covariance matrix, future
+investigations could use regression analysis to supplement the study.
+Such as \protect\hyperlink{ref-Flannery}{Flannery \& Protopapadakis}
+(\protect\hyperlink{ref-Flannery}{2002}), who use a GARCH to model the
+impact of macroeconomic conditions on asset returns, or as in
+\protect\hyperlink{ref-Maio2015}{Maio \& Philip}
+(\protect\hyperlink{ref-Maio2015}{2015}) who use dynamic factor analysis
+for identifying macroeconomic factors, and a VAR to decompose asset
+returns.
 
 \newpage
 
@@ -682,9 +731,18 @@ Available:
 Fama, E.F. \& French, K.R. 1992. {The Cross-Section of Expected Stock
 Returns}. \emph{Journal of Finance}. 47(2):427--465.
 
+\leavevmode\hypertarget{ref-Flannery}{}%
+Flannery, M. \& Protopapadakis, A.A. 2002. Macroeconomic factors do
+influence aggregate stock returns. \emph{Review of Financial Studies}.
+15(3):751--782.
+
 \leavevmode\hypertarget{ref-Kim1987}{}%
 Kim, M.K. \& Wu, C. 1987. {Macro-Economic Factors And Stock Returns}.
 \emph{Journal of Financial Research}. 10(2):87--98.
+
+\leavevmode\hypertarget{ref-Maio2015}{}%
+Maio, P. \& Philip, D. 2015. Macro variables and the components of stock
+returns. \emph{Journal of Empirical Finance}. 33(C):287--308.
 
 \leavevmode\hypertarget{ref-Sharpe1964}{}%
 Sharpe, W. 1964. Capital asset prices: A theory of market equilibrium
@@ -738,7 +796,7 @@ SLM & -0.0061 & -0.0567 & 0.0035 & 0.0030 & -0.0116 & -0.0363 & 0.0530 & 0.0059\
 \centering
 \begin{tabular}[t]{l|l}
 \hline
-  & x\\
+  & Alpha\\
 \hline
 ABG & -0.0073\\
 \hline
@@ -809,9 +867,9 @@ SLM & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 4e
 \hline
 APN & 0.0005 & -0.0506 & 0.0028 & 0.0265 & 0.0018 & -0.0411 & 0.0063 & 0.0220\\
 \hline
-BID & 0.0001 & 0.0802 & 0.0059 & 0.0928 & 0.0088 & 0.1476 & -0.0809 & 0.0003\\
+BID & -0.0196 & 0.0835 & 0.0024 & 0.0439 & 0.0308 & -0.0115 & 0.0377 & 0.0035\\
 \hline
-BTI & -0.0100 & 0.0125 & 0.0086 & 0.0274 & 0.0247 & 0.0569 & -0.0162 & -0.0127\\
+BTI & -0.0042 & -0.0056 & 0.0092 & 0.0213 & 0.0227 & 0.0053 & 0.0044 & -0.0068\\
 \hline
 BVT & -0.0087 & 0.0050 & 0.0150 & 0.0690 & 0.0030 & 0.0046 & 0.0404 & 0.0001\\
 \hline
@@ -819,7 +877,7 @@ CFR & 0.0029 & -0.0017 & -0.0094 & 0.0403 & 0.0212 & 0.0651 & -0.0622 & -0.0011\
 \hline
 CLS & -0.0029 & -0.0040 & 0.0004 & 0.0153 & 0.0116 & -0.0488 & 0.0009 & 0.0089\\
 \hline
-MNP & -0.0005 & 0.0083 & 0.0101 & 0.0532 & 0.0188 & -0.0453 & -0.0316 & 0.0002\\
+MNP & 0.0021 & -0.0136 & 0.0057 & 0.0566 & 0.0135 & -0.0451 & -0.0305 & 0.0002\\
 \hline
 MRP & 0.0069 & -0.0046 & 0.0045 & 0.0441 & -0.0104 & -0.2065 & 0.1566 & 0.0037\\
 \hline
@@ -831,7 +889,7 @@ SHP & 0.0026 & -0.0013 & 0.0016 & 0.0038 & 0.0013 & -0.1616 & 0.1257 & -0.0009\\
 \hline
 SPP & 0.0048 & -0.0038 & 0.0081 & -0.0091 & 0.0023 & -0.1399 & 0.1479 & 0.0016\\
 \hline
-VOD & 0.0024 & -0.0065 & 0.0059 & -0.0181 & 0.0055 & -0.0323 & 0.0666 & -0.0075\\
+VOD & 0.0005 & 0.0013 & 0.0089 & -0.0202 & 0.0087 & -0.0075 & 0.0346 & -0.0065\\
 \hline
 WHL & 0.0082 & 0.0223 & 0.0030 & 0.0183 & 0.0042 & -0.2556 & 0.1899 & 0.0032\\
 \hline
@@ -844,13 +902,13 @@ WHL & 0.0082 & 0.0223 & 0.0030 & 0.0183 & 0.0042 & -0.2556 & 0.1899 & 0.0032\\
 \centering
 \begin{tabular}[t]{l|l}
 \hline
-  & x\\
+  & Alpha\\
 \hline
 APN & -0.0154\\
 \hline
-BID & -0.0169\\
+BID & -0.0347\\
 \hline
-BTI & -0.0263\\
+BTI & -0.0334\\
 \hline
 BVT & 0.0087\\
 \hline
@@ -858,7 +916,7 @@ CFR & -0.0469\\
 \hline
 CLS & -0.0246\\
 \hline
-MNP & -0.0339\\
+MNP & -0.0266\\
 \hline
 MRP & 0.0128\\
 \hline
@@ -870,7 +928,7 @@ SHP & -0.0016\\
 \hline
 SPP & -0.0059\\
 \hline
-VOD & -0.0069\\
+VOD & -0.0118\\
 \hline
 WHL & -0.0160\\
 \hline
@@ -885,9 +943,9 @@ WHL & -0.0160\\
 \hline
   & APN & BID & BTI & BVT & CFR & CLS & MNP & MRP & MTN & NPN & SHP & SPP & VOD & WHL\\
 \hline
-APN & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+APN & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
-BID & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+BID & 0e+00 & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
 BTI & 0e+00 & 0e+00 & 2e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
@@ -897,7 +955,7 @@ CFR & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0
 \hline
 CLS & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
-MNP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+MNP & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 2e-04 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
 MRP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 4e-04 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
@@ -941,7 +999,7 @@ EXX & -0.0074 & 0.0331 & 0.0033 & 0.0174 & 0.0187 & 0.1998 & -0.1114 & -0.0073\\
 \hline
 GFI & 0.0197 & -0.0179 & -0.0084 & -0.0029 & -0.0194 & -0.3582 & 0.1927 & -0.0074\\
 \hline
-GLN & -0.0068 & 0.0015 & 0.0193 & 0.0039 & 0.0320 & -0.2825 & 0.1495 & 0.0145\\
+GLN & 0.0070 & 0.0090 & 0.0001 & 0.0111 & 0.0153 & -0.2665 & 0.2167 & -0.0108\\
 \hline
 IMP & -0.0134 & -0.0604 & -0.0120 & -0.0134 & -0.0073 & -0.1765 & 0.1362 & 0.0055\\
 \hline
@@ -949,7 +1007,7 @@ NPH & 0.0016 & -0.0527 & 0.0093 & -0.0315 & 0.0003 & -0.3881 & 0.2661 & 0.0167\\
 \hline
 SOL & -0.0109 & -0.0287 & 0.0319 & 0.0201 & 0.0004 & 0.0549 & -0.0442 & 0.0076\\
 \hline
-SSW & 0.0214 & -0.0425 & -0.0038 & -0.0478 & -0.0094 & -0.2192 & 0.0661 & -0.0014\\
+SSW & 0.0147 & -0.0109 & 0.0024 & -0.0231 & -0.0094 & -0.1683 & -0.0143 & 0.0020\\
 \hline
 \end{tabular}
 \end{table}
@@ -960,7 +1018,7 @@ SSW & 0.0214 & -0.0425 & -0.0038 & -0.0478 & -0.0094 & -0.2192 & 0.0661 & -0.001
 \centering
 \begin{tabular}[t]{l|l}
 \hline
-  & x\\
+  & Alpha\\
 \hline
 AGL & -0.0429\\
 \hline
@@ -974,7 +1032,7 @@ EXX & -0.0184\\
 \hline
 GFI & 0.0222\\
 \hline
-GLN & -0.0557\\
+GLN & -0.0174\\
 \hline
 IMP & 0.0317\\
 \hline
@@ -982,7 +1040,7 @@ NPH & -0.0072\\
 \hline
 SOL & 0.0095\\
 \hline
-SSW & 0.0000\\
+SSW & 0.0008\\
 \hline
 \end{tabular}
 \end{table}
@@ -995,27 +1053,27 @@ SSW & 0.0000\\
 \hline
   & AGL & AMS & ANG & BHP & EXX & GFI & GLN & IMP & NPH & SOL & SSW\\
 \hline
-AGL & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+AGL & 4e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
 AMS & 0e+00 & 6e-04 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 1e-04 & 0e+00\\
 \hline
-ANG & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+ANG & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0e+00 & 1e-04 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
-BHP & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
+BHP & 0e+00 & 0e+00 & 0e+00 & 3e-04 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
 EXX & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 5e-04 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
-GFI & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 6e-04 & 0.0000 & 0e+00 & 0e+00 & -1e-04 & 1e-04\\
+GFI & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 6e-04 & 0.0000 & 0e+00 & 0e+00 & -1e-04 & 0e+00\\
 \hline
-GLN & 1e-04 & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0.0015 & 0e+00 & 1e-04 & 1e-04 & 0e+00\\
+GLN & 0e+00 & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & 0.0015 & 0e+00 & 0e+00 & 0e+00 & 0e+00\\
 \hline
 IMP & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 6e-04 & 0e+00 & 0e+00 & 0e+00\\
 \hline
-NPH & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0001 & 0e+00 & 8e-04 & 1e-04 & 0e+00\\
+NPH & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 8e-04 & 1e-04 & 0e+00\\
 \hline
-SOL & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & -1e-04 & 0.0001 & 0e+00 & 1e-04 & 7e-04 & 0e+00\\
+SOL & 0e+00 & 1e-04 & 0e+00 & 0e+00 & 0e+00 & -1e-04 & 0.0000 & 0e+00 & 1e-04 & 7e-04 & 0e+00\\
 \hline
-SSW & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 1e-04 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 7e-04\\
+SSW & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0e+00 & 0.0000 & 0e+00 & 0e+00 & 0e+00 & 8e-04\\
 \hline
 \end{tabular}
 \end{table}

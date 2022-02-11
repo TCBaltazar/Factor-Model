@@ -92,7 +92,7 @@ output:
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
 abstract: |
-  This report compares the performance of two asset allocation strategies namely; Risk Parity and Mean Variance during periods of volatility in South Africa. Using South African financial data, the risk adjusted and information ratio of a unleverd Risk Parity Index porfolio and Tangency Index porfolio are compared. The research paper found that the Mean Variance Optimisation approach is an superior asset allocation strategy during periods of high volatility in South Africa.
+  This report aims to study the relationship between macroeconomic factors and South African asset returns. To this end, a macroeconomic factor model was fit for the top 40 assets listed on the JSE. By using a series of domestic, and global, macroeconomic factors, this study was able to determine the sensitivity of each of the assets to the macroeconomic factors. In addition to this, a covariance matrix of returns for the financial, industrial, and resource sectors was constructed using the macroeconomic factor model. 
 ---
 
 
@@ -215,9 +215,8 @@ Assets_Financials <- new_dat %>%
 
 # Introduction \label{Intro}
 
-Macroeconomic factor models use observable economic time series to explain the common variation in asset returns, with the unexplained, idiosyncratic, variance being asset-specific. 
 
-Overall investment risk is typically classified as being either systematic (market), affecting the broader market, or idiosyncratic risk, which is unique to individual assets. While the latter can, in effect, be diversified away, the former affects a large portion of assets. Factor models can be used to explain the common (systematic) variation in asset returns, with the remaining variance, not explained by the factors, being unique to each individual security. 
+Overall investment risk is typically classified as being either systematic (market), affecting the broader market, or idiosyncratic risk, which is unique to individual assets. While the latter can, in effect, be diversified away, the former affects a large portion of assets. Factor models can be used to explain the common (systematic) variation in asset returns, with the remaining variance, not explained by the factors, being unique to each individual security. Macroeconomic factor models use observable economic time series to explain the common variation in asset returns, with the remaining, unexplained, variance being asset-specific. This paper presents a series of eight macroeconomic factors to be used in studying the relationship between macroeconomic variables and the top 40 assets on the JSE. Factor loadings, describing each assets sensitivity to the macroeconomic factors, are presented, along with the estimated covariance matrix of asset returns for each super-industry, namely, the financial, industrial, and resource sectors. The rest of the paper is outlined as follows: Section \ref{Lit} presents a brief literature review, Section \ref{Explor} consists of an exploratory analysis of the variables used in the study. Section \ref{Emp} presents the results from the empirical analysis, and Section \ref{Conc} concludes. 
 
 
 
@@ -228,6 +227,8 @@ The use of modern, multivariate, factor models can be seen as an extension of th
 Factor models have gained in prominence since @Sharpe1964, and have been extended to include more than one factor. In particular, this class of models can generally be split into three types [@Connor]; macroeconomic, statistical, and fundamental factor models. Whilst statistical factor models use only the input (data) to determine the relevant factors for asset returns, macroeceonmic and fundamental factor models rely on the researcher to supplement the asset returns data with factors. One of the most prominent fundamental factor model was developed by @Fama1992, who use firm-specific variables including relevant firm financial ratios, firm-size, and market beta in order to explain the variation in asset returns. 
 
 In using macroeconomic factor models to study the behavior of asset returns, @Chen1986 propose a set of candidate economic variables as factors to explain systematic asset risk. They found that industrial production, changes in risk premium, some measures of inflation, and changes in the yield curve were all significant in explaining expected asset returns. In a similar vein, @Kim1987 find that an economic factor model, generally, performs better than a multivariate CAPM. The factors that they found to be significant were split into three categories: general, economy-wide, variables, the second category focused on the monetary side of the economy and included the interest rate and money supply. And the final factor comprised of labor market variables.  
+
+\newpage
 
 # Exploratory Analysis \label{Explor}
 
@@ -272,7 +273,7 @@ new_dat_0 %>% filter(Tickers %in% T40) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
-
+For this analysis, only variables in the Top 40 stocks in the JSE with the highest market capitalization were included. This was done to account for the fact that larger companies will be more exposed to global macroeconomic factors, relative to those with smaller market caps. The variables chosen as part of this "T40" are based on the FTSE Russell classification, as of the end of 2021 Q3 (see @FTSE).
 
 ```{r}
 new_dat_0 %>% filter(Tickers %in% T40) %>%
@@ -292,7 +293,9 @@ new_dat_0 %>% filter(Tickers %in% T40) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
-For this analysis, only variables in the Top 40 stocks in the JSE with the highest market capitalization were included. This was done to account for the fact that larger companies will be more exposed to global macroeconomic factors, relative to those with smaller market caps. The variables chosen as part of this "T40" are based on the FTSE Russell classification, as of the end of 2021 Q3 (see [@FTSE]). After subsetting the Top 40 stocks, these were stratified into their respective super-industries. The stocks included, as well as their relevant industries, can be found in Tables 3.3-3.5 above. In order to estimate the covariance matrix, there could be no missing values in the asset returns data. Firstly, only those securities which had more than 70% of observations were considered, this led to five assets dropping out: NRP, OMU, RNI, MCG, and PRX. The former three were in financials, while the latter two were classified as industrials. And secondly, returns were imputed according to their own probability distribution. After this, there were no more missing values in the asset returns data.
+\newpage
+
+ After subsetting the Top 40 stocks, these were stratified into their respective super-industries. The stocks included, as well as their relevant industries, can be found in Tables 3.3-3.5 above. In order to estimate the covariance matrix, there could be no missing values in the asset returns data. Firstly, only those securities which had more than 70% of observations were considered, this led to five assets dropping out: NRP, OMU, RNI, MCG, and PRX. The former three were in financials, while the latter two were classified as industrials. And secondly, returns were imputed according to their own probability distribution. After this, there were no more missing values in the asset returns data.
 
 ```{r Treatment of Missing Values, include=FALSE}
 
@@ -396,7 +399,7 @@ fmxdat::finplot(p.CPI, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.c
 ```
 
 
-```{r, fig.cap="Asset Returns by Industry \\label{Fig9}", fig.height=4.5, fig.width=7}
+```{r, fig.cap="Asset Returns by Industry \\label{Fig9}", fig.height=4, fig.width=7}
 p.Indus <- new_dat %>%
     filter(Tickers %in% T40) %>%
     mutate(date=as.Date(date)) %>%
@@ -406,7 +409,9 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 
 ```
 
-# Empirical Analysis
+\newpage
+
+# Empirical Analysis \label{Emp}
 
 The model used to estimate covariance matrix parameters comprises of 8 macroeconomic factors, and 35 assets, disaggregated into their respective super-industries. The macroeconomic factor model was then applied to the three different industries, as these factors may affect assets in different industries differently. These three industry classes comprise of 10, 14, and 11 observations for the financial, industrial, and resources sectors, respectively. This section presents the main contribution of this paper, and the rest of it is set up as follows. Section \ref{Meth} presents the methodology used when constructing the macroeconomic factor model, Section \ref{Est} presents the results from estimating the model, and finally, Section \ref{Disc} provides a discussion of the main results. 
 
@@ -446,6 +451,7 @@ FM_Fin <- covFactorModel::factorModel(Financials_xts, type="Macro", econ_fact = 
 covmat_Fin <- FM_Fin$Sigma  # Covariance Matrix
 FM_Res_Fin <- FM_Fin$residual
 
+Sigma_Fin <- cov(Financials_xts)
 ```
 
 ```{r, fig.cap="Factor Analysis: Financials \\label{Fig10}", fig.height=4.5, fig.width=7}
@@ -461,6 +467,8 @@ FM_Ind <- covFactorModel::factorModel(Industrial_xts, type="Macro", econ_fact = 
 
 covmat_Ind <- FM_Ind$Sigma  # Covariance Matrix
 FM_Res_Ind <- FM_Ind$residual
+Sigma_Ind <- cov(Industrial_xts)
+
 ```
 
 ```{r, fig.cap="Factor Analysis: Industrial \\label{Fig11}", fig.height=4.5, fig.width=7}
@@ -476,6 +484,8 @@ FM_Res <- covFactorModel::factorModel(Resources_xts, type="Macro", econ_fact = F
 
 covmat_Res <- FM_Res$Sigma  # Covariance Matrix
 FM_Res_Res <- FM_Res$residual
+Sigma_Res <- cov(Resources_xts)
+
 ```
 
 ```{r, fig.cap="Factor Analysis: Resources \\label{Fig12}", fig.height=4.5, fig.width=7}
@@ -486,12 +496,15 @@ barplot(t(FM_Res$beta), horiz = TRUE,
         main = "beta", col = "blue", cex.names = 0.75, las = 1)
 ```
 
-Figure \ref{Fig10} 
+
 
 ## Discussion of Results \label{Disc}
 
+Figure \ref{Fig10} displays the output from the factor analysis for stocks in the financial sector. From this, one can see that these assets tend to have a greater (positive) sensitivity to the macroeconomic factors, whilst Sanlam (SLM) appears to generate the greatest excess return. Similarly, Figure \ref{Fig11} displays these results for the industrial sector, and Figure \ref{Fig12} for resources. In addition to this, Tables 7.3, 7.6, and 7.9 in the appendix present that estimated covariance matrices for each of the assets in each industry. From these, one can see that there are many assets which exhibit zero covariance relative to the others, implying that after controlling for the common macroeconomic factors, the variance between many of the asset returns is null. 
 
-# Conclusion
+# Conclusion \label{Conc}
+
+This paper attempted to investigate the relationship between South African assets in different industries and a series of macroeconomic factors. To this end, 35 securities, from the financial, industrial, and resources sectors, were considered, along with eight macroeconomic factors. The sensitivities (loadings) of each asset to the macroeconomic factors were presented in Section \ref{Est}, as well as the covariance matrices for each industry. Whilst the aim of this study was to consider macroeconomic factors in estimating the covariance matrix, future investigations could use regression analysis to supplement the study. Such as @Flannery, who use a GARCH to model the impact of macroeconomic conditions on asset returns, or as in @Maio2015 who use dynamic factor analysis for identifying macroeconomic factors, and a VAR to decompose asset returns.
 
 \newpage
 
@@ -510,7 +523,7 @@ FM_Fin$beta %>% kable(caption="Factor Beta's: Financial", align="l", digits = 4)
 ```
 
 ```{r Alpha_F}
-FM_Fin$alpha %>% kable(caption="Factor Alpha's: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+FM_Fin$alpha %>% kable(caption="Factor Alpha's: Financial", align="l", digits = 4, col.names = "Alpha") %>% kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r Covariance Matrix_F}
@@ -526,7 +539,7 @@ FM_Ind$beta  %>% kable(caption="Factor Beta's: Industrial", align="l", digits = 
 ```
 
 ```{r Alpha_I}
-FM_Ind$alpha %>% kable(caption="Factor Alpha's: Industrial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+FM_Ind$alpha %>% kable(caption="Factor Alpha's: Industrial", align="l", digits = 4, col.names = "Alpha") %>% kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r Covariance Matrix_I}
@@ -542,7 +555,7 @@ FM_Res$beta %>% kable(caption="Factor Beta's: Resources", align="l", digits = 4)
 ```
 
 ```{r, Alpha_R}
-FM_Res$alpha %>% kable(caption="Factor Alpha's: Resources", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+FM_Res$alpha %>% kable(caption="Factor Alpha's: Resources", align="l", digits = 4, col.names = "Alpha") %>% kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r Covariance Matrix_R}

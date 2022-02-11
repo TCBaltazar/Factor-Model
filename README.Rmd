@@ -162,51 +162,17 @@ Assets_Financials <- new_dat %>%
 
 # Project Intro: Covariance Matrix Estimation via Macro Factor Modeling
 
-- using factor models to estimate covariance matrix parameters
-- assume stock returns are driven by a limited set of factors
-- curse of dimensionality, need to reduce the number of parameters. Can use factor model
+Overall investment risk is typically classified as being either systematic (market), affecting the broader market, or idiosyncratic risk, which is unique to individual assets. While the latter can, in effect, be diversified away, the former affects a large portion of assets. Factor models can be used to explain the common (systematic) variation in asset returns, with the remaining variance, not explained by the factors, being unique to each individual security. Macroeconomic factor models use observable economic time series to explain the common variation in asset returns, with the remaining, unexplained, variance being asset-specific. This paper presents a series of eight macroeconomic factors to be used in studying the relationship between macroeconomic variables and the top 40 assets on the JSE. Factor loadings, describing each assets sensitivity to the macroeconomic factors, are presented, along with the estimated covariance matrix of asset returns for each super-industry, namely, the financial, industrial, and resource sectors. The rest of the paper is outlined as follows: Section \ref{Lit} presents a brief literature review, Section \ref{Explor} consists of an exploratory analysis of the variables used in the study. Section \ref{Emp} presents the results from the empirical analysis, and Section \ref{Conc} concludes. 
 
-Factor model decomposition for asset returns
+# Literature Review \label{Lit}
 
-\begin{align}
-$R_{it}=\alpha_{i} + \beta_{i1}F_{1t} + ... + \beta_{ik}F_{kt} +...+\beta_{iK}F_{Kt} +\epsilon_{it}$
-\end{align}
+The use of modern, multivariate, factor models can be seen as an extension of the seminal work of @Sharpe1964's Capital Asset Pricing Model (CAPM), which used a single factor- the market portfolio- to estimate asset returns. In most cases, however, there are potentially, infinitely, many factors which can influence asset returns. Modern factor models allow one to address the curse of dimensionality by assuming stock returns are driven by a, more, limited set of factors. Factor models thus decompose asset returns into two components: one driven by the common variation between stocks, due to the factors, and another idiosyncratic component, unique to each asset. Using a factor model can therefore be a useful way of reducing the number of possible parameters which can, possibly, drive asset returns; assuming that what is not explained by the, common, factors is idiosyncratic risk unique to each asset.
 
-With $\beta_{ik}$ representing the sensitivity of asset $i$ to factor $k$, $(k=1,...,K)$.
+Factor models have gained in prominence since @Sharpe1964, and have been extended to include more than one factor. In particular, this class of models can generally be split into three types [@Connor]; macroeconomic, statistical, and fundamental factor models. Whilst statistical factor models use only the input (data) to determine the relevant factors for asset returns, macroeceonmic and fundamental factor models rely on the researcher to supplement the asset returns data with factors. One of the most prominent fundamental factor model was developed by @Fama1992, who use firm-specific variables including relevant firm financial ratios, firm-size, and market beta in order to explain the variation in asset returns. 
 
-- trying to explain asset returns in terms of asset exposure wrt underlying risk factors. 
-- have n=40 stocks, and k=8 macroeconomic factors
-- can use factor model to estimate the variance and covariance of stock returns
-- impose that residuals of two assets are uncorrelated
-- if factor model well specified; factor model explains common variation between stock returns, what is left is idiosyncratic component
+In using macroeconomic factor models to study the behavior of asset returns, @Chen1986 propose a set of candidate economic variables as factors to explain systematic asset risk. They found that industrial production, changes in risk premium, some measures of inflation, and changes in the yield curve were all significant in explaining expected asset returns. In a similar vein, @Kim1987 find that an economic factor model, generally, performs better than a multivariate CAPM. The factors that they found to be significant were split into three categories: general, economy-wide, variables, the second category focused on the monetary side of the economy and included the interest rate and money supply. And the final factor comprised of labor market variables. 
 
-- Macro factor models are a type of explicit factor model vs
-- implicit factor model driven by statistical factors from data. Sometimes prefered as it allows data to 'speak', telling us what the relevant factors are
--> using a factor model useful way of reducing number of possible parameters. Assuming what is not explained by factor model is idiosyncratic risk, unique to each asset.
-
-
-Using factor analysis to explain the variation in stock returns for the T40 index using macroeconomic variables.
-- Factor models decompose asset returns into low dimension factors and idiosynchratic residual noise:
--- In macro factor models, factors are observable economic time series
-
-
-
-
-Macroeconomic factor models use observable economic time series as the factors. 
-
-Factor models decompose the asset returns into an exposure term to some factors and a residual idiosyncratic component. The resulting covariance matrix contains a low-rank term corresponding to the factors and another full-rank term corresponding to the residual component.
-
-
-These factors can include inflation, economic growth, interest rates, or exchange rates, among others. Macroeconomic factor models assume that the random return of each security responds linearly to the macroeconomic shocks.
-use observable economic
-time series as measures of the pervasive factors in
-security returns
-
- As in all
-factor models, each security also has an asset specific return unrelated to the factors security's linear sensitivities to the factors are called the factor betas of the security.
-
-
-# Exploratory Analysis
+# Exploratory Analysis \label{Explor}
 
 ## Data and Descriptive Statistics
 
@@ -377,7 +343,7 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 ```
 
 
-# Empirical Analysis
+# Empirical Analysis \label{Emp}
 
 The model used to estimate covariance matrix parameters comprises of 8 macroeconomic factors, and 35 assets, disaggregated into their respective super-industries. The macroeconomic factor model was then applied to the three different industries, as these factors may affect assets in different industries differently. These three industry classes comprise of 10, 14, and 11 observations for the financial, industrial, and resources sectors, respectively. This section presents the main contribution of this paper, and the rest of it is set up as follows. Section \ref{Meth} presents the methodology used when constructing the macroeconomic factor model, Section \ref{Est} presents the results from estimating the model, and finally, Section \ref{Disc} provides a discussion of the main results. 
 
@@ -459,8 +425,11 @@ barplot(t(FM_Res$beta), horiz = TRUE,
 
 ## Discussion of Results \label{Disc}
 
+Figure \ref{Fig10} displays the output from the factor analysis for stocks in the financial sector. From this, one can see that these assets tend to have a greater (positive) sensitivity to the macroeconomic factors, whilst Sanlam (SLM) appears to generate the greatest excess return. Similarly, Figure \ref{Fig11} displays these results for the industrial sector, and Figure \ref{Fig12} for resources. In addition to this, Tables 7.3, 7.6, and 7.9 in the appendix present that estimated covariance matrices for each of the assets in each industry. From these, one can see that there are many assets which exhibit zero covariance relative to the others, implying that after controlling for the common macroeconomic factors, the variance between many of the asset returns is null. 
 
-# Conclusion
+# Conclusion \label{Conc}
+
+This paper attempted to investigate the relationship between South African assets in different industries and a series of macroeconomic factors. To this end, 35 securities, from the financial, industrial, and resources sectors, were considered, along with eight macroeconomic factors. The sensitivities (loadings) of each asset to the macroeconomic factors were presented in Section \ref{Est}, as well as the covariance matrices for each industry. Whilst the aim of this study was to consider macroeconomic factors in estimating the covariance matrix, future investigations could use regression analysis to supplement the study. Such as @Flannery, who use a GARCH to model the impact of macroeconomic conditions on asset returns, or as in @Maio2015 who use dynamic factor analysis for identifying macroeconomic factors, and a VAR to decompose asset returns.
 
 \newpage
 

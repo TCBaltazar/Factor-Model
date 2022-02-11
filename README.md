@@ -21,9 +21,14 @@ Certain sections included here, such as those discussing the process of
 uploading and tidying the data, as well as the treatment of missing
 values are excluded from the final PDF output, but are included here for
 illustration purposes. In addition, much of the output found in this
-document, and none of the code, are available in the final PDF.
+document, and none of the code, are available in the final PDF. The
+first section presents the code used in uploading and tidying the data
+for both the macroeconomic factors and the asset returns. The second
+consists of the introduction, as in the final PDF document, this is
+followed by a brief exploratory analysis, and finally a presentation of
+the empirical analysis. The final section concludes the document.
 
-## Uploading and Tidying Data
+# Uploading and Tidying Data
 
 ``` r
 dat_Fac <- read.csv("./data/Factors_New.csv")
@@ -34,8 +39,7 @@ dat_Factors <- dat_Fac %>%
     mutate_at("date", str_replace, "X", "") %>%
     arrange(date) %>% mutate(date=as.yearqtr(date, format = "%Y Q%q")) %>%
     mutate(Inflation=((CPI-lag(CPI))/lag(CPI))*100) %>% 
-    select(-c("CPI", "GDP.Deflator")) #%>%   # previously had experimented with calculating inflation using GDP deflator, decided CPI inflation was better choice.
-    #filter(date>"2004 Q4")
+    select(-c("CPI", "GDP.Deflator"))  # previously had experimented with calculating inflation using GDP deflator, decided CPI inflation was better choice.
 
 ### Daily Factors
 
@@ -67,8 +71,7 @@ dat_Factors_K <- left_join(US_10Yr, comms, by="date") %>%
   filter(date==max(date)) %>%
   ungroup() %>%
   select(Date, US_10Yr, Bcom_Index, VIX, USDZAR) %>%
-  rename(., date=Date) #%>%
-  #filter(date>"2004 Q4") 
+  rename(., date=Date) 
 
 ### Consolidated factors dataset
 Factors <- left_join(dat_Factors_K, dat_Factors, by="date")  %>%
@@ -189,73 +192,68 @@ Assets_Financials <- new_dat %>%
 
 # Project Intro: Covariance Matrix Estimation via Macro Factor Modeling
 
--   using factor models to estimat covariance matrix parameters
--   assume stock returns are driven by a limited set of factors
--   curse of dimensionality, need to reduce the number of parameters.
-    Can use factor model
+Overall investment risk is typically classified as being either
+systematic (market), affecting the broader market, or idiosyncratic
+risk, which is unique to individual assets. While the latter can, in
+effect, be diversified away, the former affects a large portion of
+assets. Factor models can be used to explain the common (systematic)
+variation in asset returns, with the remaining variance, not explained
+by the factors, being unique to each individual security. Macroeconomic
+factor models use observable economic time series to explain the common
+variation in asset returns, with the remaining, unexplained, variance
+being asset-specific. This paper presents a series of eight
+macroeconomic factors to be used in studying the relationship between
+macroeconomic variables and the top 40 assets on the JSE. Factor
+loadings, describing each assets sensitivity to the macroeconomic
+factors, are presented, along with the estimated covariance matrix of
+asset returns for each super-industry, namely, the financial,
+industrial, and resource sectors. The rest of the paper is outlined as
+follows: Section presents a brief literature review, Section consists of
+an exploratory analysis of the variables used in the study. Section
+presents the results from the empirical analysis, and Section concludes.
 
-Factor model decomposition for asset returns
+# Literature Review 
 
-With *β*<sub>*i**k*</sub> representing the sensitivity of asset *i* to
-factor *k*, (*k* = 1, ..., *K*).
+The use of modern, multivariate, factor models can be seen as an
+extension of the seminal work of @Sharpe1964’s Capital Asset Pricing
+Model (CAPM), which used a single factor- the market portfolio- to
+estimate asset returns. In most cases, however, there are potentially,
+infinitely, many factors which can influence asset returns. Modern
+factor models allow one to address the curse of dimensionality by
+assuming stock returns are driven by a, more, limited set of factors.
+Factor models thus decompose asset returns into two components: one
+driven by the common variation between stocks, due to the factors, and
+another idiosyncratic component, unique to each asset. Using a factor
+model can therefore be a useful way of reducing the number of possible
+parameters which can, possibly, drive asset returns; assuming that what
+is not explained by the, common, factors is idiosyncratic risk unique to
+each asset.
 
--   trying to explain asset returns in terms of asset exposure wrt
-    underlying risk factors.
--   have n=40 stocks, and k=8 macroeconomic factors
--   can use factor model to estimate the variance and covariance of
-    stock returns
--   impose that residuals of two assets are uncorrelated
--   if factor model well specified; factor model explains common
-    variation between stock returns, what is left is idiosyncratic
-    component
--   Macro factor models are a type of explicit factor model vs
--   implicit factor model driven by statistical factors from data.
-    Sometimes prefered as it allows data to ‘speak’, telling us what the
-    relevant factors are -\> using a factor model useful way of reducing
-    number of possible parameters. Assuming what is not explained by
-    factor model is idiosyncratic risk, unique to each asset.
+Factor models have gained in prominence since @Sharpe1964, and have been
+extended to include more than one factor. In particular, this class of
+models can generally be split into three types \[@Connor\];
+macroeconomic, statistical, and fundamental factor models. Whilst
+statistical factor models use only the input (data) to determine the
+relevant factors for asset returns, macroeceonmic and fundamental factor
+models rely on the researcher to supplement the asset returns data with
+factors. One of the most prominent fundamental factor model was
+developed by @Fama1992, who use firm-specific variables including
+relevant firm financial ratios, firm-size, and market beta in order to
+explain the variation in asset returns.
 
-Using factor analysis to explain the variation in stock returns for the
-T40 index using macroeconomic variables. - Factor models decompose asset
-returns into low dimension factors and idiosynchratic residual noise: –
-In macro factor models, factors are observable economic time series
+In using macroeconomic factor models to study the behavior of asset
+returns, @Chen1986 propose a set of candidate economic variables as
+factors to explain systematic asset risk. They found that industrial
+production, changes in risk premium, some measures of inflation, and
+changes in the yield curve were all significant in explaining expected
+asset returns. In a similar vein, @Kim1987 find that an economic factor
+model, generally, performs better than a multivariate CAPM. The factors
+that they found to be significant were split into three categories:
+general, economy-wide, variables, the second category focused on the
+monetary side of the economy and included the interest rate and money
+supply. And the final factor comprised of labor market variables.
 
-For this project I use the T40 returns dataset for stock returns: only
-accounting for large cap stocks, which will be more affected by
-movements in macroeconomic variables. - Variables had many returns
-missing, discarded ones which had more than 60% of observations missing.
-- For the rest, a function was called to draw values from the variables
-own probability distribution
-
-The Palomar covFactor package was used to estimate alpha and beta
-coefficients for the stock returns.
-
-The macroeconomic factors used are still based on the data used for the
-practical, namely the: - US and SA 10_Yr bond spreads - VIX volatility
-index - Bloomberg commodities index
-
-Macroeconomic factor models use observable economic time series as the
-factors.
-
-Factor models decompose the asset returns into an exposure term to some
-factors and a residual idiosyncratic component. The resulting covariance
-matrix contains a low-rank term corresponding to the factors and another
-full-rank term corresponding to the residual component.
-
-These factors can include inflation, economic growth, interest rates, or
-exchange rates, among others. Macroeconomic factor models assume that
-the random return of each security responds linearly to the
-macroeconomic shocks. use observable economic time series as measures of
-the pervasive factors in security returns
-
-As in all factor models, each security also has an asset specific return
-unrelated to the factors security’s linear sensitivities to the factors
-are called the factor betas of the security.
-
-In a macroeconomic factor model, the factors are defined by economic
-theory and observed externally to the security returns data
-
-# Exploratory Analysis
+# Exploratory Analysis 
 
 ## Data and Descriptive Statistics
 
@@ -413,13 +411,12 @@ table below.
 ``` r
 # Creating Table with descriptive statistics for Macro Factors
 data.frame(pastecs::stat.desc(Factors[, -1], basic=F)) %>% 
-  dplyr::mutate_at(c("Real.GDP", "Real.INV"), funs(as.character(signif(., 3)))) %>%
-  kable(caption="Summary Statistics: Macro Factors", digits=3, align="l", longtable=TRUE) #%>%  kable_styling(latex_options = "HOLD_position")
+  kable(caption="Summary Statistics: Macroeconomic Factors", digits=4, align="l", longtable=TRUE)#%>%  kable_styling(latex_options = "HOLD_position")
 ```
 
 <table>
 <caption>
-Summary Statistics: Macro Factors
+Summary Statistics: Macroeconomic Factors
 </caption>
 <thead>
 <tr>
@@ -457,28 +454,28 @@ Inflation
 median
 </td>
 <td style="text-align:left;">
-1.250
+1.2499
 </td>
 <td style="text-align:left;">
-0.003
+0.0034
 </td>
 <td style="text-align:left;">
--0.027
+-0.0274
 </td>
 <td style="text-align:left;">
-0.003
+0.0034
 </td>
 <td style="text-align:left;">
-2.019
+2.0189
 </td>
 <td style="text-align:left;">
-0.00873
+0.0087
 </td>
 <td style="text-align:left;">
 0.0109
 </td>
 <td style="text-align:left;">
-0.805
+0.8047
 </td>
 </tr>
 <tr>
@@ -486,28 +483,28 @@ median
 mean
 </td>
 <td style="text-align:left;">
-1.274
+1.2736
 </td>
 <td style="text-align:left;">
--0.005
+-0.0054
 </td>
 <td style="text-align:left;">
-0.008
+0.0078
 </td>
 <td style="text-align:left;">
-0.013
+0.0131
 </td>
 <td style="text-align:left;">
-1.988
+1.9878
 </td>
 <td style="text-align:left;">
-0.00441
+0.0044
 </td>
 <td style="text-align:left;">
-0.00326
+0.0033
 </td>
 <td style="text-align:left;">
-0.786
+0.7862
 </td>
 </tr>
 <tr>
@@ -515,28 +512,28 @@ mean
 SE.mean
 </td>
 <td style="text-align:left;">
-0.038
+0.0383
 </td>
 <td style="text-align:left;">
-0.012
+0.0121
 </td>
 <td style="text-align:left;">
-0.040
+0.0399
 </td>
 <td style="text-align:left;">
-0.008
+0.0084
 </td>
 <td style="text-align:left;">
-0.029
+0.0293
 </td>
 <td style="text-align:left;">
-0.00368
+0.0037
 </td>
 <td style="text-align:left;">
-0.00532
+0.0053
 </td>
 <td style="text-align:left;">
-0.038
+0.0378
 </td>
 </tr>
 <tr>
@@ -544,28 +541,28 @@ SE.mean
 CI.mean.0.95
 </td>
 <td style="text-align:left;">
-0.077
+0.0765
 </td>
 <td style="text-align:left;">
-0.024
+0.0243
 </td>
 <td style="text-align:left;">
-0.080
+0.0796
 </td>
 <td style="text-align:left;">
-0.017
+0.0168
 </td>
 <td style="text-align:left;">
-0.058
+0.0585
 </td>
 <td style="text-align:left;">
-0.00735
+0.0073
 </td>
 <td style="text-align:left;">
 0.0106
 </td>
 <td style="text-align:left;">
-0.076
+0.0755
 </td>
 </tr>
 <tr>
@@ -573,28 +570,28 @@ CI.mean.0.95
 var
 </td>
 <td style="text-align:left;">
-0.098
+0.0984
 </td>
 <td style="text-align:left;">
-0.010
+0.0099
 </td>
 <td style="text-align:left;">
-0.107
+0.1066
 </td>
 <td style="text-align:left;">
-0.005
+0.0048
 </td>
 <td style="text-align:left;">
-0.058
+0.0575
 </td>
 <td style="text-align:left;">
-0.000907
+0.0009
 </td>
 <td style="text-align:left;">
 0.0019
 </td>
 <td style="text-align:left;">
-0.096
+0.0959
 </td>
 </tr>
 <tr>
@@ -602,19 +599,19 @@ var
 std.dev
 </td>
 <td style="text-align:left;">
-0.314
+0.3137
 </td>
 <td style="text-align:left;">
-0.099
+0.0994
 </td>
 <td style="text-align:left;">
-0.326
+0.3264
 </td>
 <td style="text-align:left;">
-0.069
+0.0689
 </td>
 <td style="text-align:left;">
-0.240
+0.2398
 </td>
 <td style="text-align:left;">
 0.0301
@@ -623,7 +620,7 @@ std.dev
 0.0436
 </td>
 <td style="text-align:left;">
-0.310
+0.3097
 </td>
 </tr>
 <tr>
@@ -631,28 +628,28 @@ std.dev
 coef.var
 </td>
 <td style="text-align:left;">
-0.246
+0.2463
 </td>
 <td style="text-align:left;">
--18.243
+-18.2426
 </td>
 <td style="text-align:left;">
-41.716
+41.7157
 </td>
 <td style="text-align:left;">
-5.248
+5.2485
 </td>
 <td style="text-align:left;">
-0.121
+0.1206
 </td>
 <td style="text-align:left;">
-6.83
+6.8272
 </td>
 <td style="text-align:left;">
-13.4
+13.3623
 </td>
 <td style="text-align:left;">
-0.394
+0.3939
 </td>
 </tr>
 </tbody>
@@ -1514,7 +1511,7 @@ fmxdat::finplot(p.US, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.co
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" alt="US Long-Term Bond Yields"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-1-1.png" alt="US Long-Term Bond Yields \label{Fig1}"  />
 <p class="caption">
 US Long-Term Bond Yields
 </p>
@@ -1529,7 +1526,7 @@ fmxdat::finplot(p.USDZAR, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", 
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="USDZAR Spot Price"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-2-1.png" alt="USDZAR Spot Price \label{Fig2}"  />
 <p class="caption">
 USDZAR Spot Price
 </p>
@@ -1544,7 +1541,7 @@ fmxdat::finplot(p.VIX, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.c
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-3-1.png" alt="CBOE VIX Volatility Index"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-3-1.png" alt="CBOE VIX Volatility Index \label{Fig3}"  />
 <p class="caption">
 CBOE VIX Volatility Index
 </p>
@@ -1559,7 +1556,7 @@ fmxdat::finplot(p.Bcom_Index, x.vert = T, x.date.type = "%Y", x.date.dist="2 yea
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-4-1.png" alt="Bloomberg Commodity Price Index"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-4-1.png" alt="Bloomberg Commodity Price Index \label{Fig4}"  />
 <p class="caption">
 Bloomberg Commodity Price Index
 </p>
@@ -1574,7 +1571,7 @@ fmxdat::finplot(p.MM.Rate, x.vert = T, x.date.type = "%Y", x.date.dist="2 year",
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-5-1.png" alt="South Africa Money Market Rate"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-5-1.png" alt="South Africa Money Market Rate \label{Fig5}"  />
 <p class="caption">
 South Africa Money Market Rate
 </p>
@@ -1589,7 +1586,7 @@ fmxdat::finplot(p.Real.GDP, x.vert = T, x.date.type = "%Y", x.date.dist="2 year"
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-6-1.png" alt="South Africa Real GDP"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-6-1.png" alt="South Africa Real GDP \label{Fig6}"  />
 <p class="caption">
 South Africa Real GDP
 </p>
@@ -1604,7 +1601,7 @@ fmxdat::finplot(p.Real.Inv, x.vert = T, x.date.type = "%Y", x.date.dist="2 year"
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-7-1.png" alt="South Africa Real Gross Fixed Capital Formation"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-7-1.png" alt="South Africa Real Gross Fixed Capital Formation \label{Fig7}"  />
 <p class="caption">
 South Africa Real Gross Fixed Capital Formation
 </p>
@@ -1619,7 +1616,7 @@ fmxdat::finplot(p.CPI, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y.c
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" alt="South Africa Consumer Price Inflation"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" alt="South Africa Consumer Price Inflation \label{Fig8}"  />
 <p class="caption">
 South Africa Consumer Price Inflation
 </p>
@@ -1637,20 +1634,52 @@ fmxdat::finplot(p.Indus, x.vert = T, x.date.type = "%Y", x.date.dist="2 year", y
 
 <div class="figure" style="text-align: left">
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" alt="Asset Returns by Industry"  />
+<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" alt="Asset Returns by Industry \label{Fig9}"  />
 <p class="caption">
 Asset Returns by Industry
 </p>
 
 </div>
 
-# Empirical Analysis
+# Empirical Analysis 
 
-## Methodology
+The model used to estimate covariance matrix parameters comprises of 8
+macroeconomic factors, and 35 assets, disaggregated into their
+respective super-industries. The macroeconomic factor model was then
+applied to the three different industries, as these factors may affect
+assets in different industries differently. These three industry classes
+comprise of 10, 14, and 11 observations for the financial, industrial,
+and resources sectors, respectively. This section presents the main
+contribution of this paper, and the rest of it is set up as follows.
+Section presents the methodology used when constructing the
+macroeconomic factor model, Section presents the results from estimating
+the model, and finally, Section provides a discussion of the main
+results.
 
-8 Macro Factors and 40 Assets
+## Methodology 
 
-## Model Estimation
+The equation of the model is given by:
+
+With ***F*** representing the 8 factors included in estimation,
+*β*<sub>*i**k*</sub> representing the sensitivity of asset *i* to factor
+*k*, (*k* = 1, ..., *K*), for industry *j* = (*F*, *I*, *R*). Factor
+models rely on three main assumptions. Firstly, individual factor
+realizations have zero expected value: 𝔼(*f*<sub>*k*</sub>) = 0.
+Secondly, asset-specific errors are uncorrelated with each of the
+factors: *c**o**v*(*f*<sub>*k**t*</sub>, *ϵ*<sub>*i**t*</sub>) = 0 ∀
+*k*, *i*, & *t*. And, finally, that error terms are serially
+uncorrelated: *c**o**v*(*ϵ*<sub>*i**t*</sub>, *ϵ**d**s*) = 0 ∀
+*i* ≠ *d*, and *t* ≠ *s*. From this, one then essentially has that:
+
+With the above implying that the variance of individual assets is given
+by the sum of both the systematic and idiosyncratic risk components.
+
+## Model Estimation 
+
+This section presents the results from estimating the macroeconomic
+factor model, with - displaying the estimated ***α*’s** and ***β*’s**
+for each industry, where *β* represents each assets sensitivity to the
+factors, and alpha the constant (excess) returns.
 
 ``` r
 Factors_xts <- Factors %>% 
@@ -1676,7 +1705,14 @@ barplot(t(FM_Fin$beta), horiz = TRUE,
         main = "beta", col = "blue", cex.names = 0.75, las = 1)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display: block; margin: auto auto auto 0;" />
+<div class="figure" style="text-align: left">
+
+<img src="README_files/figure-markdown_github/unnamed-chunk-10-1.png" alt="Factor Analysis: Financials \label{Fig10}"  />
+<p class="caption">
+Factor Analysis: Financials
+</p>
+
+</div>
 
 ``` r
 FM_Ind <- covFactorModel::factorModel(Industrial_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
@@ -1693,7 +1729,14 @@ barplot(t(FM_Ind$beta), horiz = TRUE,
         main = "beta", col = "blue", cex.names = 0.75, las = 1)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-11-1.png" style="display: block; margin: auto auto auto 0;" />
+<div class="figure" style="text-align: left">
+
+<img src="README_files/figure-markdown_github/unnamed-chunk-11-1.png" alt="Factor Analysis: Industrial \label{Fig11}"  />
+<p class="caption">
+Factor Analysis: Industrial
+</p>
+
+</div>
 
 ``` r
 FM_Res <- covFactorModel::factorModel(Resources_xts, type="Macro", econ_fact = Factors_xts, rtn_Sigma = TRUE)
@@ -1710,10 +1753,3122 @@ barplot(t(FM_Res$beta), horiz = TRUE,
         main = "beta", col = "blue", cex.names = 0.75, las = 1)
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display: block; margin: auto auto auto 0;" />
+<div class="figure" style="text-align: left">
 
-# Conclusion
+<img src="README_files/figure-markdown_github/unnamed-chunk-12-1.png" alt="Factor Analysis: Resources \label{Fig12}"  />
+<p class="caption">
+Factor Analysis: Resources
+</p>
+
+</div>
+
+## Discussion of Results 
+
+Figure displays the output from the factor analysis for stocks in the
+financial sector. From this, one can see that these assets tend to have
+a greater (positive) sensitivity to the macroeconomic factors, whilst
+Sanlam (SLM) appears to generate the greatest excess return. Similarly,
+Figure displays these results for the industrial sector, and Figure for
+resources. In addition to this, Tables 7.3, 7.6, and 7.9 in the appendix
+present that estimated covariance matrices for each of the assets in
+each industry. From these, one can see that there are many assets which
+exhibit zero covariance relative to the others, implying that after
+controlling for the common macroeconomic factors, the variance between
+many of the asset returns is null.
+
+# Conclusion 
+
+This paper attempted to investigate the relationship between South
+African assets in different industries and a series of macroeconomic
+factors. To this end, 35 securities, from the financial, industrial, and
+resources sectors, were considered, along with eight macroeconomic
+factors. The sensitivities (loadings) of each asset to the macroeconomic
+factors were presented in Section , as well as the covariance matrices
+for each industry. Whilst the aim of this study was to consider
+macroeconomic factors in estimating the covariance matrix, future
+investigations could use regression analysis to supplement the study.
+Such as @Flannery, who use a GARCH to model the impact of macroeconomic
+conditions on asset returns, or as in @Maio2015 who use dynamic factor
+analysis for identifying macroeconomic factors, and a VAR to decompose
+asset returns.
 
 # References
 
-# Appendices
+<div id="refs">
+
+</div>
+
+# Appendix: Supplementary Tables
+
+## Financial
+
+``` r
+FM_Fin$beta %>% kable(caption="Factor Beta's: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Beta’s: Financial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+US_10Yr
+</th>
+<th style="text-align:left;">
+Bcom_Index
+</th>
+<th style="text-align:left;">
+VIX
+</th>
+<th style="text-align:left;">
+USDZAR
+</th>
+<th style="text-align:left;">
+MM.Rate
+</th>
+<th style="text-align:left;">
+Real.GDP
+</th>
+<th style="text-align:left;">
+Real.INV
+</th>
+<th style="text-align:left;">
+Inflation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ABG
+</td>
+<td style="text-align:left;">
+-0.0133
+</td>
+<td style="text-align:left;">
+-0.0056
+</td>
+<td style="text-align:left;">
+0.0306
+</td>
+<td style="text-align:left;">
+0.0976
+</td>
+<td style="text-align:left;">
+0.0133
+</td>
+<td style="text-align:left;">
+0.1730
+</td>
+<td style="text-align:left;">
+-0.0981
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CPI
+</td>
+<td style="text-align:left;">
+-0.0113
+</td>
+<td style="text-align:left;">
+0.0554
+</td>
+<td style="text-align:left;">
+0.0137
+</td>
+<td style="text-align:left;">
+0.0435
+</td>
+<td style="text-align:left;">
+0.0275
+</td>
+<td style="text-align:left;">
+0.3649
+</td>
+<td style="text-align:left;">
+-0.1153
+</td>
+<td style="text-align:left;">
+-0.0192
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DSY
+</td>
+<td style="text-align:left;">
+-0.0011
+</td>
+<td style="text-align:left;">
+0.0344
+</td>
+<td style="text-align:left;">
+0.0168
+</td>
+<td style="text-align:left;">
+0.1036
+</td>
+<td style="text-align:left;">
+0.0003
+</td>
+<td style="text-align:left;">
+0.1265
+</td>
+<td style="text-align:left;">
+-0.0930
+</td>
+<td style="text-align:left;">
+-0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FSR
+</td>
+<td style="text-align:left;">
+-0.0084
+</td>
+<td style="text-align:left;">
+0.0091
+</td>
+<td style="text-align:left;">
+0.0097
+</td>
+<td style="text-align:left;">
+0.0494
+</td>
+<td style="text-align:left;">
+0.0034
+</td>
+<td style="text-align:left;">
+-0.1884
+</td>
+<td style="text-align:left;">
+0.0182
+</td>
+<td style="text-align:left;">
+0.0034
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GRT
+</td>
+<td style="text-align:left;">
+-0.0063
+</td>
+<td style="text-align:left;">
+0.0230
+</td>
+<td style="text-align:left;">
+0.0164
+</td>
+<td style="text-align:left;">
+0.0834
+</td>
+<td style="text-align:left;">
+0.0047
+</td>
+<td style="text-align:left;">
+0.1469
+</td>
+<td style="text-align:left;">
+-0.0032
+</td>
+<td style="text-align:left;">
+0.0006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INL
+</td>
+<td style="text-align:left;">
+-0.0017
+</td>
+<td style="text-align:left;">
+0.0076
+</td>
+<td style="text-align:left;">
+0.0077
+</td>
+<td style="text-align:left;">
+0.0339
+</td>
+<td style="text-align:left;">
+0.0088
+</td>
+<td style="text-align:left;">
+0.0102
+</td>
+<td style="text-align:left;">
+-0.0150
+</td>
+<td style="text-align:left;">
+0.0013
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INP
+</td>
+<td style="text-align:left;">
+-0.0026
+</td>
+<td style="text-align:left;">
+0.0340
+</td>
+<td style="text-align:left;">
+0.0083
+</td>
+<td style="text-align:left;">
+0.0686
+</td>
+<td style="text-align:left;">
+0.0051
+</td>
+<td style="text-align:left;">
+0.1847
+</td>
+<td style="text-align:left;">
+-0.1322
+</td>
+<td style="text-align:left;">
+-0.0077
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NED
+</td>
+<td style="text-align:left;">
+-0.0117
+</td>
+<td style="text-align:left;">
+0.0071
+</td>
+<td style="text-align:left;">
+0.0245
+</td>
+<td style="text-align:left;">
+0.0863
+</td>
+<td style="text-align:left;">
+0.0086
+</td>
+<td style="text-align:left;">
+0.1478
+</td>
+<td style="text-align:left;">
+-0.0415
+</td>
+<td style="text-align:left;">
+0.0035
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SBK
+</td>
+<td style="text-align:left;">
+-0.0022
+</td>
+<td style="text-align:left;">
+-0.0311
+</td>
+<td style="text-align:left;">
+0.0093
+</td>
+<td style="text-align:left;">
+0.0319
+</td>
+<td style="text-align:left;">
+0.0065
+</td>
+<td style="text-align:left;">
+-0.1362
+</td>
+<td style="text-align:left;">
+0.1003
+</td>
+<td style="text-align:left;">
+0.0023
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SLM
+</td>
+<td style="text-align:left;">
+-0.0061
+</td>
+<td style="text-align:left;">
+-0.0567
+</td>
+<td style="text-align:left;">
+0.0035
+</td>
+<td style="text-align:left;">
+0.0030
+</td>
+<td style="text-align:left;">
+-0.0116
+</td>
+<td style="text-align:left;">
+-0.0363
+</td>
+<td style="text-align:left;">
+0.0530
+</td>
+<td style="text-align:left;">
+0.0059
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+FM_Fin$alpha %>% kable(caption="Factor Alpha's: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Alpha’s: Financial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ABG
+</td>
+<td style="text-align:left;">
+-0.0073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CPI
+</td>
+<td style="text-align:left;">
+-0.0193
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DSY
+</td>
+<td style="text-align:left;">
+0.0025
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FSR
+</td>
+<td style="text-align:left;">
+0.0029
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GRT
+</td>
+<td style="text-align:left;">
+-0.0009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INL
+</td>
+<td style="text-align:left;">
+-0.0151
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INP
+</td>
+<td style="text-align:left;">
+-0.0026
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NED
+</td>
+<td style="text-align:left;">
+-0.0045
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SBK
+</td>
+<td style="text-align:left;">
+-0.0123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SLM
+</td>
+<td style="text-align:left;">
+0.0286
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+covmat_Fin %>% kable(caption="Covariance Matrix: Financial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Covariance Matrix: Financial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+ABG
+</th>
+<th style="text-align:left;">
+CPI
+</th>
+<th style="text-align:left;">
+DSY
+</th>
+<th style="text-align:left;">
+FSR
+</th>
+<th style="text-align:left;">
+GRT
+</th>
+<th style="text-align:left;">
+INL
+</th>
+<th style="text-align:left;">
+INP
+</th>
+<th style="text-align:left;">
+NED
+</th>
+<th style="text-align:left;">
+SBK
+</th>
+<th style="text-align:left;">
+SLM
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ABG
+</td>
+<td style="text-align:left;">
+9e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+2e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CPI
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DSY
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FSR
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GRT
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INL
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INP
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NED
+</td>
+<td style="text-align:left;">
+2e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+6e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SBK
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+6e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SLM
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+</tr>
+</tbody>
+</table>
+## Industrial
+
+``` r
+FM_Ind$beta  %>% kable(caption="Factor Beta's: Industrial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Beta’s: Industrial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+US_10Yr
+</th>
+<th style="text-align:left;">
+Bcom_Index
+</th>
+<th style="text-align:left;">
+VIX
+</th>
+<th style="text-align:left;">
+USDZAR
+</th>
+<th style="text-align:left;">
+MM.Rate
+</th>
+<th style="text-align:left;">
+Real.GDP
+</th>
+<th style="text-align:left;">
+Real.INV
+</th>
+<th style="text-align:left;">
+Inflation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+APN
+</td>
+<td style="text-align:left;">
+0.0005
+</td>
+<td style="text-align:left;">
+-0.0506
+</td>
+<td style="text-align:left;">
+0.0028
+</td>
+<td style="text-align:left;">
+0.0265
+</td>
+<td style="text-align:left;">
+0.0018
+</td>
+<td style="text-align:left;">
+-0.0411
+</td>
+<td style="text-align:left;">
+0.0063
+</td>
+<td style="text-align:left;">
+0.0220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BID
+</td>
+<td style="text-align:left;">
+-0.0221
+</td>
+<td style="text-align:left;">
+-0.0173
+</td>
+<td style="text-align:left;">
+0.0083
+</td>
+<td style="text-align:left;">
+-0.0282
+</td>
+<td style="text-align:left;">
+0.0016
+</td>
+<td style="text-align:left;">
+-0.1634
+</td>
+<td style="text-align:left;">
+0.1681
+</td>
+<td style="text-align:left;">
+0.0046
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BTI
+</td>
+<td style="text-align:left;">
+-0.0116
+</td>
+<td style="text-align:left;">
+0.0115
+</td>
+<td style="text-align:left;">
+0.0116
+</td>
+<td style="text-align:left;">
+0.0114
+</td>
+<td style="text-align:left;">
+0.0275
+</td>
+<td style="text-align:left;">
+-0.0094
+</td>
+<td style="text-align:left;">
+0.0167
+</td>
+<td style="text-align:left;">
+-0.0064
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BVT
+</td>
+<td style="text-align:left;">
+-0.0087
+</td>
+<td style="text-align:left;">
+0.0050
+</td>
+<td style="text-align:left;">
+0.0150
+</td>
+<td style="text-align:left;">
+0.0690
+</td>
+<td style="text-align:left;">
+0.0030
+</td>
+<td style="text-align:left;">
+0.0046
+</td>
+<td style="text-align:left;">
+0.0404
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CFR
+</td>
+<td style="text-align:left;">
+0.0029
+</td>
+<td style="text-align:left;">
+-0.0017
+</td>
+<td style="text-align:left;">
+-0.0094
+</td>
+<td style="text-align:left;">
+0.0403
+</td>
+<td style="text-align:left;">
+0.0212
+</td>
+<td style="text-align:left;">
+0.0651
+</td>
+<td style="text-align:left;">
+-0.0622
+</td>
+<td style="text-align:left;">
+-0.0011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CLS
+</td>
+<td style="text-align:left;">
+-0.0029
+</td>
+<td style="text-align:left;">
+-0.0040
+</td>
+<td style="text-align:left;">
+0.0004
+</td>
+<td style="text-align:left;">
+0.0153
+</td>
+<td style="text-align:left;">
+0.0116
+</td>
+<td style="text-align:left;">
+-0.0488
+</td>
+<td style="text-align:left;">
+0.0009
+</td>
+<td style="text-align:left;">
+0.0089
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MNP
+</td>
+<td style="text-align:left;">
+-0.0017
+</td>
+<td style="text-align:left;">
+-0.0390
+</td>
+<td style="text-align:left;">
+0.0069
+</td>
+<td style="text-align:left;">
+-0.0087
+</td>
+<td style="text-align:left;">
+0.0140
+</td>
+<td style="text-align:left;">
+-0.0546
+</td>
+<td style="text-align:left;">
+-0.0099
+</td>
+<td style="text-align:left;">
+-0.0026
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRP
+</td>
+<td style="text-align:left;">
+0.0069
+</td>
+<td style="text-align:left;">
+-0.0046
+</td>
+<td style="text-align:left;">
+0.0045
+</td>
+<td style="text-align:left;">
+0.0441
+</td>
+<td style="text-align:left;">
+-0.0104
+</td>
+<td style="text-align:left;">
+-0.2065
+</td>
+<td style="text-align:left;">
+0.1566
+</td>
+<td style="text-align:left;">
+0.0037
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MTN
+</td>
+<td style="text-align:left;">
+-0.0051
+</td>
+<td style="text-align:left;">
+-0.0701
+</td>
+<td style="text-align:left;">
+0.0312
+</td>
+<td style="text-align:left;">
+0.0190
+</td>
+<td style="text-align:left;">
+-0.0010
+</td>
+<td style="text-align:left;">
+0.0230
+</td>
+<td style="text-align:left;">
+0.0244
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPN
+</td>
+<td style="text-align:left;">
+0.0005
+</td>
+<td style="text-align:left;">
+-0.0068
+</td>
+<td style="text-align:left;">
+-0.0086
+</td>
+<td style="text-align:left;">
+0.0493
+</td>
+<td style="text-align:left;">
+0.0081
+</td>
+<td style="text-align:left;">
+-0.0125
+</td>
+<td style="text-align:left;">
+-0.0537
+</td>
+<td style="text-align:left;">
+0.0027
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SHP
+</td>
+<td style="text-align:left;">
+0.0026
+</td>
+<td style="text-align:left;">
+-0.0013
+</td>
+<td style="text-align:left;">
+0.0016
+</td>
+<td style="text-align:left;">
+0.0038
+</td>
+<td style="text-align:left;">
+0.0013
+</td>
+<td style="text-align:left;">
+-0.1616
+</td>
+<td style="text-align:left;">
+0.1257
+</td>
+<td style="text-align:left;">
+-0.0009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SPP
+</td>
+<td style="text-align:left;">
+0.0048
+</td>
+<td style="text-align:left;">
+-0.0038
+</td>
+<td style="text-align:left;">
+0.0081
+</td>
+<td style="text-align:left;">
+-0.0091
+</td>
+<td style="text-align:left;">
+0.0023
+</td>
+<td style="text-align:left;">
+-0.1399
+</td>
+<td style="text-align:left;">
+0.1479
+</td>
+<td style="text-align:left;">
+0.0016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VOD
+</td>
+<td style="text-align:left;">
+0.0027
+</td>
+<td style="text-align:left;">
+0.0164
+</td>
+<td style="text-align:left;">
+0.0108
+</td>
+<td style="text-align:left;">
+-0.0188
+</td>
+<td style="text-align:left;">
+0.0138
+</td>
+<td style="text-align:left;">
+0.0173
+</td>
+<td style="text-align:left;">
+0.0025
+</td>
+<td style="text-align:left;">
+-0.0028
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WHL
+</td>
+<td style="text-align:left;">
+0.0082
+</td>
+<td style="text-align:left;">
+0.0223
+</td>
+<td style="text-align:left;">
+0.0030
+</td>
+<td style="text-align:left;">
+0.0183
+</td>
+<td style="text-align:left;">
+0.0042
+</td>
+<td style="text-align:left;">
+-0.2556
+</td>
+<td style="text-align:left;">
+0.1899
+</td>
+<td style="text-align:left;">
+0.0032
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+FM_Ind$alpha %>% kable(caption="Factor Alpha's: Industrial", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Alpha’s: Industrial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+APN
+</td>
+<td style="text-align:left;">
+-0.0154
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BID
+</td>
+<td style="text-align:left;">
+0.0247
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BTI
+</td>
+<td style="text-align:left;">
+-0.0344
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BVT
+</td>
+<td style="text-align:left;">
+0.0087
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CFR
+</td>
+<td style="text-align:left;">
+-0.0469
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CLS
+</td>
+<td style="text-align:left;">
+-0.0246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MNP
+</td>
+<td style="text-align:left;">
+-0.0205
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRP
+</td>
+<td style="text-align:left;">
+0.0128
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MTN
+</td>
+<td style="text-align:left;">
+0.0098
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPN
+</td>
+<td style="text-align:left;">
+-0.0137
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SHP
+</td>
+<td style="text-align:left;">
+-0.0016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SPP
+</td>
+<td style="text-align:left;">
+-0.0059
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VOD
+</td>
+<td style="text-align:left;">
+-0.0266
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WHL
+</td>
+<td style="text-align:left;">
+-0.0160
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+covmat_Ind %>% kable(caption="Covariance Matrix: Industrial", align="l", digits = 4) %>%  kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Covariance Matrix: Industrial
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+APN
+</th>
+<th style="text-align:left;">
+BID
+</th>
+<th style="text-align:left;">
+BTI
+</th>
+<th style="text-align:left;">
+BVT
+</th>
+<th style="text-align:left;">
+CFR
+</th>
+<th style="text-align:left;">
+CLS
+</th>
+<th style="text-align:left;">
+MNP
+</th>
+<th style="text-align:left;">
+MRP
+</th>
+<th style="text-align:left;">
+MTN
+</th>
+<th style="text-align:left;">
+NPN
+</th>
+<th style="text-align:left;">
+SHP
+</th>
+<th style="text-align:left;">
+SPP
+</th>
+<th style="text-align:left;">
+VOD
+</th>
+<th style="text-align:left;">
+WHL
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+APN
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BID
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BTI
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BVT
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CFR
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CLS
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MNP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MTN
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0.0011
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPN
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SHP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SPP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+2e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VOD
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+2e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WHL
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0.0000
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+</tr>
+</tbody>
+</table>
+## Resources
+
+``` r
+FM_Res$beta %>% kable(caption="Factor Beta's: Resources", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Beta’s: Resources
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+US_10Yr
+</th>
+<th style="text-align:left;">
+Bcom_Index
+</th>
+<th style="text-align:left;">
+VIX
+</th>
+<th style="text-align:left;">
+USDZAR
+</th>
+<th style="text-align:left;">
+MM.Rate
+</th>
+<th style="text-align:left;">
+Real.GDP
+</th>
+<th style="text-align:left;">
+Real.INV
+</th>
+<th style="text-align:left;">
+Inflation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AGL
+</td>
+<td style="text-align:left;">
+-0.0206
+</td>
+<td style="text-align:left;">
+0.0168
+</td>
+<td style="text-align:left;">
+-0.0002
+</td>
+<td style="text-align:left;">
+0.0548
+</td>
+<td style="text-align:left;">
+0.0347
+</td>
+<td style="text-align:left;">
+0.0327
+</td>
+<td style="text-align:left;">
+-0.0416
+</td>
+<td style="text-align:left;">
+0.0011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AMS
+</td>
+<td style="text-align:left;">
+0.0009
+</td>
+<td style="text-align:left;">
+0.0040
+</td>
+<td style="text-align:left;">
+0.0093
+</td>
+<td style="text-align:left;">
+0.0655
+</td>
+<td style="text-align:left;">
+-0.0169
+</td>
+<td style="text-align:left;">
+-0.1244
+</td>
+<td style="text-align:left;">
+0.0329
+</td>
+<td style="text-align:left;">
+-0.0044
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ANG
+</td>
+<td style="text-align:left;">
+0.0158
+</td>
+<td style="text-align:left;">
+0.0556
+</td>
+<td style="text-align:left;">
+0.0015
+</td>
+<td style="text-align:left;">
+0.0786
+</td>
+<td style="text-align:left;">
+-0.0093
+</td>
+<td style="text-align:left;">
+-0.3271
+</td>
+<td style="text-align:left;">
+0.1507
+</td>
+<td style="text-align:left;">
+-0.0053
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BHP
+</td>
+<td style="text-align:left;">
+-0.0040
+</td>
+<td style="text-align:left;">
+0.0021
+</td>
+<td style="text-align:left;">
+-0.0007
+</td>
+<td style="text-align:left;">
+0.0409
+</td>
+<td style="text-align:left;">
+0.0232
+</td>
+<td style="text-align:left;">
+-0.0461
+</td>
+<td style="text-align:left;">
+-0.0156
+</td>
+<td style="text-align:left;">
+-0.0022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EXX
+</td>
+<td style="text-align:left;">
+-0.0074
+</td>
+<td style="text-align:left;">
+0.0331
+</td>
+<td style="text-align:left;">
+0.0033
+</td>
+<td style="text-align:left;">
+0.0174
+</td>
+<td style="text-align:left;">
+0.0187
+</td>
+<td style="text-align:left;">
+0.1998
+</td>
+<td style="text-align:left;">
+-0.1114
+</td>
+<td style="text-align:left;">
+-0.0073
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GFI
+</td>
+<td style="text-align:left;">
+0.0197
+</td>
+<td style="text-align:left;">
+-0.0179
+</td>
+<td style="text-align:left;">
+-0.0084
+</td>
+<td style="text-align:left;">
+-0.0029
+</td>
+<td style="text-align:left;">
+-0.0194
+</td>
+<td style="text-align:left;">
+-0.3582
+</td>
+<td style="text-align:left;">
+0.1927
+</td>
+<td style="text-align:left;">
+-0.0074
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GLN
+</td>
+<td style="text-align:left;">
+0.0046
+</td>
+<td style="text-align:left;">
+-0.0238
+</td>
+<td style="text-align:left;">
+0.0236
+</td>
+<td style="text-align:left;">
+0.0477
+</td>
+<td style="text-align:left;">
+-0.0052
+</td>
+<td style="text-align:left;">
+-0.0321
+</td>
+<td style="text-align:left;">
+-0.0573
+</td>
+<td style="text-align:left;">
+0.0069
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IMP
+</td>
+<td style="text-align:left;">
+-0.0134
+</td>
+<td style="text-align:left;">
+-0.0604
+</td>
+<td style="text-align:left;">
+-0.0120
+</td>
+<td style="text-align:left;">
+-0.0134
+</td>
+<td style="text-align:left;">
+-0.0073
+</td>
+<td style="text-align:left;">
+-0.1765
+</td>
+<td style="text-align:left;">
+0.1362
+</td>
+<td style="text-align:left;">
+0.0055
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPH
+</td>
+<td style="text-align:left;">
+0.0016
+</td>
+<td style="text-align:left;">
+-0.0527
+</td>
+<td style="text-align:left;">
+0.0093
+</td>
+<td style="text-align:left;">
+-0.0315
+</td>
+<td style="text-align:left;">
+0.0003
+</td>
+<td style="text-align:left;">
+-0.3881
+</td>
+<td style="text-align:left;">
+0.2661
+</td>
+<td style="text-align:left;">
+0.0167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOL
+</td>
+<td style="text-align:left;">
+-0.0109
+</td>
+<td style="text-align:left;">
+-0.0287
+</td>
+<td style="text-align:left;">
+0.0319
+</td>
+<td style="text-align:left;">
+0.0201
+</td>
+<td style="text-align:left;">
+0.0004
+</td>
+<td style="text-align:left;">
+0.0549
+</td>
+<td style="text-align:left;">
+-0.0442
+</td>
+<td style="text-align:left;">
+0.0076
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SSW
+</td>
+<td style="text-align:left;">
+0.0110
+</td>
+<td style="text-align:left;">
+-0.0319
+</td>
+<td style="text-align:left;">
+-0.0116
+</td>
+<td style="text-align:left;">
+-0.0249
+</td>
+<td style="text-align:left;">
+-0.0150
+</td>
+<td style="text-align:left;">
+-0.2844
+</td>
+<td style="text-align:left;">
+0.0837
+</td>
+<td style="text-align:left;">
+0.0159
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+FM_Res$alpha %>% kable(caption="Factor Alpha's: Resources", align="l", digits = 4) %>% kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Factor Alpha’s: Resources
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AGL
+</td>
+<td style="text-align:left;">
+-0.0429
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AMS
+</td>
+<td style="text-align:left;">
+0.0383
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ANG
+</td>
+<td style="text-align:left;">
+0.0063
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BHP
+</td>
+<td style="text-align:left;">
+-0.0398
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EXX
+</td>
+<td style="text-align:left;">
+-0.0184
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GFI
+</td>
+<td style="text-align:left;">
+0.0222
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GLN
+</td>
+<td style="text-align:left;">
+0.0036
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IMP
+</td>
+<td style="text-align:left;">
+0.0317
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPH
+</td>
+<td style="text-align:left;">
+-0.0072
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOL
+</td>
+<td style="text-align:left;">
+0.0095
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SSW
+</td>
+<td style="text-align:left;">
+0.0064
+</td>
+</tr>
+</tbody>
+</table>
+
+``` r
+covmat_Res %>% kable(caption="Covariance Matrix: Resources", align="l", digits = 4) %>%  kable_styling(latex_options = "HOLD_position")
+```
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Covariance Matrix: Resources
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+AGL
+</th>
+<th style="text-align:left;">
+AMS
+</th>
+<th style="text-align:left;">
+ANG
+</th>
+<th style="text-align:left;">
+BHP
+</th>
+<th style="text-align:left;">
+EXX
+</th>
+<th style="text-align:left;">
+GFI
+</th>
+<th style="text-align:left;">
+GLN
+</th>
+<th style="text-align:left;">
+IMP
+</th>
+<th style="text-align:left;">
+NPH
+</th>
+<th style="text-align:left;">
+SOL
+</th>
+<th style="text-align:left;">
+SSW
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AGL
+</td>
+<td style="text-align:left;">
+4e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AMS
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+6e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ANG
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BHP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+3e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EXX
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+5e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GFI
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+6e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+-1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GLN
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-03
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IMP
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+6e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NPH
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+8e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOL
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+-1e-04
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+1e-04
+</td>
+<td style="text-align:left;">
+7e-04
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SSW
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+0e+00
+</td>
+<td style="text-align:left;">
+9e-04
+</td>
+</tr>
+</tbody>
+</table>
